@@ -1,0 +1,80 @@
+:root {
+    --bg-dark: #21252b;
+    --track-bg: #282c34;
+    --border-color: #181a1f;
+    --text-color: #abb2bf;
+    --step-bg: #15181c;
+    --step-border: #3b4048;
+    --step-active: #56d8d6;
+    --step-active-border: #80ecea;
+}
+
+body {
+    background-color: var(--bg-dark);
+    font-family: monospace;
+    padding: 20px;
+    color: var(--text-color);
+}
+
+#game {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+.sequencer {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background-color: var(--border-color);
+    border: 2px solid var(--border-color);
+    width: fit-content;
+}
+
+.track {
+    display: flex;
+    align-items: center;
+    background-color: var(--track-bg);
+    height: 36px;
+}
+
+.track-header {
+    display: flex;
+    align-items: center;
+    width: 220px;
+    height: 100%;
+    padding: 0 8px;
+    gap: 6px;
+    border-right: 2px solid var(--border-color);
+}
+
+.track-name {
+    font-size: 13px;
+    margin-left: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.step-container {
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    gap: 3px;
+}
+
+.step {
+    width: 18px;
+    height: 22px;
+    background-color: var(--step-bg);
+    border: 1px solid var(--step-border);
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.step.active {
+    background-color: var(--step-active);
+    border-color: var(--step-active-border);
+    box-shadow: inset 0 0 2px #ffffff;
+}

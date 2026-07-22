@@ -18,7 +18,6 @@ Sequence:
     { id: 'track-1', name: 'Kick', steps: [...] },
     { id: 'track-2', name: 'Snare', steps: [...] },
     { id: 'track-3', name: 'Shaker', steps: [...] },
-    { id: 'track-4', name: 'Snare', steps: [...] },
     { id: 'track-5', name: 'Tom', steps: [...] }
 }
 ```

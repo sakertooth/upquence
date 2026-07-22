@@ -1,0 +1,24 @@
+{
+  "name": "upquence",
+  "version": "1.0.0",
+  "description": "Gamified music sequencer.",
+  "keywords": [
+    "music",
+    "sequencer",
+    "game"
+  ],
+  "homepage": "https://github.com/sakertooth/upquence#readme",
+  "bugs": {
+    "url": "https://github.com/sakertooth/upquence/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sakertooth/upquence.git"
+  },
+  "license": "MIT",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}

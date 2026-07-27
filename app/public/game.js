@@ -80,6 +80,20 @@ function setupPlayButton() {
     });
 }
 
+function runSchedule(time) {
+    const stepsPerBeat = PATTERN_STEP_RESOLUTION / game.timeSigDenominator;
+    const ticksPerStep = Tone.Transport.PPQ / stepsPerBeat;
+    const currentStep = Math.floor(Tone.Transport.ticks / ticksPerStep);
+    const stepContainer = document.querySelectorAll("#sequencer .step-container");
+
+    stepContainer.forEach(container => {
+        const stepCells = container.querySelectorAll(".step");
+        stepCells.forEach((cell, index) => {
+            cell.classList.toggle("highlighted", index === currentStep);
+        });
+    });
+}
+
 function initalize() {
     const numSteps = calculateNumSteps();
     for (let track of game.pattern) {
@@ -90,13 +104,7 @@ function initalize() {
     Tone.Transport.bpm.value = game.beatsPerMinute;
     Tone.Transport.loop = true;
     Tone.Transport.setLoopPoints(0, "1m");
-
-    Tone.Transport.scheduleRepeat((time) => {
-        const stepsPerBeat = PATTERN_STEP_RESOLUTION / game.timeSigDenominator;
-        const ticksPerStep = Tone.Transport.PPQ / stepsPerBeat;
-        const step = Math.floor(Tone.Transport.ticks / ticksPerStep);
-        console.log(step);
-    }, "16n");
+    Tone.Transport.scheduleRepeat(runSchedule, "16n");
 }
 
 initalize();

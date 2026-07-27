@@ -79,3 +79,8 @@ body {
     border-color: var(--step-active-border);
     box-shadow: inset 0 0 2px #ffffff;
 }
+
+.step.highlighted {
+    border-color: var(--step-active-border);
+    box-shadow: inset 0 0 2px #ffffff;
+}

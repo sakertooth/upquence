@@ -1,3 +1,5 @@
+const PATTERN_STEP_RESOLUTION = 16
+
 let game = {
     pattern: [
         { trackID: 0, name: "Kick", steps: [] },
@@ -11,8 +13,7 @@ let game = {
 }
 
 function calculateNumSteps() {
-    const patternStepResolution = 16;
-    return game.timeSigNumerator * (patternStepResolution / game.timeSigDenominator);
+    return game.timeSigNumerator * (PATTERN_STEP_RESOLUTION / game.timeSigDenominator);
 }
 
 function renderSequencer() {

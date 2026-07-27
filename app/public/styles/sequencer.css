@@ -1,28 +1,3 @@
-:root {
-    --bg-dark: #21252b;
-    --track-bg: #282c34;
-    --border-color: #181a1f;
-    --text-color: #abb2bf;
-    --step-bg: #15181c;
-    --step-border: #3b4048;
-    --step-active: #56d8d6;
-    --step-active-border: #80ecea;
-}
-
-body {
-    background-color: var(--bg-dark);
-    font-family: monospace;
-    color: var(--text-color);
-    margin: 0;
-    height: 100vh;
-}
-
-.game {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .sequencer {
     display: flex;
     flex-direction: column;

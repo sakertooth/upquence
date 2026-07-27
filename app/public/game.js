@@ -12,8 +12,6 @@ let game = {
     beatsPerMinute: 140
 }
 
-let currentStep = 0;
-
 function calculateNumSteps() {
     return game.timeSigNumerator * (PATTERN_STEP_RESOLUTION / game.timeSigDenominator);
 }
@@ -94,7 +92,10 @@ function initalize() {
     Tone.Transport.setLoopPoints(0, "1m");
 
     Tone.Transport.scheduleRepeat((time) => {
-        currentStep = (currentStep + 1) % calculateNumSteps();
+        const stepsPerBeat = PATTERN_STEP_RESOLUTION / game.timeSigDenominator;
+        const ticksPerStep = Tone.Transport.PPQ / stepsPerBeat;
+        const step = Math.floor(Tone.Transport.ticks / ticksPerStep);
+        console.log(step);
     }, "16n");
 }
 

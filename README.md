@@ -15,11 +15,11 @@ Run the server using `npm run start`.
 Sequence:
 ```js
 {
-    { id: 'track-1', name: 'Kick', steps: [...] },
-    { id: 'track-2', name: 'Snare', steps: [...] },
-    { id: 'track-3', name: 'Shaker', steps: [...] },
-    { id: 'track-5', name: 'Tom', steps: [...] }
+    { trackID: 0, name: 'Kick', steps: [...] },
+    { trackID: 1, name: 'Snare', steps: [...] },
+    { trackID: 2, name: 'Shaker', steps: [...] },
+    { trackID: 3, name: 'Tom', steps: [...] }
 }
 ```
 
-Each sequence contains a list of tracks. Each track has an `id`, as well as a `name` and the activated number of `steps`. Each track in a sequence is required to have the same number of `steps`. The values in `steps` for each track consist of `true` and `false` values for if that step is activated or not. 
+Each sequence contains a list of tracks. Each track has an `trackID`, as well as a `name` and the activated number of `steps`. Each track in a sequence is required to have the same number of `steps`. The values in `steps` for each track consist of `true` and `false` values for if that step is activated or not. In the case of a track having the incorrect number of steps, the step value is treated as `false` or ignored.

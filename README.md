@@ -12,14 +12,18 @@ Run the server using `npm run start`.
 
 # Data Layout
 
-Sequence:
 ```js
 {
-    { trackID: 0, name: 'Kick', steps: [...] },
-    { trackID: 1, name: 'Snare', steps: [...] },
-    { trackID: 2, name: 'Shaker', steps: [...] },
-    { trackID: 3, name: 'Tom', steps: [...] }
+    { id: "example_kick", name: 'Kick', url: ...., steps: [...] },
+    { id: "example_snare", name: 'Snare', url: ..., steps: [...] },
+    { id: "example_shaker", name: 'Shaker', url: ..., steps: [...] },
+    { id: "example_tom", name: 'Tom', url: ..., steps: [...] },
+    timeSigNumerator: 4,
+    timeSigDenominator: 4,
+    beatsPerMinute: 140
 }
 ```
 
-Each sequence contains a list of tracks. Each track has an `trackID`, as well as a `name` and the activated number of `steps`. Each track in a sequence is required to have the same number of `steps`. The values in `steps` for each track consist of `true` and `false` values for if that step is activated or not. In the case of a track having the incorrect number of steps, the step value is treated as `false` or ignored.
+Each sequence contains a list of tracks. Each track has a `id`, `name`, `url`, and `steps`. The `id` uniquely identifies the track, `name` provides the display name of a track, `url` stores the path to the audio file that is associated with the track, and `steps` stores the steps. The values in `steps` for each track consist of `true` and `false` values for if that step is activated or not. The number of steps for each track is based on the time signature of the session.
+
+`timeSigNumerator` and `timeSigDenominator` specify the time signature, and `beatsPerMinute` specifies the tempo of the session in BPM.

@@ -1,0 +1,76 @@
+{
+  "sounds": [
+    {
+      "id": "tr808_kick",
+      "name": "TR-808 Kick",
+      "category": "drums",
+      "type": "sample",
+      "url": "/sounds/tr808/kick.wav"
+    },
+    {
+      "id": "tr808_snare",
+      "name": "TR-808 Snare",
+      "category": "drums",
+      "type": "sample",
+      "url": "/sounds/tr808/snare.wav"
+    },
+    {
+      "id": "tr808_clap",
+      "name": "TR-808 Clap",
+      "category": "drums",
+      "type": "sample",
+      "url": "/sounds/tr808/clap.wav"
+    },
+    {
+      "id": "tr808_closed_hat",
+      "name": "TR-808 Closed Hat",
+      "category": "drums",
+      "type": "sample",
+      "url": "/sounds/tr808/closedhat.wav"
+    },
+    {
+      "id": "tr808_open_hat",
+      "name": "TR-808 Open Hat",
+      "category": "drums",
+      "type": "sample",
+      "url": "/sounds/tr808/openhat.wav"
+    },
+    {
+      "id": "tr808_cowbell",
+      "name": "TR-808 Cowbell",
+      "category": "drums",
+      "type": "sample",
+      "url": "/sounds/tr808/cowbell.wav"
+    },
+    {
+      "id": "tr808_conga",
+      "name": "TR-808 Conga",
+      "category": "drums",
+      "type": "sample",
+      "url": "/sounds/tr808/conga.wav"
+    },
+    {
+      "id": "tr808_rim",
+      "name": "TR-808 Rim",
+      "category": "drums",
+      "type": "sample",
+      "url": "/sounds/tr808/rim.wav"
+    }
+  ],
+  "drumkits": [
+    {
+      "name": "tr808",
+      "sounds": [
+        "tr808_clap",
+        "tr808_closedhat",
+        "tr808_conga",
+        "tr808_cowbell",
+        "tr808_kick",
+        "tr808_openhat",
+        "tr808_rim",
+        "tr808_snare"
+      ]
+    }
+  ],
+  "default-drumkit": "tr808"
+}

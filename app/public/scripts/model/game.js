@@ -10,22 +10,54 @@ export let session = {
     beatsPerMinute: DEFAULT_BEATS_PER_MINUTE
 }
 
+let players = []
+
 export async function init() {
+    // Load default drum kit
     const soundCatalogResponse = await fetch("/sounds/catalog.json");
     const soundCatalogBody = await soundCatalogResponse.json();
-
     const defaultDrumkit = soundCatalogBody.drumkits.find(drumkit => drumkit.name === soundCatalogBody["default-drumkit"]);
+
     for (let soundID of defaultDrumkit.sounds) {
         const sound = soundCatalogBody.sounds.find(sound => sound.id === soundID);
 
         session.pattern = [...session.pattern,
         {
             name: sound.name,
+            url: sound.url,
             steps: Array(PATTERN_STEP_RESOLUTION).fill(false)
         }]
-    };
+    }
+
+    // Create player objects for each track
+    players = session.pattern.map(track => ({
+        id: track.id,
+        url: track.url,
+        obj: new Tone.Player(track.url).toDestination()
+    }));
+
+    // Start game loop, set time signature and BPM, etc
+    Tone.Transport.timeSignature = [session.timeSigNumerator, session.timeSigDenominator];
+    Tone.Transport.bpm.value = session.beatsPerMinute;
+    Tone.Transport.loop = true;
+    Tone.Transport.setLoopPoints(0, "1m");
+    Tone.Transport.scheduleRepeat((time) => {
+        const step = currentStep();
+        for (let track of session.pattern) {
+            if (track.steps[step]) {
+                const player = players.find(p => p.url === track.url);
+                player.obj.start(time);
+            }
+        }
+    }, "16n");
 }
 
 export function numSteps() {
     return session.timeSigNumerator * (PATTERN_STEP_RESOLUTION / session.timeSigDenominator);
+}
+
+export function currentStep() {
+    const stepsPerBeat = PATTERN_STEP_RESOLUTION / session.timeSigDenominator;
+    const ticksPerStep = Tone.Transport.PPQ / stepsPerBeat;
+    return Math.floor(Tone.Transport.ticks / ticksPerStep);
 }

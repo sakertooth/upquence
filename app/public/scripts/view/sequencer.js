@@ -35,4 +35,23 @@ export function init() {
         trackRow.appendChild(stepContainer);
         sequencer.appendChild(trackRow);
     });
+
+    requestAnimationFrame(update);
+}
+
+function update() {
+
+    if (Tone.Transport.state === "started") {
+        const currentStep = GameModel.currentStep();
+        const stepContainer = sequencer.querySelectorAll(".step-container");
+
+        stepContainer.forEach(container => {
+            const stepCells = container.querySelectorAll(".step");
+            stepCells.forEach((cell, index) => {
+                cell.classList.toggle("highlighted", index === currentStep);
+            });
+        });
+    }
+
+    requestAnimationFrame(update);
 }

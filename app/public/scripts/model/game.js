@@ -1,15 +1,29 @@
 export const PATTERN_STEP_RESOLUTION = 16;
+export const DEFAULT_TIME_SIG_NUMERATOR = 4;
+export const DEFAULT_TIME_SIG_DENOMINATOR = 4;
+export const DEFAULT_BEATS_PER_MINUTE = 140;
 
 export let session = {
-    pattern: [
-        { trackID: 0, name: "Kick", steps: [] },
-        { trackID: 1, name: "Snare", steps: [] },
-        { trackID: 2, name: "Hat", steps: [] },
-        { trackID: 3, name: "Tom", steps: [] }
-    ],
-    timeSigNumerator: 4,
-    timeSigDenominator: 4,
-    beatsPerMinute: 140
+    pattern: [],
+    timeSigNumerator: DEFAULT_TIME_SIG_NUMERATOR,
+    timeSigDenominator: DEFAULT_TIME_SIG_DENOMINATOR,
+    beatsPerMinute: DEFAULT_BEATS_PER_MINUTE
+}
+
+export async function init() {
+    const soundCatalogResponse = await fetch("/sounds/catalog.json");
+    const soundCatalogBody = await soundCatalogResponse.json();
+
+    const defaultDrumkit = soundCatalogBody.drumkits.find(drumkit => drumkit.name === soundCatalogBody["default-drumkit"]);
+    for (let soundID of defaultDrumkit.sounds) {
+        const sound = soundCatalogBody.sounds.find(sound => sound.id === soundID);
+
+        session.pattern = [...session.pattern,
+        {
+            name: sound.name,
+            steps: Array(PATTERN_STEP_RESOLUTION).fill(false)
+        }]
+    };
 }
 
 export function numSteps() {

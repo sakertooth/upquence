@@ -62,11 +62,11 @@
       "name": "tr808",
       "sounds": [
         "tr808_clap",
-        "tr808_closedhat",
+        "tr808_closed_hat",
         "tr808_conga",
         "tr808_cowbell",
         "tr808_kick",
-        "tr808_openhat",
+        "tr808_open_hat",
         "tr808_rim",
         "tr808_snare"
       ]

@@ -18,11 +18,12 @@ export function init() {
     });
 
     stopButton.addEventListener("click", () => {
-        console.log("STOPPED");
         if (Tone.Transport.state === "stopped") {
             return;
         }
+
         Tone.Transport.stop();
+        playIconPath.setAttribute("d", PLAY_BUTTON_ICON_PATH);
     });
 
     document.addEventListener("keyup", (e) => {

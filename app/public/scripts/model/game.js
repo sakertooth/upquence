@@ -52,12 +52,15 @@ export async function init() {
     }, `${PATTERN_STEP_RESOLUTION}n`);
 }
 
+export function stepsPerBeat() {
+    return PATTERN_STEP_RESOLUTION / session.timeSigNumerator;
+}
+
 export function numSteps() {
-    return session.timeSigNumerator * (PATTERN_STEP_RESOLUTION / session.timeSigDenominator);
+    return session.timeSigNumerator * stepsPerBeat();
 }
 
 export function currentStep() {
-    const stepsPerBeat = PATTERN_STEP_RESOLUTION / session.timeSigDenominator;
-    const ticksPerStep = Tone.Transport.PPQ / stepsPerBeat;
+    const ticksPerStep = Tone.Transport.PPQ / stepsPerBeat();
     return Math.floor(Tone.Transport.ticks / ticksPerStep);
 }

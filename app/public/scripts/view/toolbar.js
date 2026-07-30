@@ -3,6 +3,7 @@ const PAUSE_BUTTON_ICON_PATH = "M3 2h3.5v12H3V2zm6.5 0H13v12H9.5V2z";
 
 const playButton = document.getElementById("play-button");
 const playIconPath = document.querySelector("#play-icon path");
+const stopButton = document.getElementById("stop-button");
 
 export function init() {
     playButton.addEventListener("click", async () => {
@@ -14,6 +15,14 @@ export function init() {
             Tone.Transport.pause();
             playIconPath.setAttribute("d", PLAY_BUTTON_ICON_PATH);
         }
+    });
+
+    stopButton.addEventListener("click", () => {
+        console.log("STOPPED");
+        if (Tone.Transport.state === "stopped") {
+            return;
+        }
+        Tone.Transport.stop();
     });
 
     document.addEventListener("keyup", (e) => {

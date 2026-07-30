@@ -40,18 +40,15 @@ export function init() {
 }
 
 function update() {
+    const currentStep = GameModel.currentStep();
+    const stepContainer = sequencer.querySelectorAll(".step-container");
 
-    if (Tone.Transport.state === "started") {
-        const currentStep = GameModel.currentStep();
-        const stepContainer = sequencer.querySelectorAll(".step-container");
-
-        stepContainer.forEach(container => {
-            const stepCells = container.querySelectorAll(".step");
-            stepCells.forEach((cell, index) => {
-                cell.classList.toggle("highlighted", index === currentStep);
-            });
+    stepContainer.forEach(container => {
+        const stepCells = container.querySelectorAll(".step");
+        stepCells.forEach((cell, index) => {
+            cell.classList.toggle("highlighted", Tone.Transport.state !== "stopped" && index === currentStep);
         });
-    }
+    });
 
     requestAnimationFrame(update);
 }

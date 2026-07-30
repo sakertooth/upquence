@@ -49,7 +49,7 @@ export async function init() {
                 player.obj.start(time);
             }
         }
-    }, "16n");
+    }, `${PATTERN_STEP_RESOLUTION}n`);
 }
 
 export function numSteps() {

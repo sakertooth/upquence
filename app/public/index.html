@@ -28,34 +28,19 @@
     </div>
     <!-- Time Signature Display -->
     <div class="time-signature">
-        <div class="time-signature-display">
-          <span id = "top-fraction" class="numerator"> </span>
-          <span id = "bottom-fraction" class="denominator"></span>
-        </div>
-        <div class="time-signature-slider-display">
-          <input
-            type="range"
-            id="numeratorSlider"
-            min="1"
-            max="64"
-            value="0"
-            step="1"
-          >
-          <input
-            type="range"
-            id="denominatorSlider"
-            min="1"
-            max="64"
-            value="0"
-            step="1"
-          >
-        </div>
+      <div class="time-signature-display">
+        <span id="top-fraction" class="numerator"> </span>
+        <span id="bottom-fraction" class="denominator"></span>
+      </div>
+      <div class="time-signature-slider-display">
+        <input type="range" id="numeratorSlider" min="1" max="64" value="0" step="1">
+        <input type="range" id="denominatorSlider" min="1" max="64" value="0" step="1">
+      </div>
     </div>
     <!-- BPM Display-->
     <div class="bpm-display" id="bpm"> </div>
     <!-- Metronome Button -->
     <button class="metronome" id="metronome-button">M</button>
-
   </div>
 
   <!-- Game Container -->

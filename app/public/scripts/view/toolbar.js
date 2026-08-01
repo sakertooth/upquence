@@ -56,7 +56,7 @@ export function init() {
         GameModel.session.timeSigDenominator = denominator;
     });
 
-    bpm.textContent = Tone.Transport.bpm.value + "bpm";
+    bpm.textContent = `${Tone.Transport.bpm.value}bpm`;
 
     metronomeButton.addEventListener("click", () => {
         if (metronomeLoopID === -1) {

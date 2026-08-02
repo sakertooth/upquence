@@ -8,14 +8,14 @@
     margin: 30px;
 }
 
-.track {
+.sequencer-track {
     display: flex;
     align-items: center;
     background-color: var(--track-bg);
     height: 36px;
 }
 
-.track-header {
+.sequencer-track-header {
     display: flex;
     align-items: center;
     width: 220px;
@@ -25,7 +25,7 @@
     border-right: 2px solid var(--border-color);
 }
 
-.track-name {
+.sequencer-track-name {
     font-size: 13px;
     margin-left: 4px;
     white-space: nowrap;
@@ -33,14 +33,14 @@
     text-overflow: ellipsis;
 }
 
-.step-container {
+.sequencer-step-grid {
     display: flex;
     align-items: center;
     padding: 0 6px;
     gap: 3px;
 }
 
-.step {
+.sequencer-step {
     width: 18px;
     height: 22px;
     background-color: var(--step-bg);
@@ -49,13 +49,13 @@
     cursor: pointer;
 }
 
-.step.active {
+.sequencer-step.active {
     background-color: var(--step-active);
     border-color: var(--step-active-border);
     box-shadow: inset 0 0 2px #ffffff;
 }
 
-.step.highlighted {
+.sequencer-step.highlighted {
     border-color: var(--step-active-border);
     box-shadow: inset 0 0 2px #ffffff;
 }

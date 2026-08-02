@@ -1,0 +1,10 @@
+:root {
+    --bg-dark: #21252b;
+    --track-bg: #282c34;
+    --border-color: #181a1f;
+    --text-color: #abb2bf;
+    --step-bg: #15181c;
+    --step-border: #3b4048;
+    --step-active: #56d8d6;
+    --step-active-border: #80ecea;
+}

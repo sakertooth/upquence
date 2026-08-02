@@ -1,0 +1,13 @@
+body {
+    background-color: var(--bg-dark);
+    font-family: monospace;
+    color: var(--text-color);
+    margin: 0;
+    height: 100vh;
+}
+
+.game {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

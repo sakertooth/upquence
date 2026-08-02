@@ -6,31 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Upquence</title>
   <link rel="stylesheet" type="text/css" href="styles/main.css">
-  <link rel="stylesheet" type="text/css" href="styles/sequencer.css">
-  <link rel="stylesheet" type="text/css" href="styles/dialog.css">
-  <link rel="stylesheet" type="text/css" href="styles/toolbar.css">
 </head>
 
 <body>
-  <!-- Toolbar -->
   <div class="toolbar">
-    <!-- Play/Stop Buttons -->
     <div class="toolbar-group">
-      <button id="play-button" class="btn btn-primary" aria-label="Play">
+      <button class="control control-primary" id="play-button" aria-label="Play">
         <svg id="play-icon" width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
           <path d="M3 2l11 6-11 6V2z" />
         </svg>
       </button>
-      <button id="stop-button" class="btn" aria-label="Stop">
+      <button class="control" id="stop-button" aria-label="Stop">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
           <rect x="2" y="2" width="12" height="12" />
         </svg>
       </button>
     </div>
-    <!-- Time Signature Display -->
-    <div class="time-signature">
-      <div class="time-signature-display">
-        <select id="time-signature-numerator">
+
+    <div class="toolbar-group">
+      <div class="control">
+        <select class="control" id="time-signature-numerator">
           <option>1</option>
           <option>2</option>
           <option>3</option>
@@ -40,7 +35,7 @@
           <option>7</option>
           <option>8</option>
         </select>
-        <select id="time-signature-denominator">
+        <select class="control" id="time-signature-denominator">
           <option>1</option>
           <option>2</option>
           <option>4</option>
@@ -50,44 +45,45 @@
         </select>
       </div>
     </div>
-    <!-- BPM Display-->
-    <div class="bpm-display" id="bpm"> </div>
-    <!-- Metronome Button -->
-    <button class="metronome" id="metronome-button">M</button>
-    <!-- Export Button-->
-    <button class="btn" id="export-button">Export</button>
-    <dialog class="dialog" id="export-dialog">
-      <div class="dialog-title">Export</h2>
 
-      <div class="dialog-group">
-        <label>
-          Format:
-          <select id="export-format">
-            <option value="wav">WAV</option>
-            <option value="mp3">MP3</option>
-          </select>
-        </label>
-      </div>
+    <div class="toolbar-group">
+      <div class="bpm-display" id="bpm"></div>
+    </div>
 
-      <div class="dialog-group">
-        <label>
-          Filename:
-          <input id="export-filename">
-        </label>
-      </div>
+    <div class="toolbar-group">
+      <button class="control metronome" id="metronome-button">M</button>
+    </div>
 
-      <div class="dialog-group dialog-group-center">
-        <button class="btn" id="export-start-button">Start</button>
-        <button class="btn" id="export-cancel-button">Cancel</button>
-      </div>
-    </dialog>
+    <div class="toolbar-group">
+      <button class="control" id="export-button">Export</button>
+    </div>
+
   </div>
-
-  <!-- Game Container -->
   <div class="game">
-    <!-- Sequencer-->
     <div class="sequencer" id="sequencer"></div>
   </div>
+
+  <dialog class="dialog" id="export-dialog">
+    <div class="dialog-title">Export</div>
+    <label class="dialog-group">
+      Format:
+      <select class="control" id="export-format">
+        <option value="wav">WAV</option>
+        <option value="mp3">MP3</option>
+      </select>
+    </label>
+
+    <label class="dialog-group">
+      Filename:
+      <input class="control" id="export-filename">
+    </label>
+
+    <div class="dialog-group center">
+      <button class="control" id="export-start-button">Start</button>
+      <button class="control" id="export-cancel-button">Cancel</button>
+    </div>
+
+  </dialog>
 
   <script src="http://unpkg.com/tone"></script>
   <script type="module" src="scripts/main.js"></script>

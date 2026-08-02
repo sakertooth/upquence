@@ -54,7 +54,7 @@ export function init() {
 
     metronomeButton.addEventListener("click", (e) => {
         GameModel.toggleMetronomePlayback();
-        metronomeButton.classList.toggle("activated");
+        metronomeButton.classList.toggle("active");
     });
 
     metronomeButton.addEventListener("mousedown", (e) => {

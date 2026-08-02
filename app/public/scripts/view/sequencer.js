@@ -11,18 +11,18 @@ function render() {
     sequencer.innerHTML = "";
     GameModel.session.pattern.forEach((track, trackIndex) => {
         const trackRow = document.createElement("div");
-        trackRow.className = "track";
+        trackRow.className = "sequencer-track";
 
         const trackHeader = document.createElement("div");
-        trackHeader.className = "track-header";
-        trackHeader.innerHTML = `<span class="track-name">${track.name}</span>`;
+        trackHeader.className = "sequencer-track-header";
+        trackHeader.innerHTML = `<span class="sequencer-track-name">${track.name}</span>`;
 
         const stepContainer = document.createElement("div");
-        stepContainer.className = "step-container";
+        stepContainer.className = "sequencer-step-grid";
 
         for (let stepIndex = 0; stepIndex < GameModel.numSteps(); ++stepIndex) {
             const step = document.createElement("div");
-            step.className = "step";
+            step.className = "sequencer-step";
 
             if (track.steps[stepIndex]) {
                 step.classList.add("active");
@@ -46,10 +46,10 @@ function render() {
 
 function update() {
     const currentStep = GameModel.currentStep();
-    const stepContainer = sequencer.querySelectorAll(".step-container");
+    const stepContainer = sequencer.querySelectorAll(".sequencer-step-grid");
 
     stepContainer.forEach(container => {
-        const stepCells = container.querySelectorAll(".step");
+        const stepCells = container.querySelectorAll(".sequencer-step");
         stepCells.forEach((cell, index) => {
             cell.classList.toggle("highlighted", Tone.Transport.state !== "stopped" && index === currentStep);
         });

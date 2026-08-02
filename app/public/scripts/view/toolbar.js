@@ -11,7 +11,13 @@ const timeSigNumerator = document.getElementById("time-signature-numerator");
 const timeSigDenominator = document.getElementById("time-signature-denominator");
 
 const bpm = document.getElementById("bpm");
+
 const metronomeButton = document.getElementById("metronome-button");
+
+const exportButton = document.getElementById("export-button");
+const exportStartButton = document.getElementById("export-button");
+const exportCancelButton = document.getElementById("export-cancel-button");
+const exportDialog = document.getElementById("export-dialog");
 
 export function init() {
     timeSigNumerator.value = GameModel.session.timeSigNumerator;
@@ -61,6 +67,14 @@ export function init() {
 
     timeSigDenominator.addEventListener("keypress", (e) => {
         e.preventDefault();
+    });
+
+    exportButton.addEventListener("click", () => {
+        exportDialog.showModal();
+    });
+
+    exportCancelButton.addEventListener("click", () => {
+        exportDialog.close();
     });
 
     document.addEventListener("keyup", (e) => {

@@ -1,7 +1,7 @@
 .dialog {
-  background-color: var(--bg-secondary, #1e1e24);
-  color: var(--text-color, #f0f0f0);
-  border: 1px solid var(--border-color, #333);
+  background-color: var(--bg-secondary);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   padding: 20px;
   min-width: 320px;
@@ -20,7 +20,7 @@
 .dialog-title {
   margin: 0 0 16px;
   font-size: 16px;
-  color: var(--text-color, #f0f0f0);
+  color: var(--text-color);
   text-align: center;
   margin-top: 0;
 }

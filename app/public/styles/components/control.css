@@ -1,7 +1,7 @@
 .control {
-    background-color: var(--bg-tertiary, #2a2a32);
-    color: var(--text-color, #f0f0f0);
-    border: 1px solid var(--border-color, #444);
+    background-color: var(--bg-tertiary);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     padding: 6px 12px;
     font-size: 13px;
@@ -10,20 +10,10 @@
 }
 
 .control:hover {
-    background-color: var(--bg-hover, #353540);
+    background-color: var(--bg-hover);
 }
 
 .control.active:hover {
     background-color: var(--accent-color);
-    filter: brightness(1.1);
-}
-
-.control-primary {
-    background-color: var(--accent-color, #00ffcc);
-    color: #000;
-    border-color: var(--accent-color, #00ffcc);
-}
-
-.control-primary:hover {
     filter: brightness(1.1);
 }

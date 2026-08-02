@@ -1,7 +1,7 @@
 body {
-    background-color: var(--bg-dark);
+    background-color: var(--bg-primary);
     font-family: monospace;
-    color: var(--text-color);
+    color: var(--text-primary);
     margin: 0;
     height: 100vh;
 }

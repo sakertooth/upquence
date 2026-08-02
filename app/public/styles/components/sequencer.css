@@ -11,7 +11,7 @@
 .sequencer-track {
     display: flex;
     align-items: center;
-    background-color: var(--track-bg);
+    background-color: var(--bg-secondary);
     height: 36px;
 }
 
@@ -43,19 +43,19 @@
 .sequencer-step {
     width: 18px;
     height: 22px;
-    background-color: var(--step-bg);
-    border: 1px solid var(--step-border);
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-subtle);
     border-radius: 2px;
     cursor: pointer;
 }
 
 .sequencer-step.active {
-    background-color: var(--step-active);
-    border-color: var(--step-active-border);
+    background-color: var(--accent-color);
+    border-color: var(--accent-highlight);
     box-shadow: inset 0 0 2px #ffffff;
 }
 
 .sequencer-step.highlighted {
-    border-color: var(--step-active-border);
+    border-color: var(--accent-highlight);
     box-shadow: inset 0 0 2px #ffffff;
 }

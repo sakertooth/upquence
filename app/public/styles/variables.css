@@ -1,14 +1,14 @@
 :root {
-    --bg-dark: #21252b;
+    --bg-primary: #21252b;
+    --bg-secondary: #1e1e24;
     --bg-tertiary: #2a2a32;
     --bg-hover: #353540;
-    --bg-secondary: #1e1e24;
-    --track-bg: #282c34;
+
     --border-color: #181a1f;
-    --text-color: #abb2bf;
-    --step-bg: #15181c;
-    --step-border: #3b4048;
-    --step-active: #56d8d6;
-    --step-active-border: #80ecea;
+    --border-subtle: #3b4048;
+
+    --text-primary: #abb2bf;
+
     --accent-color: #00ffcc;
+    --accent-highlight: #80ecea;
 }

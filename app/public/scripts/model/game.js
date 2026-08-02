@@ -18,10 +18,9 @@ export let session = {
 }
 
 let trackPlayers = [];
-
 let metronomePlaying = false;
 let metronomePlayer = null;
-
+let stepIndex = 0;
 let timeSignatureChangeEvents = []
 
 export async function init() {
@@ -57,20 +56,20 @@ export async function init() {
     Tone.Transport.loop = true;
     Tone.Transport.setLoopPoints(0, "1m");
     Tone.Transport.scheduleRepeat((time) => {
-        const step = currentStep();
-
         // Play tracks once you reach any active steps
         for (let track of session.pattern) {
-            if (track.steps[step]) {
+            if (track.steps[stepIndex]) {
                 const player = trackPlayers.find(p => p.url === track.url);
                 player.obj.start(time);
             }
         }
 
         // Start playback of metronome if on a new beat
-        if (metronomePlaying && step % stepsPerBeat() == 0) {
+        if (metronomePlaying && stepIndex % stepsPerBeat() == 0) {
             metronomePlayer.start(time);
         }
+
+        stepIndex = (stepIndex + 1) % numSteps();
     }, `${PATTERN_STEP_RESOLUTION}n`);
 }
 
@@ -83,8 +82,7 @@ export function numSteps() {
 }
 
 export function currentStep() {
-    const ticksPerStep = Tone.Transport.PPQ / (PATTERN_STEP_RESOLUTION / 4);
-    return Math.floor(Tone.Transport.ticks / ticksPerStep);
+    return stepIndex;
 }
 
 export function toggleMetronomePlayback() {

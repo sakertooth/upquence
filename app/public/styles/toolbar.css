@@ -19,8 +19,8 @@
   padding: 10px;
 }
 
-.btn, 
-.toolbar input, 
+.btn,
+.toolbar input,
 .toolbar select {
   background-color: var(--bg-tertiary, #2a2a32);
   color: var(--text-color, #f0f0f0);
@@ -60,51 +60,60 @@
 }
 
 .time-signature-display {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    vertical-align: middle;
-    font-family: 'Roboto-Condensed';
-    font-weight: 300;
-    font-style: normal;
-    font-size: 20px;
-    padding: 1px;
-    line-height: 0.75;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+  font-family: 'Roboto-Condensed';
+  font-weight: 300;
+  font-style: normal;
+  font-size: 20px;
+  padding: 1px;
+  line-height: 0.75;
 }
+
 .numerator {
   padding: 0 4px 0px 4px;
   color: white;
 }
+
 .denominator {
   color: white;
   padding: 0px 4px 0 4px;
 }
+
 .time-signature-slider-display {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    vertical-align: middle;
-    padding: 0px;
-    gap: 0px;
-}
-.time-signature-slider-display input[type="range"] {
-    margin: -4px 0;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+  padding: 0px;
+  gap: 0px;
 }
 
-.bpm-display{
+.time-signature-slider-display input[type="range"] {
+  margin: -4px 0;
+}
+
+.bpm-display {
   color: white;
   padding: 0px 4px 0 4px;
 }
 
-.metronome{
+.metronome {
   width: 32px;
   height: 32px;
   border: 1px solid #666;
   border-radius: 4px;
   background: #333;
-  color: white;
-  font-family: sans-serif;
+  color: black;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.metronome.activated {
+  background-color: #00bfa5;
+  border-color: #00ffcc;
+  box-shadow: 0 0 6px rgba(0, 255, 204, 0.4);
 }

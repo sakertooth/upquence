@@ -56,6 +56,14 @@ export function init() {
         e.preventDefault();
     });
 
+    timeSigNumerator.addEventListener("keypress", (e) => {
+        e.preventDefault();
+    });
+
+    timeSigDenominator.addEventListener("keypress", (e) => {
+        e.preventDefault();
+    });
+
     document.addEventListener("keyup", (e) => {
         if (e.code === "Space") {
             playButton.click();

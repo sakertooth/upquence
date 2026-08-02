@@ -69,7 +69,7 @@ export async function init() {
 
         // Start playback of metronome if on a new beat
         if (metronomePlaying && step % stepsPerBeat() == 0) {
-            metronomePlayer.start();
+            metronomePlayer.start(time);
         }
     }, `${PATTERN_STEP_RESOLUTION}n`);
 }

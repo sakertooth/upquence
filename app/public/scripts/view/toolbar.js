@@ -13,10 +13,7 @@ const timeSigNumeratorSlider = document.getElementById("numeratorSlider");
 const timeSigDenominatorSlider = document.getElementById("denominatorSlider");
 
 const bpm = document.getElementById("bpm");
-
 const metronomeButton = document.getElementById("metronome-button");
-const metronomePlayer = new Tone.Player({url: "../sounds/metronome.mp3"}).toDestination();
-let metronomeLoopID = -1;
 
 export function init() {
     playButton.addEventListener("click", async () => {
@@ -58,15 +55,13 @@ export function init() {
 
     bpm.textContent = `${Tone.Transport.bpm.value}bpm`;
 
-    metronomeButton.addEventListener("click", () => {
-        if (metronomeLoopID === -1) {
-            metronomeLoopID = setInterval(() => {
-                metronomePlayer.start();
-            }, (60 / Tone.Transport.bpm.value) * 1000);
-        } else {
-            clearInterval(metronomeLoopID);
-            metronomeLoopID = -1
-        }
+    metronomeButton.addEventListener("click", (e) => {
+        GameModel.toggleMetronomePlayback();
+        metronomeButton.classList.toggle("activated");
+    });
+
+    metronomeButton.addEventListener("mousedown", (e) => {
+        e.preventDefault();
     });
 
     document.addEventListener("keyup", (e) => {

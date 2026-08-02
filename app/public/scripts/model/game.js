@@ -1,14 +1,14 @@
 // The note value for one step (e.g., 16 means one step is 16th note long)
-export const PATTERN_STEP_RESOLUTION = 16;
+const PATTERN_STEP_RESOLUTION = 16;
 
 // The default number of beats per measure (e.g., a value of 4 means 4 beats in one measure)
-export const DEFAULT_TIME_SIG_NUMERATOR = 4;
+const DEFAULT_TIME_SIG_NUMERATOR = 4;
 
 // The default note value for a single beat (e.g., a value of 4 means each beat is a quarter note)
-export const DEFAULT_TIME_SIG_DENOMINATOR = 4;
+const DEFAULT_TIME_SIG_DENOMINATOR = 4;
 
 // The default number of beats per minute (e.g., a value of 140 means there are 140 beats that happen in one minute)
-export const DEFAULT_BEATS_PER_MINUTE = 140;
+const DEFAULT_BEATS_PER_MINUTE = 140;
 
 export let session = {
     pattern: [],
@@ -95,10 +95,6 @@ export function setTimeSignature(numerator, denominator) {
     session.timeSigDenominator = denominator;
     Tone.Transport.timeSignature = [session.timeSigNumerator, session.timeSigDenominator];
     Tone.Transport.setLoopPoints(0, "1m");
-
-    for (let track of session.pattern) {
-        track.steps.length = Math.min(track.steps.length, numSteps());
-    }
 
     for (let event of timeSignatureChangeEvents) {
         event(numerator, denominator);

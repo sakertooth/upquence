@@ -14,6 +14,10 @@ const bpm = document.getElementById("bpm");
 const metronomeButton = document.getElementById("metronome-button");
 
 export function init() {
+    timeSigNumerator.value = GameModel.session.timeSigNumerator;
+    timeSigDenominator.value = GameModel.session.timeSigDenominator;
+    bpm.textContent = `${GameModel.session.beatsPerMinute} BPM`;
+
     playButton.addEventListener("click", async () => {
         if (Tone.Transport.state === "stopped" || Tone.Transport.state === "paused") {
             Tone.Transport.start();
@@ -34,9 +38,6 @@ export function init() {
         playIconPath.setAttribute("d", PLAY_BUTTON_ICON_PATH);
     });
 
-    timeSigNumerator.value = GameModel.session.timeSigNumerator;
-    timeSigDenominator.value = GameModel.session.timeSigDenominator;
-
     timeSigNumerator.addEventListener("change", () => {
         GameModel.setTimeSignatureNumerator(parseInt(timeSigNumerator.value));
     });
@@ -44,8 +45,6 @@ export function init() {
     timeSigDenominator.addEventListener("change", () => {
         GameModel.setTimeSignatureDenominator(parseInt(timeSigDenominator.value));
     });
-
-    bpm.textContent = `${Tone.Transport.bpm.value}bpm`;
 
     metronomeButton.addEventListener("click", (e) => {
         GameModel.toggleMetronomePlayback();

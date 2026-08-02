@@ -60,39 +60,8 @@
 }
 
 .time-signature-display {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
-  align-items: center;
-  vertical-align: middle;
-  font-family: 'Roboto-Condensed';
-  font-weight: 300;
-  font-style: normal;
-  font-size: 20px;
-  padding: 1px;
-  line-height: 0.75;
-}
-
-.numerator {
-  padding: 0 4px 0px 4px;
-  color: white;
-}
-
-.denominator {
-  color: white;
-  padding: 0px 4px 0 4px;
-}
-
-.time-signature-slider-display {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  vertical-align: middle;
-  padding: 0px;
-  gap: 0px;
-}
-
-.time-signature-slider-display input[type="range"] {
-  margin: -4px 0;
 }
 
 .bpm-display {

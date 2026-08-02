@@ -7,10 +7,8 @@ const playButton = document.getElementById("play-button");
 const playIconPath = document.querySelector("#play-icon path");
 const stopButton = document.getElementById("stop-button");
 
-const timeSigNumerator = document.getElementById("top-fraction");
-const timeSigDenominator = document.getElementById("bottom-fraction");
-const timeSigNumeratorSlider = document.getElementById("numeratorSlider");
-const timeSigDenominatorSlider = document.getElementById("denominatorSlider");
+const timeSigNumerator = document.getElementById("time-signature-numerator");
+const timeSigDenominator = document.getElementById("time-signature-denominator");
 
 const bpm = document.getElementById("bpm");
 const metronomeButton = document.getElementById("metronome-button");
@@ -36,21 +34,15 @@ export function init() {
         playIconPath.setAttribute("d", PLAY_BUTTON_ICON_PATH);
     });
 
-    timeSigNumerator.textContent = GameModel.session.timeSigNumerator;
-    timeSigDenominator.textContent = GameModel.session.timeSigDenominator;
-    timeSigNumeratorSlider.value = GameModel.session.timeSigNumerator;
-    timeSigDenominatorSlider.value = GameModel.session.timeSigDenominator;
+    timeSigNumerator.value = GameModel.session.timeSigNumerator;
+    timeSigDenominator.value = GameModel.session.timeSigDenominator;
 
-    timeSigNumeratorSlider.addEventListener("input", () => {
-        let numerator = Number(timeSigNumeratorSlider.value);
-        timeSigNumerator.textContent = numerator;
-        GameModel.session.timeSigNumerator = numerator;
+    timeSigNumerator.addEventListener("change", () => {
+        GameModel.setTimeSignatureNumerator(parseInt(timeSigNumerator.value));
     });
 
-    timeSigDenominatorSlider.addEventListener("input", () => {
-        let denominator = Number(timeSigDenominatorSlider.value);
-        timeSigDenominator.textContent = denominator;
-        GameModel.session.timeSigDenominator = denominator;
+    timeSigDenominator.addEventListener("change", () => {
+        GameModel.setTimeSignatureDenominator(parseInt(timeSigDenominator.value));
     });
 
     bpm.textContent = `${Tone.Transport.bpm.value}bpm`;

@@ -3,6 +3,11 @@ import * as GameModel from "../model/game.js"
 const sequencer = document.getElementById("sequencer");
 
 export function init() {
+    render();
+    GameModel.onTimeSignatureChange(render);
+}
+
+function render() {
     sequencer.innerHTML = "";
     GameModel.session.pattern.forEach((track, trackIndex) => {
         const trackRow = document.createElement("div");

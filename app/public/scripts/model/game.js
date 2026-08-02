@@ -1,6 +1,13 @@
+// The note value for one step (e.g., 16 means one step is 16th note long)
 export const PATTERN_STEP_RESOLUTION = 16;
+
+// The default number of beats per measure (e.g., a value of 4 means 4 beats in one measure)
 export const DEFAULT_TIME_SIG_NUMERATOR = 4;
+
+// The default note value for a single beat (e.g., a value of 4 means each beat is a quarter note)
 export const DEFAULT_TIME_SIG_DENOMINATOR = 4;
+
+// The default number of beats per minute (e.g., a value of 140 means there are 140 beats that happen in one minute)
 export const DEFAULT_BEATS_PER_MINUTE = 140;
 
 export let session = {
@@ -14,6 +21,8 @@ let trackPlayers = [];
 
 let metronomePlaying = false;
 let metronomePlayer = null;
+
+let timeSignatureChangeEvents = []
 
 export async function init() {
     // Load default drum kit
@@ -66,19 +75,46 @@ export async function init() {
 }
 
 export function stepsPerBeat() {
-    return PATTERN_STEP_RESOLUTION / session.timeSigNumerator;
+    return PATTERN_STEP_RESOLUTION / session.timeSigDenominator;
 }
 
 export function numSteps() {
-    return session.timeSigNumerator * stepsPerBeat();
+    return Math.floor(session.timeSigNumerator * stepsPerBeat());
 }
 
 export function currentStep() {
-    const ticksPerStep = Tone.Transport.PPQ / stepsPerBeat();
+    const ticksPerStep = Tone.Transport.PPQ / (PATTERN_STEP_RESOLUTION / 4);
     return Math.floor(Tone.Transport.ticks / ticksPerStep);
 }
 
 export function toggleMetronomePlayback() {
     metronomePlaying = !metronomePlaying;
     return metronomePlaying;
+}
+
+export function setTimeSignature(numerator, denominator) {
+    session.timeSigNumerator = numerator;
+    session.timeSigDenominator = denominator;
+    Tone.Transport.timeSignature = [session.timeSigNumerator, session.timeSigDenominator];
+    Tone.Transport.setLoopPoints(0, "1m");
+
+    for (let track of session.pattern) {
+        track.steps.length = Math.min(track.steps.length, numSteps());
+    }
+
+    for (let event of timeSignatureChangeEvents) {
+        event(numerator, denominator);
+    }
+}
+
+export function setTimeSignatureNumerator(numerator) {
+    setTimeSignature(numerator, session.timeSigDenominator);
+}
+
+export function setTimeSignatureDenominator(denominator) {
+    setTimeSignature(session.timeSigNumerator, denominator);
+}
+
+export function onTimeSignatureChange(callback) {
+    timeSignatureChangeEvents.push(callback);
 }

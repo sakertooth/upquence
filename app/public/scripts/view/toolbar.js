@@ -26,11 +26,11 @@ export function init() {
 
     playButton.addEventListener("click", async () => {
         if (Tone.Transport.state === "stopped" || Tone.Transport.state === "paused") {
-            Tone.Transport.start();
+            GameModel.startPlayback();
             playIconPath.setAttribute("d", PAUSE_BUTTON_ICON_PATH);
         }
         else {
-            Tone.Transport.pause();
+            GameModel.pausePlayback();
             playIconPath.setAttribute("d", PLAY_BUTTON_ICON_PATH);
         }
     });
@@ -40,7 +40,7 @@ export function init() {
             return;
         }
 
-        Tone.Transport.stop();
+        GameModel.stopPlayback();
         playIconPath.setAttribute("d", PLAY_BUTTON_ICON_PATH);
     });
 

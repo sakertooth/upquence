@@ -92,6 +92,19 @@ export function currentStep() {
     return playbackState.currentStep;
 }
 
+export function startPlayback() {
+    Tone.Transport.start();
+}
+
+export function pausePlayback() {
+    Tone.Transport.pause();
+}
+
+export function stopPlayback() {
+    playbackState.currentStep = 0;
+    Tone.Transport.stop();
+}
+
 export function toggleMetronomePlayback() {
     playbackState.metronomePlaying = !playbackState.metronomePlaying;
     return playbackState.metronomePlaying;

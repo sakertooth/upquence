@@ -2,6 +2,6 @@ CREATE DATABASE upquence;
 \c upquence;
 
 CREATE TABLE levels (
-    id      SERIAL PRIMARY KEY,
+    id      SERIAL AUTO_INCREMENT PRIMARY KEY,
     data    JSONB NOT NULL
 );

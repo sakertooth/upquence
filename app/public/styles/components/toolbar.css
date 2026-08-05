@@ -12,14 +12,16 @@
 
 .toolbar-main {
   display: flex;
+  grid-row: 1;
   grid-column: 2;
   justify-content: center;
   flex: 1;
 }
 
 .toolbar-misc {
-  grid-column: 3;
-  justify-self: end;
+  grid-row: 1;
+  grid-column: 1;
+  justify-self: start;
 }
 
 .toolbar-group {
@@ -30,7 +32,6 @@
 }
 
 .toolbar-group.column {
-  display: inline-flex;
   flex-direction: column;
   align-items: stretch;
 }

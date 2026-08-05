@@ -44,7 +44,7 @@ app.get("/api/levels/:id", async (req, res) => {
 app.post("/api/levels/:id/submit", async (req, res) => {
   if (!req.body.hasOwnProperty("submission")) {
     res.status(400);
-    res.send({ error: "Missingz` submission" })
+    res.send({ error: "Missing submission" })
     return;
   }
 

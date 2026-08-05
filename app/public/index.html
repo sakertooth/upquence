@@ -10,21 +10,8 @@
 
 <body>
   <div class="toolbar">
-    <div class="toolbar-group">
-      <button class="control" id="play-button" aria-label="Play">
-        <svg id="play-icon" width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-          <path d="M3 2l11 6-11 6V2z" />
-        </svg>
-      </button>
-      <button class="control" id="stop-button" aria-label="Stop">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-          <rect x="2" y="2" width="12" height="12" />
-        </svg>
-      </button>
-    </div>
-
-    <div class="toolbar-group">
-      <div class="control">
+    <div class="toolbar-main">
+      <div class="toolbar-group column">
         <select class="control" id="time-signature-numerator">
           <option>1</option>
           <option>2</option>
@@ -43,21 +30,36 @@
           <option>16</option>
         </select>
       </div>
+      <div class="toolbar-group column">
+        <button class="control metronome" id="metronome-button">M</button>
+        <button class="control bpm-display" id="bpm"></button>
+      </div>
+      <div class="toolbar-group">
+        <button class="control" id="play-button" aria-label="Play">
+          <svg id="play-icon" width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M3 2l11 6-11 6V2z" />
+          </svg>
+        </button>
+        <button class="control" id="stop-button" aria-label="Stop">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <rect x="2" y="2" width="12" height="12" />
+          </svg>
+        </button>
+      </div>
+      <div class="toolbar-group column">
+        <button class="control" id="add-level-button">Add Level</button>
+        <button class="control" id="play-level-button">Play Level</button>
+      </div>
     </div>
-
-    <div class="toolbar-group">
-      <div class="bpm-display" id="bpm"></div>
+    <div class="toolbar-misc">
+      <div class="toolbar-group column">
+        <button class="control" id="download-button">Download</button>
+        <button class="control" id="upload-button">Upload</button>
+        <button class="control" id="export-button">Export</button>
+      </div>
     </div>
-
-    <div class="toolbar-group">
-      <button class="control metronome" id="metronome-button">M</button>
-    </div>
-
-    <div class="toolbar-group">
-      <button class="control" id="export-button">Export</button>
-    </div>
-
   </div>
+
   <div class="game">
     <div class="sequencer" id="sequencer"></div>
   </div>
@@ -71,19 +73,15 @@
         <option value="mp3">MP3</option>
       </select>
     </label>
-
     <label class="dialog-group">
       Filename:
       <input class="control" id="export-filename">
     </label>
-
     <div class="dialog-group center">
       <button class="control" id="export-start-button">Start</button>
       <button class="control" id="export-cancel-button">Cancel</button>
     </div>
-
   </dialog>
-
   <script src="http://unpkg.com/tone"></script>
   <script type="module" src="scripts/main.js"></script>
 </body>

@@ -24,6 +24,12 @@
   justify-self: start;
 }
 
+.toolbar-level-controls {
+  grid-row: 1;
+  grid-column: 3;
+  justify-self: end;
+}
+
 .toolbar-group {
   display: flex;
   align-items: center;

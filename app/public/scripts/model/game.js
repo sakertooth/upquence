@@ -121,6 +121,11 @@ export function setTimeSignature(numerator, denominator) {
     }
 }
 
+export function setBeatsPerMinute(bpm) {
+    session.beatsPerMinute = bpm;
+    Tone.Transport.bpm.value = bpm;
+}
+
 export function setTimeSignatureNumerator(numerator) {
     setTimeSignature(numerator, session.timeSigDenominator);
 }

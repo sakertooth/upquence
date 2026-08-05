@@ -11,6 +11,13 @@
 <body>
   <div class="toolbar">
     <div class="toolbar-main">
+      <div class="toolbar-group">
+        <button class="control metronome" id="metronome-button">M</button>
+      </div>
+      <div class="toolbar-group column">
+        <input class="control slider" id="bpm-slider" type="range" min="1" max="300" />
+        <button class="control bpm-display" id="bpm-display"></button>
+      </div>
       <div class="toolbar-group column">
         <select class="control" id="time-signature-numerator">
           <option>1</option>
@@ -31,10 +38,6 @@
         </select>
       </div>
       <div class="toolbar-group column">
-        <button class="control metronome" id="metronome-button">M</button>
-        <button class="control bpm-display" id="bpm"></button>
-      </div>
-      <div class="toolbar-group">
         <button class="control" id="play-button" aria-label="Play">
           <svg id="play-icon" width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
             <path d="M3 2l11 6-11 6V2z" />
@@ -58,17 +61,18 @@
         <button class="control" id="export-button">Export</button>
       </div>
     </div>
-
-    <fieldset id="level-controls-fieldset">
-      <legend id="level-controls-title">Level Controls</legend>
-      <div class="toolbar-level-controls">
-        <div class="toolbar-group column">
-          <button class="control" id="listen-to-level-button">Listen</button>
-          <button class="control" id="submit-pattern-button">Submit</button>
-          <button class="control" id="level-description-button">Description</button>
+    <div class="toolbar-level-controls">
+      <fieldset id="level-controls-fieldset">
+        <legend id="level-controls-title">Level Controls</legend>
+        <div class="toolbar-level-controls">
+          <div class="toolbar-group column">
+            <button class="control" id="listen-to-level-button">Listen</button>
+            <button class="control" id="submit-pattern-button">Submit</button>
+            <button class="control" id="level-description-button">Description</button>
+          </div>
         </div>
-      </div>
-    </fieldset>
+      </fieldset>
+    </div>
   </div>
 
   <div class="game">

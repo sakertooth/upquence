@@ -14,10 +14,12 @@ Run the server using `npm run start`.
 
 ```js
 {
-    { id: "example_kick", name: "Kick", url: ...., steps: [...] },
-    { id: "example_snare", name: "Snare", url: ..., steps: [...] },
-    { id: "example_shaker", name: "Shaker", url: ..., steps: [...] },
-    { id: "example_tom", name: "Tom", url: ..., steps: [...] },
+    pattern: [
+        { id: "example_kick", name: "Kick", url: ...., steps: [...] },
+        { id: "example_snare", name: "Snare", url: ..., steps: [...] },
+        { id: "example_shaker", name: "Shaker", url: ..., steps: [...] },
+        { id: "example_tom", name: "Tom", url: ..., steps: [...] },
+    ],
     timeSigNumerator: 4,
     timeSigDenominator: 4,
     beatsPerMinute: 140

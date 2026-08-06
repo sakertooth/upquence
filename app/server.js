@@ -25,7 +25,7 @@ app.get("/api/levels", async (req, res) => {
   catch (e) {
     console.log(e);
     res.status(500);
-    res.send({ error: "Something went wrong" });
+    res.json({ error: "Something went wrong" });
   }
 });
 
@@ -37,14 +37,14 @@ app.get("/api/levels/:id", async (req, res) => {
   catch (e) {
     console.log(e);
     res.status(500);
-    res.send({ error: "Something went wrong" });
+    res.json({ error: "Something went wrong" });
   }
 });
 
 app.post("/api/levels/:id/submit", async (req, res) => {
   if (!req.body.hasOwnProperty("submission")) {
     res.status(400);
-    res.send({ error: "Missing submission" })
+    res.json({ error: "Missing submission" })
     return;
   }
 
@@ -72,14 +72,14 @@ app.post("/api/levels/:id/submit", async (req, res) => {
   catch (e) {
     console.log(e);
     res.status(500);
-    res.send({ error: "Something went wrong" });
+    res.json({ error: "Something went wrong" });
   }
 });
 
 app.post("/api/levels/add", async (req, res) => {
     if (!req.body.hasOwnProperty("level")) {
     res.status(400);
-    res.send({ error: "Missing level" })
+    res.json({ error: "Missing level" })
     return;
   }
 
@@ -90,7 +90,7 @@ app.post("/api/levels/add", async (req, res) => {
   catch (e) {
     console.log(e);
     res.status(500);
-    res.send({ error: "Something went wrong" });
+    res.json({ error: "Something went wrong" });
   }
 });
 

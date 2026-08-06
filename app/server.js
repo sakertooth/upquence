@@ -84,7 +84,7 @@ app.post("/api/levels/add", async (req, res) => {
   }
 
   try {
-    const response = await pool.query(`INSERT INTO levels (data) VALUES ($1)`, [req.body.level]);
+    const response = await pool.query(`INSERT INTO levels (data) VALUES ($1)`, [req.body]);
     res.json({ message: "Level added" });
   }
   catch (e) {

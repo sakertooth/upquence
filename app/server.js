@@ -76,7 +76,7 @@ app.post("/api/levels/:id/submit", async (req, res) => {
   }
 });
 
-app.post("/api/levels/:id/add", async (req, res) => {
+app.post("/api/levels/add", async (req, res) => {
     if (!req.body.hasOwnProperty("level")) {
     res.status(400);
     res.send({ error: "Missing level" })

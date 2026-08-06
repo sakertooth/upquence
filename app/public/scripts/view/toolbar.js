@@ -1,4 +1,5 @@
 import * as GameModel from "../model/game.js"
+import * as Toast from "./toast.js"
 
 const PLAY_BUTTON_ICON_PATH = "M3 2l11 6-11 6V2z";
 const PAUSE_BUTTON_ICON_PATH = "M3 2h3.5v12H3V2zm6.5 0H13v12H9.5V2z";
@@ -100,8 +101,10 @@ export function init() {
                 },
                 body: JSON.stringify({level: GameModel.session}),
             });
-            console.log("Response received:", response.status);
-            console.log("Body:", response.json());
+
+            console.log("Add level, response received:", response.status);
+            console.log("Add level, body received:", response.json());
+            Toast.showToast("Level added!");
         } catch (e) {
             console.log(e);
         }

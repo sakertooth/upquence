@@ -94,19 +94,21 @@ export function init() {
 
     addLevelButton.addEventListener("click", async () => {
         try {
-            const response = await fetch(`/api/levels/add`, {
+            const response = await fetch("/api/levels/add", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({level: GameModel.session}),
+                body: JSON.stringify({ level: GameModel.session }),
             });
 
-            console.log("Add level, response received:", response.status);
-            console.log("Add level, body received:", response.json());
-            Toast.showToast("Level added!");
+            if (response.status === 200) {
+                const body = await response.json();
+                Toast.showToast(body.message);
+            }
+
         } catch (e) {
-            console.log(e);
+            console.log("Error: ", e);
         }
     });
 }

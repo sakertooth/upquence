@@ -20,7 +20,7 @@ app.use(express.static("public"));
 app.get("/api/levels", async (req, res) => {
   try {
     const response = await pool.query(`SELECT data FROM levels`);
-    res.json({ levels: response.rows });
+    res.json({ levels: response.rows.map(row => row.data.level) });
   }
   catch (e) {
     console.log(e);

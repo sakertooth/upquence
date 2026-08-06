@@ -5,6 +5,7 @@
 
 @import "./components/control.css";
 @import "./components/dialog.css";
+@import "./components/toast.css";
 @import "./components/metronome.css";
 @import "./components/sequencer.css";
 @import "./components/toolbar.css";

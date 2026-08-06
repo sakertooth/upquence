@@ -20,6 +20,8 @@ const exportStartButton = document.getElementById("export-button");
 const exportCancelButton = document.getElementById("export-cancel-button");
 const exportDialog = document.getElementById("export-dialog");
 
+const addLevelButton = document.getElementById("add-level-button");
+
 export function init() {
     timeSigNumerator.value = GameModel.session.timeSigNumerator;
     timeSigDenominator.value = GameModel.session.timeSigDenominator;
@@ -86,6 +88,22 @@ export function init() {
     document.addEventListener("keyup", (e) => {
         if (e.code === "Space") {
             playButton.click();
+        }
+    });
+
+    addLevelButton.addEventListener("click", async () => {
+        try {
+            const response = await fetch(`/api/levels/add`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({level: GameModel.session}),
+            });
+            console.log("Response received:", response.status);
+            console.log("Body:", response.json());
+        } catch (e) {
+            console.log(e);
         }
     });
 }

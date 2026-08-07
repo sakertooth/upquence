@@ -137,3 +137,7 @@ export function setTimeSignatureDenominator(denominator) {
 export function onTimeSignatureChange(callback) {
     eventListeners.onTimeSignatureChange.push(callback);
 }
+
+export function loadLevel(level) {
+    // TODO: Implement
+}

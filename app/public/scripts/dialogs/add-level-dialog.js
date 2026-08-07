@@ -7,7 +7,9 @@ const titleControl = dialog.querySelector("#title");
 const descriptionControl = dialog.querySelector("#description");
 const pointsRequiredControl = dialog.querySelector("#points-required");
 
-addButton.addEventListener("click", async () => {
+addButton.addEventListener("click", async (e) => {
+    e.preventDefault();
+
     try {
         const response = await fetch("/api/levels/add", {
             method: "POST",
@@ -34,6 +36,7 @@ addButton.addEventListener("click", async () => {
     dialog.close();
 });
 
-closeButton.addEventListener("click", () => {
+closeButton.addEventListener("click", (e) => {
+    e.preventDefault();
     dialog.close();
 });

@@ -74,18 +74,6 @@ export function init() {
         metronomeButton.classList.toggle("active");
     });
 
-    metronomeButton.addEventListener("mousedown", (e) => {
-        e.preventDefault();
-    });
-
-    timeSigNumerator.addEventListener("keypress", (e) => {
-        e.preventDefault();
-    });
-
-    timeSigDenominator.addEventListener("keypress", (e) => {
-        e.preventDefault();
-    });
-
     exportButton.addEventListener("click", () => {
         exportDialog.showModal();
     });

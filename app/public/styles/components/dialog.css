@@ -17,8 +17,13 @@
   margin: 10px;
 }
 
+.dialog-control {
+  margin: 5px;
+}
+
 .dialog-buttons {
   display: flex;
+  gap: 5px;
 }
 
 .dialog-title {

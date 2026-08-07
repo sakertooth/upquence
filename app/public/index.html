@@ -98,6 +98,24 @@
       <button class="control" id="export-cancel-button">Cancel</button>
     </div>
   </dialog>
+
+  <dialog class="dialog" id="add-level-dialog">
+    <form id="dialog-form">
+      <div class="dialog-title">Add Level</div>
+      <div class="dialog-settings">
+        <div class="dialog-header">Title:</div>
+        <input class="dialog-control control" id="title" required>
+        <div class="dialog-header">Description:</div>
+        <input class="dialog-control control" id="description">
+        <div class="dialog-header">Points Required:</div>
+        <input class="dialog-control control" type="number" min="1" max="100" value="80" id="points-required">
+      </div>
+      <div class="dialog-buttons center">
+        <button class="control" id="add-button" type="submit">Add</button>
+        <button class="control" id="close-button">Close</button>
+      </div>
+    </form>
+  </dialog>
   <script src="http://unpkg.com/tone"></script>
   <script type="module" src="scripts/main.js"></script>
 </body>

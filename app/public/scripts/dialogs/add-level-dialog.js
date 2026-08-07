@@ -1,0 +1,39 @@
+import * as GameModel from "../model/game.js"
+
+export const dialog = document.getElementById("add-level-dialog");
+const addButton = dialog.querySelector("#add-button");
+const closeButton = dialog.querySelector("#close-button");
+const titleControl = dialog.querySelector("#title");
+const descriptionControl = dialog.querySelector("#description");
+const pointsRequiredControl = dialog.querySelector("#points-required");
+
+addButton.addEventListener("click", async () => {
+    try {
+        const response = await fetch("/api/levels/add", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                level: GameModel.session,
+                title: titleControl.value,
+                description: descriptionControl.value,
+                pointsRequired: pointsRequiredControl.value
+            }),
+        });
+
+        if (response.status === 200) {
+            const body = await response.json();
+            Toast.showToast(body.message);
+        }
+
+    } catch (e) {
+        console.log("Error: ", e);
+    }
+
+    dialog.close();
+});
+
+closeButton.addEventListener("click", () => {
+    dialog.close();
+});

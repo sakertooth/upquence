@@ -1,5 +1,6 @@
 import * as GameModel from "../model/game.js"
 import * as Toast from "./toast.js"
+import { dialog as addLevelDialog } from "../dialogs/add-level-dialog.js";
 
 const PLAY_BUTTON_ICON_PATH = "M3 2l11 6-11 6V2z";
 const PAUSE_BUTTON_ICON_PATH = "M3 2h3.5v12H3V2zm6.5 0H13v12H9.5V2z";
@@ -86,29 +87,13 @@ export function init() {
         exportDialog.close();
     });
 
+    addLevelButton.addEventListener("click", () => {
+        addLevelDialog.showModal();
+    });
+
     document.addEventListener("keyup", (e) => {
         if (e.code === "Space") {
             playButton.click();
-        }
-    });
-
-    addLevelButton.addEventListener("click", async () => {
-        try {
-            const response = await fetch("/api/levels/add", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ level: GameModel.session }),
-            });
-
-            if (response.status === 200) {
-                const body = await response.json();
-                Toast.showToast(body.message);
-            }
-
-        } catch (e) {
-            console.log("Error: ", e);
         }
     });
 }

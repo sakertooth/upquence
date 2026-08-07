@@ -67,7 +67,7 @@ function renderLoop(time, state) {
     // Play tracks once you reach any active steps
     for (let track of session.pattern) {
         if (track.steps[state.currentStep]) {
-            const player = playbackState.players.find(p => p.url === track.url);
+            const player = state.players.find(p => p.url === track.url);
             player.obj.start(time);
         }
     }

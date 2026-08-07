@@ -1,13 +1,16 @@
 import * as GameModel from "../model/game.js"
+import * as Toast from "../view/toast.js"
 
 export const dialog = document.getElementById("add-level-dialog");
+
+const form = dialog.querySelector("form");
 const addButton = dialog.querySelector("#add-button");
 const closeButton = dialog.querySelector("#close-button");
 const titleControl = dialog.querySelector("#title");
 const descriptionControl = dialog.querySelector("#description");
 const pointsRequiredControl = dialog.querySelector("#points-required");
 
-addButton.addEventListener("click", async (e) => {
+form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     try {

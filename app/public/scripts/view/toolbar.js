@@ -1,6 +1,6 @@
 import * as GameModel from "../model/game.js"
 import * as Toast from "./toast.js"
-import { dialog as addLevelDialog } from "../dialogs/add-level-dialog.js";
+import * as AddLevelDialog from "../dialogs/add-level-dialog.js";
 import * as PlayLevelDialog from "../dialogs/play-level-dialog.js";
 
 const PLAY_BUTTON_ICON_PATH = "M3 2l11 6-11 6V2z";
@@ -95,7 +95,7 @@ export function init() {
     });
 
     addLevelButton.addEventListener("click", () => {
-        addLevelDialog.showModal();
+        AddLevelDialog.dialog.showModal();
     });
 
     playLevelButton.addEventListener("click", async () => {

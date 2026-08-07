@@ -55,7 +55,7 @@ export function init() {
     });
 
     bpmSlider.addEventListener("input", () => {
-        GameModel.setBeatsPerMinute(bpmSlider.value);
+        GameModel.setBeatsPerMinute(parseInt(bpmSlider.value));
         bpmDisplay.textContent = `${bpmSlider.value} BPM`;
     });
 

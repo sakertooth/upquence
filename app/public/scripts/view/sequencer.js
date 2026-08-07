@@ -1,15 +1,15 @@
-import * as GameModel from "../model/game.js"
+import * as Game from "../game.js"
 
 const sequencer = document.getElementById("sequencer");
 
 export function init() {
     render();
-    GameModel.onTimeSignatureChange(render);
+    Game.onTimeSignatureChange(render);
 }
 
 function render() {
     sequencer.innerHTML = "";
-    GameModel.session.pattern.forEach((track, trackIndex) => {
+    Game.session.pattern.forEach((track, trackIndex) => {
         const trackRow = document.createElement("div");
         trackRow.className = "sequencer-track";
 
@@ -20,7 +20,7 @@ function render() {
         const stepContainer = document.createElement("div");
         stepContainer.className = "sequencer-step-grid";
 
-        for (let stepIndex = 0; stepIndex < GameModel.numSteps(); ++stepIndex) {
+        for (let stepIndex = 0; stepIndex < Game.numSteps(); ++stepIndex) {
             const step = document.createElement("div");
             step.className = "sequencer-step";
 
@@ -45,7 +45,7 @@ function render() {
 }
 
 function update() {
-    const currentStep = GameModel.currentStep();
+    const currentStep = Game.currentStep();
     const stepContainer = sequencer.querySelectorAll(".sequencer-step-grid");
 
     stepContainer.forEach(container => {

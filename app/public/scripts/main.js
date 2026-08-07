@@ -1,4 +1,4 @@
-import * as Game from "./model/game.js"
+import * as Game from "./game.js"
 import * as Sequencer from "./view/sequencer.js"
 import * as Toolbar from "./view/toolbar.js"
 

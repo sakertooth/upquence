@@ -1,4 +1,4 @@
-import * as GameModel from "../model/game.js"
+import * as Game from "../game.js"
 import * as Toast from "../view/toast.js"
 
 export const dialog = document.getElementById("add-level-dialog");
@@ -20,7 +20,7 @@ form.addEventListener("submit", async (e) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                level: GameModel.session,
+                level: Game.session,
                 title: titleControl.value,
                 description: descriptionControl.value,
                 pointsRequired: pointsRequiredControl.value

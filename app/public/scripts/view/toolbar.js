@@ -1,4 +1,4 @@
-import * as GameModel from "../model/game.js"
+import * as Game from "../game.js"
 import * as Toast from "./toast.js"
 import * as AddLevelDialog from "../dialogs/add-level-dialog.js";
 import * as PlayLevelDialog from "../dialogs/play-level-dialog.js";
@@ -32,17 +32,17 @@ document.querySelectorAll(".toolbar .control").forEach(control => {
 });
 
 export function init() {
-    timeSigNumerator.value = GameModel.session.timeSigNumerator;
-    timeSigDenominator.value = GameModel.session.timeSigDenominator;
-    bpmDisplay.textContent = `${GameModel.session.beatsPerMinute} BPM`;
+    timeSigNumerator.value = Game.session.timeSigNumerator;
+    timeSigDenominator.value = Game.session.timeSigDenominator;
+    bpmDisplay.textContent = `${Game.session.beatsPerMinute} BPM`;
 
     playButton.addEventListener("click", async () => {
         if (Tone.Transport.state === "stopped" || Tone.Transport.state === "paused") {
-            GameModel.startPlayback();
+            Game.startPlayback();
             playIconPath.setAttribute("d", PAUSE_BUTTON_ICON_PATH);
         }
         else {
-            GameModel.pausePlayback();
+            Game.pausePlayback();
             playIconPath.setAttribute("d", PLAY_BUTTON_ICON_PATH);
         }
     });
@@ -52,25 +52,25 @@ export function init() {
             return;
         }
 
-        GameModel.stopPlayback();
+        Game.stopPlayback();
         playIconPath.setAttribute("d", PLAY_BUTTON_ICON_PATH);
     });
 
     bpmSlider.addEventListener("input", () => {
-        GameModel.setBeatsPerMinute(parseInt(bpmSlider.value));
+        Game.setBeatsPerMinute(parseInt(bpmSlider.value));
         bpmDisplay.textContent = `${bpmSlider.value} BPM`;
     });
 
     timeSigNumerator.addEventListener("change", () => {
-        GameModel.setTimeSignatureNumerator(parseInt(timeSigNumerator.value));
+        Game.setTimeSignatureNumerator(parseInt(timeSigNumerator.value));
     });
 
     timeSigDenominator.addEventListener("change", () => {
-        GameModel.setTimeSignatureDenominator(parseInt(timeSigDenominator.value));
+        Game.setTimeSignatureDenominator(parseInt(timeSigDenominator.value));
     });
 
     metronomeButton.addEventListener("click", (e) => {
-        GameModel.toggleMetronomePlayback();
+        Game.toggleMetronomePlayback();
         metronomeButton.classList.toggle("active");
     });
 

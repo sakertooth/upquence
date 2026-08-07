@@ -8,8 +8,3 @@ import * as Toolbar from "./view/toolbar.js"
     Toolbar.init();
 }
 )();
-
-// Disable focus for all controls
-document.querySelectorAll(".control").forEach(control => {
-  control.addEventListener("click", () => control.blur());
-});

@@ -24,6 +24,11 @@ const exportDialog = document.getElementById("export-dialog");
 
 const addLevelButton = document.getElementById("add-level-button");
 
+// Disable focus for all toolbar controls
+document.querySelectorAll(".toolbar .control").forEach(control => {
+  control.addEventListener("click", () => control.blur());
+});
+
 export function init() {
     timeSigNumerator.value = GameModel.session.timeSigNumerator;
     timeSigDenominator.value = GameModel.session.timeSigDenominator;

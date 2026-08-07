@@ -3,7 +3,7 @@
     flex-direction: column;
     gap: 2px;
     background-color: var(--border-color);
-    border: 2px solid var(--border-color);
+    border: 8px solid var(--border-color);
     width: fit-content;
     margin: 30px;
 }
@@ -12,7 +12,7 @@
     display: flex;
     align-items: center;
     background-color: var(--bg-secondary);
-    height: 36px;
+    height: calc(var(--step-size) + 8px);
 }
 
 .sequencer-track-header {
@@ -41,11 +41,11 @@
 }
 
 .sequencer-step {
-    width: 18px;
-    height: 22px;
+    width: var(--step-size);
+    height: var(--step-size);
     background-color: var(--bg-tertiary);
     border: 1px solid var(--border-subtle);
-    border-radius: 2px;
+    border-radius: 3px;
     cursor: pointer;
 }
 

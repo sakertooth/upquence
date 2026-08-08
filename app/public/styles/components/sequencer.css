@@ -25,6 +25,15 @@
     border-right: 2px solid var(--border-color);
 }
 
+.sequencer-track-volume-slider {
+    width: 120px;
+}
+
+.sequencer-track-volume-display {
+    width: 50px;
+    text-align: center;
+}
+
 .sequencer-track-name {
     font-size: 13px;
     margin-left: 4px;

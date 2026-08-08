@@ -137,3 +137,7 @@ export function setTimeSignatureDenominator(denominator) {
 export function onTimeSignatureChange(callback) {
     eventListeners.onTimeSignatureChange.push(callback);
 }
+
+export function changeVolume(trackID, volume){
+    playbackState.players[trackID].obj.volume.value = volume;
+}

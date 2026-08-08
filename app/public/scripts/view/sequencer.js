@@ -9,6 +9,7 @@ export function init() {
 
 function render() {
     sequencer.innerHTML = "";
+    let index = 0;
     GameModel.session.pattern.forEach((track, trackIndex) => {
         const trackRow = document.createElement("div");
         trackRow.className = "sequencer-track";
@@ -36,8 +37,33 @@ function render() {
             stepContainer.appendChild(step);
         }
 
+        const trackVolumeSlider = document.createElement("input");
+        trackVolumeSlider.className = "sequencer-track-volume-slider";
+        trackVolumeSlider.type = "range";
+        trackVolumeSlider.min = -40;
+        trackVolumeSlider.defaultValue = 5;
+        trackVolumeSlider.max = 40;
+
+        const trackVolume = document.createElement("div");
+        trackVolume.className = "sequencer-track-volume-display";
+        trackVolume.textContent = trackVolumeSlider.value + "dB";
+
+        const trackVolumeIndex = trackIndex;
+        GameModel.changeVolume(trackVolumeIndex, trackVolumeSlider.defaultValue);
+
+        trackVolumeSlider.addEventListener("input", () => {
+            GameModel.changeVolume(trackVolumeIndex, trackVolumeSlider.value);
+            
+            trackVolume.textContent = trackVolumeSlider.value + "dB";
+        });
+
+        const trackPanning = document.createElement("div");
+        trackPanning.className = "track-panning-knob";
+
         trackRow.appendChild(trackHeader);
         trackRow.appendChild(stepContainer);
+        trackRow.appendChild(trackVolumeSlider);
+        trackRow.appendChild(trackVolume);
         sequencer.appendChild(trackRow);
     });
 

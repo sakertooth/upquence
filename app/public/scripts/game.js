@@ -30,8 +30,7 @@ export async function init() {
     for (let soundID of defaultDrumkit.sounds) {
         const sound = soundCatalogBody.sounds.find(sound => sound.id === soundID);
 
-        playbackSession.data.pattern = [...playbackSession.data.pattern,
-        {
+        playbackSession.data.pattern = [...playbackSession.data.pattern, {
             name: sound.name,
             url: sound.url,
             steps: Array(PATTERN_STEP_RESOLUTION).fill(false)
@@ -53,7 +52,13 @@ export async function init() {
     Tone.Transport.bpm.value = playbackSession.data.beatsPerMinute;
     Tone.Transport.loop = true;
     Tone.Transport.setLoopPoints(0, "1m");
-    Tone.Transport.scheduleRepeat((time) => renderLoop(time, playbackSession), `${PATTERN_STEP_RESOLUTION}n`);
+    Tone.Transport.scheduleRepeat((time) => {
+        renderLoop(time, playbackSession);
+
+        if (metronomePlaying && playbackSession.state.currentStep % stepsPerBeat() == 0) {
+            metronomePlayer.start(time);
+        }
+    }, `${PATTERN_STEP_RESOLUTION}n`);
 }
 
 function renderLoop(time, session) {
@@ -63,11 +68,6 @@ function renderLoop(time, session) {
             const player = session.state.players.find(p => p.url === track.url);
             player.obj.start(time);
         }
-    }
-
-    // Start playback of metronome if on a new beat
-    if (metronomePlaying && session.state.currentStep % stepsPerBeat() == 0) {
-        metronomePlayer.start(time);
     }
 
     session.state.currentStep = (session.state.currentStep + 1) % numSteps();

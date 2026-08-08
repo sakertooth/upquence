@@ -138,6 +138,10 @@ export function onTimeSignatureChange(callback) {
     eventListeners.onTimeSignatureChange.push(callback);
 }
 
+export function changeVolume(trackID, volume){
+    playbackState.players[trackID].obj.volume.value = volume;
+}
+
 export function loadLevel(level) {
     // TODO: Implement
 }

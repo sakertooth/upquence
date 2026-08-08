@@ -81,22 +81,22 @@
   </div>
 
   <dialog class="dialog" id="export-dialog">
-    <div class="dialog-title">Export</div>
-    <label class="dialog-group">
-      Format:
-      <select class="control" id="export-format">
-        <option value="wav">WAV</option>
-        <option value="mp3">MP3</option>
-      </select>
-    </label>
-    <label class="dialog-group">
-      Filename:
-      <input class="control" id="export-filename">
-    </label>
-    <div class="dialog-group center">
-      <button class="control" id="export-start-button">Start</button>
-      <button class="control" id="export-cancel-button">Cancel</button>
-    </div>
+    <form>
+      <div class="dialog-title">Export</div>
+      <div class="dialog-settings">
+        <div class="dialog-header">Format:</div>
+        <select class="dialog-control control" id="format" required>
+          <option value="wav">WAV</option>
+          <option value="mp3">MP3</option>
+        </select>
+        <div class="dialog-header">Filename:</div>
+        <input class="dialog-control control" id="filename" required>
+      </div>
+      <div class="dialog-buttons center">
+        <button class="control" id="start-button" type="submit">Start</button>
+        <button class="control" id="cancel-button">Cancel</button>
+      </div>
+    </form>
   </dialog>
 
   <dialog class="dialog" id="add-level-dialog">

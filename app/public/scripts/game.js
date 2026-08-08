@@ -87,6 +87,28 @@ function createSession() {
     };
 }
 
+export function setSession(data) {
+    playbackSession = {
+        data: {
+            pattern: data.pattern,
+            timeSigNumerator: data.timeSigNumerator,
+            timeSigDenominator: data.timeSigDenominator,
+            beatsPerMinute: data.beatsPerMinute
+        },
+        state: {
+            currentStep: 0,
+            players: data.pattern.map(track => ({
+                id: track.id,
+                url: track.url,
+                obj: new Tone.Player(track.url).toDestination()
+            })),
+            playing: false
+        }
+    };
+    Tone.Transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
+    Tone.Transport.bpm.value = data.beatsPerMinute;
+}
+
 export function stepsPerBeat() {
     return PATTERN_STEP_RESOLUTION / playbackSession.data.timeSigDenominator;
 }

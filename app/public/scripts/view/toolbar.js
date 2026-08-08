@@ -2,7 +2,8 @@ import * as Game from "../game.js"
 import * as Toast from "./toast.js"
 import * as AddLevelDialog from "../dialogs/add-level-dialog.js";
 import * as PlayLevelDialog from "../dialogs/play-level-dialog.js";
-import * as ExportDialog from "../dialogs/export-dialog.js"
+import * as ExportDialog from "../dialogs/export-dialog.js";
+import * as UploadDialog from "../dialogs/upload-dialog.js";
 
 const PLAY_BUTTON_ICON_PATH = "M3 2l11 6-11 6V2z";
 const PAUSE_BUTTON_ICON_PATH = "M3 2h3.5v12H3V2zm6.5 0H13v12H9.5V2z";
@@ -93,7 +94,11 @@ export function init() {
         downloadLink.download = "upquence_sequencer_data";
         downloadLink.click();
         URL.revokeObjectURL(downloadURL);
-    })
+    });
+
+    uploadButton.addEventListener("click", () => {
+        UploadDialog.dialog.showModal();
+    });
 
     document.addEventListener("keydown", (e) => {
         if (e.code === "Space") {

@@ -3,7 +3,6 @@ import * as Toast from "./toast.js"
 import * as AddLevelDialog from "../dialogs/add-level-dialog.js";
 import * as PlayLevelDialog from "../dialogs/play-level-dialog.js";
 import * as ExportDialog from "../dialogs/export-dialog.js";
-import * as UploadDialog from "../dialogs/upload-dialog.js";
 
 const PLAY_BUTTON_ICON_PATH = "M3 2l11 6-11 6V2z";
 const PAUSE_BUTTON_ICON_PATH = "M3 2h3.5v12H3V2zm6.5 0H13v12H9.5V2z";
@@ -28,6 +27,7 @@ const playLevelButton = document.getElementById("play-level-button");
 
 const downloadButton = document.getElementById("download-button");
 const uploadButton = document.getElementById("upload-button");
+const uploadFileInput = document.getElementById("upload-file-input");
 
 export function init() {
     timeSigNumerator.value = Game.session.data.timeSigNumerator;
@@ -96,8 +96,29 @@ export function init() {
         URL.revokeObjectURL(downloadURL);
     });
 
-    uploadButton.addEventListener("click", () => {
-        UploadDialog.dialog.showModal();
+    uploadButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        uploadFileInput.click();
+    });
+
+    uploadFileInput.addEventListener("change", async (e) => {
+        if (uploadFileInput.files.length === 0) {
+            return;
+        }
+
+        const file = uploadFileInput.files[0];
+        try {
+            const text = await file.text();
+            const json = JSON.parse(text);
+            Game.setData(json);
+
+            Toast.showToast("New pattern loaded!");
+        } catch (error) {
+            Toast.showToast("Invalid pattern file!");
+            console.log("Error: ", error);
+        }
+
+        uploadFileInput.value = "";
     });
 
     document.addEventListener("keydown", (e) => {

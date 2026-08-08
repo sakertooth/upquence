@@ -10,7 +10,7 @@ const DEFAULT_TIME_SIG_DENOMINATOR = 4;
 // The default number of beats per minute (e.g., a value of 140 means there are 140 beats that happen in one minute)
 const DEFAULT_BEATS_PER_MINUTE = 140;
 
-export let playbackSession = null;
+export let playbackSession = createSession();
 
 let metronomePlaying = false;
 let metronomePlayer = null;
@@ -20,8 +20,6 @@ let eventListeners = {
 }
 
 export async function init() {
-    playbackSession = createSession();
-
     // Load default drum kit
     const soundCatalogResponse = await fetch("/sounds/catalog.json");
     const soundCatalogBody = await soundCatalogResponse.json();

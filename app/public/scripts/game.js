@@ -17,18 +17,12 @@ export let session = {
         timeSigDenominator: DEFAULT_TIME_SIG_DENOMINATOR,
         beatsPerMinute: DEFAULT_BEATS_PER_MINUTE
     },
-    levelData: {
-        pattern: [],
-        timeSigNumerator: DEFAULT_TIME_SIG_NUMERATOR,
-        timeSigDenominator: DEFAULT_TIME_SIG_DENOMINATOR,
-        beatsPerMinute: DEFAULT_BEATS_PER_MINUTE
+    playback: {
+        currentStep: 0,
+        trackPlayers: [],
+        metronomePlayer: false,
+        metronomePlaying: false,
     },
-    currentStep: 0,
-    trackPlayers: [],
-    metronomePlayer: false,
-    metronomePlaying: false,
-    playingLevel: false,
-    levelBuffer: null,
     eventListeners: {
         onTimeSignatureChange: []
     }
@@ -51,50 +45,67 @@ export async function init() {
     }
 
     // Create player objects for each track
-    session.trackPlayers = session.data.pattern.map(track => ({
-        id: track.id,
-        url: track.url,
-        obj: new Tone.Player(track.url).toDestination()
-    }));
+    session.playback.trackPlayers = await createTrackPlayers(session.data.pattern);
 
     // Add metronome player
-    session.metronomePlayer = new Tone.Player({ url: "../sounds/metronome.mp3" }).toDestination();
+    session.playback.metronomePlayer = new Tone.Player({ url: "../sounds/metronome.mp3" }).toDestination();
 
     // Start game loop, set time signature and BPM, etc
     Tone.Transport.timeSignature = [session.data.timeSigNumerator, session.data.timeSigDenominator];
     Tone.Transport.bpm.value = session.data.beatsPerMinute;
     Tone.Transport.loop = true;
     Tone.Transport.setLoopPoints(0, "1m");
-    Tone.Transport.scheduleRepeat((time) => renderLoop(time), `${PATTERN_STEP_RESOLUTION}n`);
+    Tone.Transport.scheduleRepeat((time) => {
+        renderLoop(time, session.data, session.playback.trackPlayers, session.playback.currentStep);
+
+        // Play metronome on each new beat
+        if (session.playback.metronomePlaying && session.playback.currentStep % stepsPerBeat() == 0) {
+            session.playback.metronomePlayer.start(time);
+        }
+
+        session.playback.currentStep = (session.playback.currentStep + 1) % numSteps();
+
+    }, `${PATTERN_STEP_RESOLUTION}n`);
 }
 
-function renderLoop(time) {
+async function createTrackPlayers(pattern) {
+    const players = pattern.map(track => ({
+        url: track.url,
+        obj: new Tone.Player(track.url).toDestination()
+    }));
+
+    await Tone.loaded();
+    return players;
+}
+
+function renderLoop(time, data, players, step) {
     // Play tracks once you reach any active steps
-    for (let track of session.data.pattern) {
-        if (track.steps[session.currentStep]) {
-            const player = session.trackPlayers.find(p => p.url === track.url);
+    for (let track of data.pattern) {
+        if (track.steps[step]) {
+            const player = players.find(p => p.url === track.url);
             player.obj.start(time);
         }
     }
+}
 
-    // Play metronome on each new beat
-    if (session.metronomePlaying && session.currentStep % stepsPerBeat() == 0) {
-        session.metronomePlayer.start(time);
-    }
+function stepsPerBeatFor(denominator) {
+    return PATTERN_STEP_RESOLUTION / denominator;
+}
 
-    session.currentStep = (session.currentStep + 1) % numSteps();
+function numStepsFor(numerator, denominator) {
+    return Math.floor(numerator * stepsPerBeatFor(denominator));
 }
 
 export function stepsPerBeat() {
-    return PATTERN_STEP_RESOLUTION / session.data.timeSigDenominator;
+    return stepsPerBeatFor(session.data.timeSigDenominator);
 }
 
 export function numSteps() {
-    return Math.floor(session.data.timeSigNumerator * stepsPerBeat());
+    return numStepsFor(session.data.timeSigNumerator, session.data.timeSigDenominator);
 }
 
 export function currentStep() {
-    return session.currentStep;
+    return session.playback.currentStep;
 }
 
 export function startPlayback() {
@@ -106,13 +117,13 @@ export function pausePlayback() {
 }
 
 export function stopPlayback() {
-    session.currentStep = 0;
+    session.playback.currentStep = 0;
     Tone.Transport.stop();
 }
 
 export function toggleMetronomePlayback() {
-    session.metronomePlaying = !session.metronomePlaying;
-    return session.metronomePlaying;
+    session.playback.metronomePlaying = !session.playback.metronomePlaying;
+    return session.playback.metronomePlaying;
 }
 
 export function setTimeSignature(numerator, denominator) {
@@ -144,9 +155,23 @@ export function addEventListener(event, callback) {
 }
 
 export function changeVolume(trackID, volume) {
-    session.trackPlayers[trackID].obj.volume.value = volume;
+    session.playback.trackPlayers[trackID].obj.volume.value = volume;
 }
 
-export function loadLevel(level) {
-    // TODO: Implement
+export async function startExport(data) {
+    const buffer = await Tone.Offline(async ({ transport }) => {
+        let currentStep = 0;
+        let trackPlayers = await createTrackPlayers(data.pattern);
+
+        transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
+        transport.bpm.value = data.beatsPerMinute;
+
+        transport.scheduleRepeat(time => {
+            renderLoop(time, data, trackPlayers, currentStep);
+            currentStep = (currentStep + 1) % numStepsFor(data.timeSigNumerator, data.timeSigDenominator);
+        }, `${PATTERN_STEP_RESOLUTION}n`);
+        transport.start(0);
+    }, Tone.Time("4m").toSeconds());
+
+    return buffer;
 }

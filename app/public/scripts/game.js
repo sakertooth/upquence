@@ -145,8 +145,8 @@ export function addEventListener(event, callback) {
     eventListeners[event].push(callback);
 }
 
-export function changeVolume(trackID, volume){
-    playbackState.players[trackID].obj.volume.value = volume;
+export function changeVolume(trackID, volume) {
+    playbackSession.state.players[trackID].obj.volume.value = volume;
 }
 
 export function loadLevel(level) {

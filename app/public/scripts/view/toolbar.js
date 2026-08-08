@@ -1,5 +1,7 @@
-import * as GameModel from "../model/game.js"
+import * as Game from "../game.js"
 import * as Toast from "./toast.js"
+import * as AddLevelDialog from "../dialogs/add-level-dialog.js";
+import * as PlayLevelDialog from "../dialogs/play-level-dialog.js";
 
 const PLAY_BUTTON_ICON_PATH = "M3 2l11 6-11 6V2z";
 const PAUSE_BUTTON_ICON_PATH = "M3 2h3.5v12H3V2zm6.5 0H13v12H9.5V2z";
@@ -22,19 +24,25 @@ const exportCancelButton = document.getElementById("export-cancel-button");
 const exportDialog = document.getElementById("export-dialog");
 
 const addLevelButton = document.getElementById("add-level-button");
+const playLevelButton = document.getElementById("play-level-button");
+
+// Disable focus for all toolbar controls
+document.querySelectorAll(".toolbar .control").forEach(control => {
+  control.addEventListener("click", () => control.blur());
+});
 
 export function init() {
-    timeSigNumerator.value = GameModel.session.timeSigNumerator;
-    timeSigDenominator.value = GameModel.session.timeSigDenominator;
-    bpmDisplay.textContent = `${GameModel.session.beatsPerMinute} BPM`;
+    timeSigNumerator.value = Game.playbackSession.timeSigNumerator;
+    timeSigDenominator.value = Game.playbackSession.timeSigDenominator;
+    bpmDisplay.textContent = `${Game.playbackSession.beatsPerMinute} BPM`;
 
     playButton.addEventListener("click", async () => {
         if (Tone.Transport.state === "stopped" || Tone.Transport.state === "paused") {
-            GameModel.startPlayback();
+            Game.startPlayback();
             playIconPath.setAttribute("d", PAUSE_BUTTON_ICON_PATH);
         }
         else {
-            GameModel.pausePlayback();
+            Game.pausePlayback();
             playIconPath.setAttribute("d", PLAY_BUTTON_ICON_PATH);
         }
     });
@@ -44,38 +52,26 @@ export function init() {
             return;
         }
 
-        GameModel.stopPlayback();
+        Game.stopPlayback();
         playIconPath.setAttribute("d", PLAY_BUTTON_ICON_PATH);
     });
 
     bpmSlider.addEventListener("input", () => {
-        GameModel.setBeatsPerMinute(bpmSlider.value);
+        Game.setBeatsPerMinute(parseInt(bpmSlider.value));
         bpmDisplay.textContent = `${bpmSlider.value} BPM`;
     });
 
     timeSigNumerator.addEventListener("change", () => {
-        GameModel.setTimeSignatureNumerator(parseInt(timeSigNumerator.value));
+        Game.setTimeSignatureNumerator(parseInt(timeSigNumerator.value));
     });
 
     timeSigDenominator.addEventListener("change", () => {
-        GameModel.setTimeSignatureDenominator(parseInt(timeSigDenominator.value));
+        Game.setTimeSignatureDenominator(parseInt(timeSigDenominator.value));
     });
 
     metronomeButton.addEventListener("click", (e) => {
-        GameModel.toggleMetronomePlayback();
+        Game.toggleMetronomePlayback();
         metronomeButton.classList.toggle("active");
-    });
-
-    metronomeButton.addEventListener("mousedown", (e) => {
-        e.preventDefault();
-    });
-
-    timeSigNumerator.addEventListener("keypress", (e) => {
-        e.preventDefault();
-    });
-
-    timeSigDenominator.addEventListener("keypress", (e) => {
-        e.preventDefault();
     });
 
     exportButton.addEventListener("click", () => {
@@ -86,27 +82,18 @@ export function init() {
         exportDialog.close();
     });
 
+    addLevelButton.addEventListener("click", () => {
+        AddLevelDialog.dialog.showModal();
+    });
+
+    playLevelButton.addEventListener("click", async () => {
+        await PlayLevelDialog.populate();
+        PlayLevelDialog.dialog.showModal();
+    });
+
     document.addEventListener("keyup", (e) => {
         if (e.code === "Space") {
             playButton.click();
-        }
-    });
-
-    addLevelButton.addEventListener("click", async () => {
-        try {
-            const response = await fetch(`/api/levels/add`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({level: GameModel.session}),
-            });
-
-            console.log("Add level, response received:", response.status);
-            console.log("Add level, body received:", response.json());
-            Toast.showToast("Level added!");
-        } catch (e) {
-            console.log(e);
         }
     });
 }

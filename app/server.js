@@ -19,8 +19,8 @@ app.use(express.static("public"));
 
 app.get("/api/levels", async (req, res) => {
   try {
-    const response = await pool.query(`SELECT data FROM levels`);
-    res.json({ levels: response.rows });
+    const response = await pool.query(`SELECT id, data FROM levels`);
+    res.json({ levels: response.rows.map(row => ({ ...row.data, id: row.id })) });
   }
   catch (e) {
     console.log(e);
@@ -77,7 +77,7 @@ app.post("/api/levels/:id/submit", async (req, res) => {
 });
 
 app.post("/api/levels/add", async (req, res) => {
-    if (!req.body.hasOwnProperty("level")) {
+  if (!req.body.hasOwnProperty("level")) {
     res.status(400);
     res.json({ error: "Missing level" })
     return;
@@ -85,7 +85,7 @@ app.post("/api/levels/add", async (req, res) => {
 
   try {
     const response = await pool.query(`INSERT INTO levels (data) VALUES ($1)`, [req.body]);
-    res.json({ message: "Level added" });
+    res.json({ message: "Level added!" });
   }
   catch (e) {
     console.log(e);

@@ -23,14 +23,12 @@ export let session = {
         timeSigDenominator: DEFAULT_TIME_SIG_DENOMINATOR,
         beatsPerMinute: DEFAULT_BEATS_PER_MINUTE
     },
-    state: {
-        currentStep: 0,
-        trackPlayers: [],
-        metronomePlayer: false,
-        metronomePlaying: false,
-        playingLevel: false,
-        levelBuffer: null
-    },
+    currentStep: 0,
+    trackPlayers: [],
+    metronomePlayer: false,
+    metronomePlaying: false,
+    playingLevel: false,
+    levelBuffer: null,
     eventListeners: {
         onTimeSignatureChange: []
     }
@@ -53,14 +51,14 @@ export async function init() {
     }
 
     // Create player objects for each track
-    session.state.trackPlayers = session.data.pattern.map(track => ({
+    session.trackPlayers = session.data.pattern.map(track => ({
         id: track.id,
         url: track.url,
         obj: new Tone.Player(track.url).toDestination()
     }));
 
     // Add metronome player
-    session.state.metronomePlayer = new Tone.Player({ url: "../sounds/metronome.mp3" }).toDestination();
+    session.metronomePlayer = new Tone.Player({ url: "../sounds/metronome.mp3" }).toDestination();
 
     // Start game loop, set time signature and BPM, etc
     Tone.Transport.timeSignature = [session.data.timeSigNumerator, session.data.timeSigDenominator];
@@ -73,18 +71,18 @@ export async function init() {
 function renderLoop(time) {
     // Play tracks once you reach any active steps
     for (let track of session.data.pattern) {
-        if (track.steps[session.state.currentStep]) {
-            const player = session.state.trackPlayers.find(p => p.url === track.url);
+        if (track.steps[session.currentStep]) {
+            const player = session.trackPlayers.find(p => p.url === track.url);
             player.obj.start(time);
         }
     }
 
     // Play metronome on each new beat
-    if (session.state.metronomePlaying && session.state.currentStep % stepsPerBeat() == 0) {
-        session.state.metronomePlayer.start(time);
+    if (session.metronomePlaying && session.currentStep % stepsPerBeat() == 0) {
+        session.metronomePlayer.start(time);
     }
 
-    session.state.currentStep = (session.state.currentStep + 1) % numSteps();
+    session.currentStep = (session.currentStep + 1) % numSteps();
 }
 
 export function stepsPerBeat() {
@@ -96,7 +94,7 @@ export function numSteps() {
 }
 
 export function currentStep() {
-    return session.state.currentStep;
+    return session.currentStep;
 }
 
 export function startPlayback() {
@@ -108,13 +106,13 @@ export function pausePlayback() {
 }
 
 export function stopPlayback() {
-    session.state.currentStep = 0;
+    session.currentStep = 0;
     Tone.Transport.stop();
 }
 
 export function toggleMetronomePlayback() {
-    session.state.metronomePlaying = !session.state.metronomePlaying;
-    return session.state.metronomePlaying;
+    session.metronomePlaying = !session.metronomePlaying;
+    return session.metronomePlaying;
 }
 
 export function setTimeSignature(numerator, denominator) {
@@ -146,7 +144,7 @@ export function addEventListener(event, callback) {
 }
 
 export function changeVolume(trackID, volume) {
-    session.state.trackPlayers[trackID].obj.volume.value = volume;
+    session.trackPlayers[trackID].obj.volume.value = volume;
 }
 
 export function loadLevel(level) {

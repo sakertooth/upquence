@@ -29,11 +29,6 @@ const playLevelButton = document.getElementById("play-level-button");
 const downloadButton = document.getElementById("download-button");
 const uploadButton = document.getElementById("upload-button");
 
-// Disable focus for all toolbar controls
-document.querySelectorAll(".toolbar .control").forEach(control => {
-  control.addEventListener("click", () => control.blur());
-});
-
 export function init() {
     timeSigNumerator.value = Game.playbackSession.data.timeSigNumerator;
     timeSigDenominator.value = Game.playbackSession.data.timeSigDenominator;
@@ -95,7 +90,7 @@ export function init() {
     });
 
     downloadButton.addEventListener("click", () => {
-        const upquenceData = new Blob([JSON.stringify(Game.playbackSession)], {type: "application/json"});
+        const upquenceData = new Blob([JSON.stringify(Game.playbackSession.data)], { type: "application/json" });
         const downloadURL = URL.createObjectURL(upquenceData);
         const downloadLink = document.createElement("a");
 
@@ -105,8 +100,9 @@ export function init() {
         URL.revokeObjectURL(downloadURL);
     })
 
-    document.addEventListener("keyup", (e) => {
+    document.addEventListener("keydown", (e) => {
         if (e.code === "Space") {
+            e.preventDefault();
             playButton.click();
         }
     });

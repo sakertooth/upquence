@@ -35,9 +35,9 @@ document.querySelectorAll(".toolbar .control").forEach(control => {
 });
 
 export function init() {
-    timeSigNumerator.value = Game.playbackSession.timeSigNumerator;
-    timeSigDenominator.value = Game.playbackSession.timeSigDenominator;
-    bpmDisplay.textContent = `${Game.playbackSession.beatsPerMinute} BPM`;
+    timeSigNumerator.value = Game.playbackSession.data.timeSigNumerator;
+    timeSigDenominator.value = Game.playbackSession.data.timeSigDenominator;
+    bpmDisplay.textContent = `${Game.playbackSession.data.beatsPerMinute} BPM`;
 
     playButton.addEventListener("click", async () => {
         if (Tone.Transport.state === "stopped" || Tone.Transport.state === "paused") {

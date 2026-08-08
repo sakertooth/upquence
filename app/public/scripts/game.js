@@ -10,25 +10,18 @@ const DEFAULT_TIME_SIG_DENOMINATOR = 4;
 // The default number of beats per minute (e.g., a value of 140 means there are 140 beats that happen in one minute)
 const DEFAULT_BEATS_PER_MINUTE = 140;
 
-export let playbackSession = {
-    pattern: [],
-    timeSigNumerator: DEFAULT_TIME_SIG_NUMERATOR,
-    timeSigDenominator: DEFAULT_TIME_SIG_DENOMINATOR,
-    beatsPerMinute: DEFAULT_BEATS_PER_MINUTE
-}
+export let playbackSession = null;
 
-let playbackState = {
-    currentStep: 0,
-    players: [],
-    metronomePlaying: false,
-    metronomePlayer: null
-}
+let metronomePlaying = false;
+let metronomePlayer = null;
 
 let eventListeners = {
     onTimeSignatureChange: []
 }
 
 export async function init() {
+    playbackSession = createSession();
+
     // Load default drum kit
     const soundCatalogResponse = await fetch("/sounds/catalog.json");
     const soundCatalogBody = await soundCatalogResponse.json();
@@ -37,7 +30,7 @@ export async function init() {
     for (let soundID of defaultDrumkit.sounds) {
         const sound = soundCatalogBody.sounds.find(sound => sound.id === soundID);
 
-        playbackSession.pattern = [...playbackSession.pattern,
+        playbackSession.data.pattern = [...playbackSession.data.pattern,
         {
             name: sound.name,
             url: sound.url,
@@ -46,50 +39,66 @@ export async function init() {
     }
 
     // Create player objects for each track
-    playbackState.players = playbackSession.pattern.map(track => ({
+    playbackSession.state.players = playbackSession.data.pattern.map(track => ({
         id: track.id,
         url: track.url,
         obj: new Tone.Player(track.url).toDestination()
     }));
 
     // Add metronome player
-    playbackState.metronomePlayer = new Tone.Player({ url: "../sounds/metronome.mp3" }).toDestination();
+    metronomePlayer = new Tone.Player({ url: "../sounds/metronome.mp3" }).toDestination();
 
     // Start game loop, set time signature and BPM, etc
-    Tone.Transport.timeSignature = [playbackSession.timeSigNumerator, playbackSession.timeSigDenominator];
-    Tone.Transport.bpm.value = playbackSession.beatsPerMinute;
+    Tone.Transport.timeSignature = [playbackSession.data.timeSigNumerator, playbackSession.data.timeSigDenominator];
+    Tone.Transport.bpm.value = playbackSession.data.beatsPerMinute;
     Tone.Transport.loop = true;
     Tone.Transport.setLoopPoints(0, "1m");
-    Tone.Transport.scheduleRepeat((time) => renderLoop(time, playbackState), `${PATTERN_STEP_RESOLUTION}n`);
+    Tone.Transport.scheduleRepeat((time) => renderLoop(time, playbackSession), `${PATTERN_STEP_RESOLUTION}n`);
 }
 
-function renderLoop(time, state) {
+function renderLoop(time, session) {
     // Play tracks once you reach any active steps
-    for (let track of playbackSession.pattern) {
-        if (track.steps[state.currentStep]) {
-            const player = state.players.find(p => p.url === track.url);
+    for (let track of session.data.pattern) {
+        if (track.steps[session.state.currentStep]) {
+            const player = session.state.players.find(p => p.url === track.url);
             player.obj.start(time);
         }
     }
 
     // Start playback of metronome if on a new beat
-    if (state.metronomePlaying && state.currentStep % stepsPerBeat() == 0) {
-        state.metronomePlayer.start(time);
+    if (metronomePlaying && session.state.currentStep % stepsPerBeat() == 0) {
+        metronomePlayer.start(time);
     }
 
-    state.currentStep = (state.currentStep + 1) % numSteps();
+    session.state.currentStep = (session.state.currentStep + 1) % numSteps();
+}
+
+function createSession() {
+    return {
+        data: {
+            pattern: [],
+            timeSigNumerator: DEFAULT_TIME_SIG_NUMERATOR,
+            timeSigDenominator: DEFAULT_TIME_SIG_DENOMINATOR,
+            beatsPerMinute: DEFAULT_BEATS_PER_MINUTE
+        },
+        state: {
+            currentStep: 0,
+            players: [],
+            playing: false
+        }
+    };
 }
 
 export function stepsPerBeat() {
-    return PATTERN_STEP_RESOLUTION / playbackSession.timeSigDenominator;
+    return PATTERN_STEP_RESOLUTION / playbackSession.data.timeSigDenominator;
 }
 
 export function numSteps() {
-    return Math.floor(playbackSession.timeSigNumerator * stepsPerBeat());
+    return Math.floor(playbackSession.data.timeSigNumerator * stepsPerBeat());
 }
 
 export function currentStep() {
-    return playbackState.currentStep;
+    return playbackSession.state.currentStep;
 }
 
 export function startPlayback() {
@@ -101,19 +110,19 @@ export function pausePlayback() {
 }
 
 export function stopPlayback() {
-    playbackState.currentStep = 0;
+    playbackSession.state.currentStep = 0;
     Tone.Transport.stop();
 }
 
 export function toggleMetronomePlayback() {
-    playbackState.metronomePlaying = !playbackState.metronomePlaying;
-    return playbackState.metronomePlaying;
+    metronomePlaying = !metronomePlaying;
+    return metronomePlaying;
 }
 
 export function setTimeSignature(numerator, denominator) {
-    playbackSession.timeSigNumerator = numerator;
-    playbackSession.timeSigDenominator = denominator;
-    Tone.Transport.timeSignature = [playbackSession.timeSigNumerator, playbackSession.timeSigDenominator];
+    playbackSession.data.timeSigNumerator = numerator;
+    playbackSession.data.timeSigDenominator = denominator;
+    Tone.Transport.timeSignature = [playbackSession.data.timeSigNumerator, playbackSession.data.timeSigDenominator];
     Tone.Transport.setLoopPoints(0, "1m");
 
     for (let event of eventListeners.onTimeSignatureChange) {
@@ -122,16 +131,16 @@ export function setTimeSignature(numerator, denominator) {
 }
 
 export function setBeatsPerMinute(bpm) {
-    playbackSession.beatsPerMinute = bpm;
+    playbackSession.data.beatsPerMinute = bpm;
     Tone.Transport.bpm.value = bpm;
 }
 
 export function setTimeSignatureNumerator(numerator) {
-    setTimeSignature(numerator, playbackSession.timeSigDenominator);
+    setTimeSignature(numerator, playbackSession.data.timeSigDenominator);
 }
 
 export function setTimeSignatureDenominator(denominator) {
-    setTimeSignature(playbackSession.timeSigNumerator, denominator);
+    setTimeSignature(playbackSession.data.timeSigNumerator, denominator);
 }
 
 export function onTimeSignatureChange(callback) {

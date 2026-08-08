@@ -30,9 +30,9 @@ const downloadButton = document.getElementById("download-button");
 const uploadButton = document.getElementById("upload-button");
 
 export function init() {
-    timeSigNumerator.value = Game.playbackSession.data.timeSigNumerator;
-    timeSigDenominator.value = Game.playbackSession.data.timeSigDenominator;
-    bpmDisplay.textContent = `${Game.playbackSession.data.beatsPerMinute} BPM`;
+    timeSigNumerator.value = Game.session.data.timeSigNumerator;
+    timeSigDenominator.value = Game.session.data.timeSigDenominator;
+    bpmDisplay.textContent = `${Game.session.data.beatsPerMinute} BPM`;
 
     playButton.addEventListener("click", async () => {
         if (Tone.Transport.state === "stopped" || Tone.Transport.state === "paused") {
@@ -86,7 +86,7 @@ export function init() {
     });
 
     downloadButton.addEventListener("click", () => {
-        const upquenceData = new Blob([JSON.stringify(Game.playbackSession.data)], { type: "application/json" });
+        const upquenceData = new Blob([JSON.stringify(Game.session.data)], { type: "application/json" });
         const downloadURL = URL.createObjectURL(upquenceData);
         const downloadLink = document.createElement("a");
 

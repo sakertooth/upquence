@@ -9,7 +9,7 @@ export function init() {
 
 function render() {
     sequencer.innerHTML = "";
-    Game.playbackSession.data.pattern.forEach((track, trackIndex) => {
+    Game.session.data.pattern.forEach((track, trackIndex) => {
         const trackRow = document.createElement("div");
         trackRow.className = "sequencer-track";
 

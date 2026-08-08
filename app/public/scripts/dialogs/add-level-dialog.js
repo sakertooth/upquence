@@ -20,7 +20,7 @@ form.addEventListener("submit", async (e) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                level: Game.playbackSession.data,
+                level: Game.session.data,
                 title: titleControl.value,
                 description: descriptionControl.value,
                 pointsRequired: pointsRequiredControl.value

@@ -26,6 +26,9 @@ const exportDialog = document.getElementById("export-dialog");
 const addLevelButton = document.getElementById("add-level-button");
 const playLevelButton = document.getElementById("play-level-button");
 
+const downloadButton = document.getElementById("download-button");
+const uploadButton = document.getElementById("upload-button");
+
 // Disable focus for all toolbar controls
 document.querySelectorAll(".toolbar .control").forEach(control => {
   control.addEventListener("click", () => control.blur());
@@ -90,6 +93,17 @@ export function init() {
         await PlayLevelDialog.populate();
         PlayLevelDialog.dialog.showModal();
     });
+
+    downloadButton.addEventListener("click", () => {
+        const upquenceData = new Blob([JSON.stringify(Game.playbackSession)], {type: "application/json"});
+        const downloadURL = URL.createObjectURL(upquenceData);
+        const downloadLink = document.createElement("a");
+
+        downloadLink.href = downloadURL;
+        downloadLink.download = "upquence_sequencer_data";
+        downloadLink.click();
+        URL.revokeObjectURL(downloadURL);
+    })
 
     document.addEventListener("keyup", (e) => {
         if (e.code === "Space") {

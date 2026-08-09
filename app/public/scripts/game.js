@@ -58,7 +58,7 @@ export async function init() {
     Tone.Transport.loop = true;
     Tone.Transport.setLoopPoints(0, "1m");
     Tone.Transport.scheduleRepeat((time) => {
-        renderLoop(time, session.data, session.playback.trackPlayers, session.playback.currentStep);
+        renderStep(time, session.data, session.playback.trackPlayers, session.playback.currentStep);
 
         // Play metronome on each new beat
         if (session.playback.metronomePlaying && session.playback.currentStep % stepsPerBeat() == 0) {
@@ -84,7 +84,7 @@ async function createTrackPlayers(pattern) {
     return players;
 }
 
-function renderLoop(time, data, players, step) {
+function renderStep(time, data, players, step) {
     // Play tracks once you reach any active steps
     for (let track of data.pattern) {
         if (track.steps[step]) {
@@ -200,7 +200,7 @@ export async function startExport(data) {
         transport.bpm.value = data.beatsPerMinute;
 
         transport.scheduleRepeat(time => {
-            renderLoop(time, data, trackPlayers, currentStep);
+            renderStep(time, data, trackPlayers, currentStep);
             currentStep = (currentStep + 1) % numStepsFor(data.timeSigNumerator, data.timeSigDenominator);
         }, `${PATTERN_STEP_RESOLUTION}n`);
         transport.start(0);

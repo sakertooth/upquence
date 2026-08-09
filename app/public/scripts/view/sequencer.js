@@ -5,7 +5,7 @@ const sequencer = document.getElementById("sequencer");
 export function init() {
     render();
     Game.addEventListener("onTimeSignatureChange", render);
-    Game.addEventListener("onDataChange", render);
+    Game.addEventListener("onDataUploaded", render);
 }
 
 function render() {

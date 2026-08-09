@@ -3,6 +3,7 @@ import * as Toast from "./toast.js"
 import * as AddLevelDialog from "../dialogs/add-level-dialog.js";
 import * as PlayLevelDialog from "../dialogs/play-level-dialog.js";
 import * as ExportDialog from "../dialogs/export-dialog.js";
+import { validateUpload } from "../util.js";
 
 const PLAY_BUTTON_ICON_PATH = "M3 2l11 6-11 6V2z";
 const PAUSE_BUTTON_ICON_PATH = "M3 2h3.5v12H3V2zm6.5 0H13v12H9.5V2z";
@@ -29,11 +30,17 @@ const downloadButton = document.getElementById("download-button");
 const uploadButton = document.getElementById("upload-button");
 const uploadFileInput = document.getElementById("upload-file-input");
 
-export function init() {
-    timeSigNumerator.value = Game.session.data.timeSigNumerator;
-    timeSigDenominator.value = Game.session.data.timeSigDenominator;
-    bpmDisplay.textContent = `${Game.session.data.beatsPerMinute} BPM`;
+Game.addEventListener("onInitialized", update);
+Game.addEventListener("onDataUploaded", update);
 
+function update(data) {
+    timeSigNumerator.value = data.timeSigNumerator;
+    timeSigDenominator.value = data.timeSigDenominator;
+    bpmSlider.value = data.beatsPerMinute;
+    bpmDisplay.textContent = `${data.beatsPerMinute} BPM`;
+}
+
+export function init() {
     playButton.addEventListener("click", async () => {
         if (Tone.Transport.state === "stopped" || Tone.Transport.state === "paused") {
             Game.startPlayback();
@@ -110,8 +117,11 @@ export function init() {
         try {
             const text = await file.text();
             const json = JSON.parse(text);
-            Game.setData(json);
+            if (!validateUpload(json)) {
+                return;
+            }
 
+            Game.setData(json);
             Toast.showToast("New pattern loaded!");
         } catch (error) {
             Toast.showToast("Invalid pattern file!");
@@ -127,10 +137,4 @@ export function init() {
             playButton.click();
         }
     });
-}
-
-export function render() {
-    timeSigNumerator.value = Game.session.data.timeSigNumerator;
-    timeSigDenominator.value = Game.session.data.timeSigDenominator;
-    bpmDisplay.textContent = `${Game.session.data.beatsPerMinute} BPM`;
 }

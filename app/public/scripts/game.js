@@ -25,7 +25,8 @@ export let session = {
     },
     eventListeners: {
         onTimeSignatureChange: [],
-        onDataChange: []
+        onDataUploaded: [],
+        onInitialized: [],
     }
 }
 
@@ -57,7 +58,7 @@ export async function init() {
     Tone.Transport.loop = true;
     Tone.Transport.setLoopPoints(0, "1m");
     Tone.Transport.scheduleRepeat((time) => {
-        renderLoop(time, session.data, session.playback.trackPlayers, session.playback.currentStep);
+        renderStep(time, session.data, session.playback.trackPlayers, session.playback.currentStep);
 
         // Play metronome on each new beat
         if (session.playback.metronomePlaying && session.playback.currentStep % stepsPerBeat() == 0) {
@@ -67,6 +68,8 @@ export async function init() {
         session.playback.currentStep = (session.playback.currentStep + 1) % numSteps();
 
     }, `${PATTERN_STEP_RESOLUTION}n`);
+
+    emitEvent("onInitialized", session.data);
 }
 
 async function createTrackPlayers(pattern) {
@@ -79,7 +82,7 @@ async function createTrackPlayers(pattern) {
     return players;
 }
 
-function renderLoop(time, data, players, step) {
+function renderStep(time, data, players, step) {
     // Play tracks once you reach any active steps
     for (let track of data.pattern) {
         if (track.steps[step]) {
@@ -159,10 +162,7 @@ export function setTimeSignature(numerator, denominator) {
     session.data.timeSigDenominator = denominator;
     Tone.Transport.timeSignature = [session.data.timeSigNumerator, session.data.timeSigDenominator];
     Tone.Transport.setLoopPoints(0, "1m");
-
-    for (let event of session.eventListeners.onTimeSignatureChange) {
-        event(numerator, denominator);
-    }
+    emitEvent("onTimeSignatureChange", numerator, denominator);
 }
 
 export function setBeatsPerMinute(bpm) {
@@ -195,7 +195,7 @@ export async function startExport(data) {
         transport.bpm.value = data.beatsPerMinute;
 
         transport.scheduleRepeat(time => {
-            renderLoop(time, data, trackPlayers, currentStep);
+            renderStep(time, data, trackPlayers, currentStep);
             currentStep = (currentStep + 1) % numStepsFor(data.timeSigNumerator, data.timeSigDenominator);
         }, `${PATTERN_STEP_RESOLUTION}n`);
         transport.start(0);
@@ -208,8 +208,11 @@ export function setData(data) {
     Tone.Transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
     Tone.Transport.bpm.value = data.beatsPerMinute;
     session.data = data;
+    emitEvent("onDataUploaded", data);
+}
 
-    for (let event of session.eventListeners.onDataChange) {
-        event(data);
+function emitEvent(type, ...args) {
+    for (let event of session.eventListeners[type]) {
+        event(...args);
     }
 }

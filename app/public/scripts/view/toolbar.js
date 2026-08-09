@@ -29,11 +29,17 @@ const downloadButton = document.getElementById("download-button");
 const uploadButton = document.getElementById("upload-button");
 const uploadFileInput = document.getElementById("upload-file-input");
 
-export function init() {
-    timeSigNumerator.value = Game.session.data.timeSigNumerator;
-    timeSigDenominator.value = Game.session.data.timeSigDenominator;
-    bpmDisplay.textContent = `${Game.session.data.beatsPerMinute} BPM`;
+Game.addEventListener("onInitialized", update);
+Game.addEventListener("onDataUploaded", update);
 
+function update(data) {
+    timeSigNumerator.value = data.timeSigNumerator;
+    timeSigDenominator.value = data.timeSigDenominator;
+    bpmSlider.value = data.beatsPerMinute;
+    bpmDisplay.textContent = `${data.beatsPerMinute} BPM`;
+}
+
+export function init() {
     playButton.addEventListener("click", async () => {
         if (Tone.Transport.state === "stopped" || Tone.Transport.state === "paused") {
             Game.startPlayback();

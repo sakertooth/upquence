@@ -25,7 +25,8 @@ export let session = {
     },
     eventListeners: {
         onTimeSignatureChange: [],
-        onDataChange: []
+        onDataUploaded: [],
+        onInitialized: [],
     }
 }
 
@@ -67,6 +68,10 @@ export async function init() {
         session.playback.currentStep = (session.playback.currentStep + 1) % numSteps();
 
     }, `${PATTERN_STEP_RESOLUTION}n`);
+
+    for (let event of session.eventListeners.onInitialized) {
+        event(session.data);
+    }
 }
 
 async function createTrackPlayers(pattern) {
@@ -209,7 +214,7 @@ export function setData(data) {
     Tone.Transport.bpm.value = data.beatsPerMinute;
     session.data = data;
 
-    for (let event of session.eventListeners.onDataChange) {
+    for (let event of session.eventListeners.onDataUploaded) {
         event(data);
     }
 }

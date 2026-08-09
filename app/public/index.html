@@ -58,6 +58,7 @@
     <div class="toolbar-misc">
       <div class="toolbar-group column">
         <button class="control" id="download-button">Download</button>
+        <input type="file" id="upload-file-input" accept=".json" hidden>
         <button class="control" id="upload-button">Upload</button>
         <button class="control" id="export-button">Export</button>
       </div>
@@ -115,7 +116,6 @@
       </div>
     </form>
   </dialog>
-
   <dialog class="dialog" id="play-level-dialog">
     <form>
       <div class="dialog-title">Play Level</div>
@@ -130,20 +130,6 @@
       </div>
     </form>
   </dialog>
-
-  <dialog class="dialog" id="upload-dialog">
-    <form>
-      <div class="dialog-title">Upload Sequence</div>
-      <div class="dialog-settings">
-        <input type="file" id="file-input" />
-      </div>
-      <div class="dialog-buttons center">
-        <button class="control" id="submit-upload-button" type="submit">Submit</button>
-        <button class="control" id="cancel-button">Cancel</button>
-      </div>
-    </form>
-  </dialog>
-  
   <script src="http://unpkg.com/tone"></script>
   <script type="module" src="scripts/main.js"></script>
 </body>

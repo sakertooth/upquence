@@ -24,7 +24,8 @@ export let session = {
         metronomePlaying: false,
     },
     eventListeners: {
-        onTimeSignatureChange: []
+        onTimeSignatureChange: [],
+        onDataChange: []
     }
 }
 
@@ -201,4 +202,14 @@ export async function startExport(data) {
     }, Tone.Time("4m").toSeconds());
 
     return buffer;
+}
+
+export function setData(data) {
+    Tone.Transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
+    Tone.Transport.bpm.value = data.beatsPerMinute;
+    session.data = data;
+
+    for (let event of session.eventListeners.onDataChange) {
+        event(data);
+    }
 }

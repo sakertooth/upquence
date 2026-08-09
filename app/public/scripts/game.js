@@ -69,9 +69,7 @@ export async function init() {
 
     }, `${PATTERN_STEP_RESOLUTION}n`);
 
-    for (let event of session.eventListeners.onInitialized) {
-        event(session.data);
-    }
+    emitEvent("onInitialized", session.data);
 }
 
 async function createTrackPlayers(pattern) {
@@ -164,10 +162,7 @@ export function setTimeSignature(numerator, denominator) {
     session.data.timeSigDenominator = denominator;
     Tone.Transport.timeSignature = [session.data.timeSigNumerator, session.data.timeSigDenominator];
     Tone.Transport.setLoopPoints(0, "1m");
-
-    for (let event of session.eventListeners.onTimeSignatureChange) {
-        event(numerator, denominator);
-    }
+    emitEvent("onTimeSignatureChange", numerator, denominator);
 }
 
 export function setBeatsPerMinute(bpm) {
@@ -213,8 +208,11 @@ export function setData(data) {
     Tone.Transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
     Tone.Transport.bpm.value = data.beatsPerMinute;
     session.data = data;
+    emitEvent("onDataUploaded", data);
+}
 
-    for (let event of session.eventListeners.onDataUploaded) {
-        event(data);
+function emitEvent(type, ...args) {
+    for (let event of session.eventListeners[type]) {
+        event(...args);
     }
 }

@@ -53,7 +53,7 @@ form.addEventListener("submit", async (e) => {
 
     Game.setSession(file);
     Sequencer.init();
-    Toolbar.init();
+    Toolbar.render();
 
     Toast.showToast("File Uploaded!");
     dialog.close();

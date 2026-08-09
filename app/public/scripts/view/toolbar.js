@@ -107,3 +107,9 @@ export function init() {
         }
     });
 }
+
+export function render() {
+    timeSigNumerator.value = Game.session.data.timeSigNumerator;
+    timeSigDenominator.value = Game.session.data.timeSigDenominator;
+    bpmDisplay.textContent = `${Game.session.data.beatsPerMinute} BPM`;
+}

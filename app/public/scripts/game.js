@@ -112,7 +112,7 @@ export function setSession(data) {
                 obj: new Tone.Player(track.url).toDestination()
             })),
             playing: false,
-            metronomePlayer: new Tone.Player({ url: "../sounds/metronome.mp3" }).toDestination(),
+            metronomePlayer: session.playback.currentStep.metronomePlayer,
             metronomePlaying: false,
         },
         eventListeners: {

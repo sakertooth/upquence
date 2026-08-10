@@ -100,33 +100,6 @@ function numStepsFor(numerator, denominator) {
     return Math.floor(numerator * stepsPerBeatFor(denominator));
 }
 
-export function setSession(data) {
-    session = {
-        data: {
-            pattern: data.pattern,
-            timeSigNumerator: data.timeSigNumerator,
-            timeSigDenominator: data.timeSigDenominator,
-            beatsPerMinute: data.beatsPerMinute
-        },
-        playback: {
-            currentStep: 0,
-            trackPlayers: data.pattern.map(track => ({
-                id: track.id,
-                url: track.url,
-                obj: new Tone.Player(track.url).toDestination()
-            })),
-            playing: false,
-            metronomePlayer: session.playback.currentStep.metronomePlayer,
-            metronomePlaying: false,
-        },
-        eventListeners: {
-            onTimeSignatureChange: []
-        }
-    };
-    Tone.Transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
-    Tone.Transport.bpm.value = data.beatsPerMinute;
-}
-
 export function stepsPerBeat() {
     return stepsPerBeatFor(session.data.timeSigDenominator);
 }

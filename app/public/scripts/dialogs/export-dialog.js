@@ -1,6 +1,6 @@
 import * as Game from "../game.js"
 import * as Toast from "../view/toast.js"
-import { audioBufferToWav } from "../util.js"
+import { audioBufferToWav } from "../util/audio-buffer-to-wav.js"
 
 export const dialog = document.getElementById("export-dialog");
 

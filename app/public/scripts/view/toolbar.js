@@ -3,7 +3,7 @@ import * as Toast from "./toast.js"
 import * as AddLevelDialog from "../dialogs/add-level-dialog.js";
 import * as PlayLevelDialog from "../dialogs/play-level-dialog.js";
 import * as ExportDialog from "../dialogs/export-dialog.js";
-import { validateUpload } from "../util.js";
+import { validateUpload } from "../util/validate-upload.js";
 
 const PLAY_BUTTON_ICON_PATH = "M3 2l11 6-11 6V2z";
 const PAUSE_BUTTON_ICON_PATH = "M3 2h3.5v12H3V2zm6.5 0H13v12H9.5V2z";

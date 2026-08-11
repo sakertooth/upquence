@@ -3,11 +3,9 @@ import * as Game from "../game.js"
 
 const sequencer = document.getElementById("sequencer");
 
-export function init() {
-    render();
-    Events.on("onTimeSignatureChange", render);
-    Events.on("onDataUploaded", render);
-}
+Events.on("onInitialized", render);
+Events.on("onTimeSignatureChange", render);
+Events.on("onDataUploaded", render);
 
 function render() {
     sequencer.innerHTML = "";

@@ -1,11 +1,12 @@
+import * as Events from "../events.js"
 import * as Game from "../game.js"
 
 const sequencer = document.getElementById("sequencer");
 
 export function init() {
     render();
-    Game.addEventListener("onTimeSignatureChange", render);
-    Game.addEventListener("onDataUploaded", render);
+    Events.on("onTimeSignatureChange", render);
+    Events.on("onDataUploaded", render);
 }
 
 function render() {

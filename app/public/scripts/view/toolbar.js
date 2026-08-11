@@ -1,3 +1,4 @@
+import * as Events from "../events.js"
 import * as Game from "../game.js"
 import * as Toast from "./toast.js"
 import * as AddLevelDialog from "../dialogs/add-level-dialog.js";
@@ -30,8 +31,8 @@ const downloadButton = document.getElementById("download-button");
 const uploadButton = document.getElementById("upload-button");
 const uploadFileInput = document.getElementById("upload-file-input");
 
-Game.addEventListener("onInitialized", update);
-Game.addEventListener("onDataUploaded", update);
+Events.on("onInitialized", update);
+Events.on("onDataUploaded", update);
 
 function update(data) {
     timeSigNumerator.value = data.timeSigNumerator;

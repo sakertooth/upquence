@@ -24,7 +24,9 @@ export let session = {
         trackPlayers: [],
         metronomePlayer: false,
         metronomePlaying: false,
-    }
+        levelPlayer: null,
+    },
+    level: null
 }
 
 export async function init() {
@@ -175,4 +177,22 @@ export function setData(data) {
     Tone.Transport.bpm.value = data.beatsPerMinute;
     session.data = data;
     Events.emit("onDataUploaded", data);
+}
+
+export async function loadLevel(data) {
+    session.level = data;
+
+    const buffer = await startExport(data);
+    session.playback.levelPlayer = new Tone.Player(buffer).toDestination();
+
+    await Tone.loaded();
+}
+
+export function unloadLevel() {
+    session.level = null;
+    session.playback.levelPlayer = null;
+}
+
+export function listenToLevel() {
+    session.playback.levelPlayer?.start();
 }

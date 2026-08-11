@@ -77,12 +77,6 @@ app.post("/api/levels/:id/submit", async (req, res) => {
 });
 
 app.post("/api/levels/add", async (req, res) => {
-  if (!req.body.hasOwnProperty("level")) {
-    res.status(400);
-    res.json({ error: "Missing level" })
-    return;
-  }
-
   try {
     const response = await pool.query(`INSERT INTO levels (data) VALUES ($1)`, [req.body]);
     res.json({ message: "Level added!" });

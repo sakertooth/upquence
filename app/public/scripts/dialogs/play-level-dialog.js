@@ -31,10 +31,10 @@ export async function populate() {
     selectedLevel = levels.find(lvl => String(lvl.id) === select.value);
 }
 
-playButton.addEventListener("click", (e) => {
+playButton.addEventListener("click", async (e) => {
     e.preventDefault();
     dialog.close();
-    Game.loadLevel(selectedLevel);
+    await Game.loadLevel(selectedLevel);
     Toast.showToast(`Playing level: ${selectedLevel.title} (check the description for more info)`);
 });
 

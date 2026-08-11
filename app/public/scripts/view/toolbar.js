@@ -27,6 +27,10 @@ const exportDialog = document.getElementById("export-dialog");
 const addLevelButton = document.getElementById("add-level-button");
 const playLevelButton = document.getElementById("play-level-button");
 
+const listenToLevelButton = document.getElementById("listen-to-level-button");
+const submitPatternButton = document.getElementById("submit-pattern-button");
+const levelDescriptionButton = document.getElementById("level-description-button");
+
 const downloadButton = document.getElementById("download-button");
 const uploadButton = document.getElementById("upload-button");
 const uploadFileInput = document.getElementById("upload-file-input");
@@ -130,6 +134,21 @@ uploadFileInput.addEventListener("change", async (e) => {
 
     uploadFileInput.value = "";
 });
+
+listenToLevelButton.addEventListener("click", () => {
+    if (Game.session.level === null) { return; }
+    Game.listenToLevel();
+    Toast.showToast("Listen for the pattern...");
+});
+
+submitPatternButton.addEventListener("click", () => {
+    // TODO: submit level and unload it
+    Game.unloadLevel();
+});
+
+levelDescriptionButton.addEventListener("click", () => {
+    // TODO: show dialog that describes level
+})
 
 document.addEventListener("keydown", (e) => {
     if (e.code === "Space") {

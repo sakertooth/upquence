@@ -110,7 +110,7 @@ export function currentStep() {
 }
 
 export function startPlayback() {
-    Tone.Transport.start();
+    Tone.start().then(() => Tone.Transport.start());
 }
 
 export function pausePlayback() {

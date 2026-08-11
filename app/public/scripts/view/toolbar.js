@@ -1,9 +1,10 @@
+import * as Events from "../events.js"
 import * as Game from "../game.js"
 import * as Toast from "./toast.js"
 import * as AddLevelDialog from "../dialogs/add-level-dialog.js";
 import * as PlayLevelDialog from "../dialogs/play-level-dialog.js";
 import * as ExportDialog from "../dialogs/export-dialog.js";
-import { validateUpload } from "../util.js";
+import { validateUpload } from "../util/validate-upload.js";
 
 const PLAY_BUTTON_ICON_PATH = "M3 2l11 6-11 6V2z";
 const PAUSE_BUTTON_ICON_PATH = "M3 2h3.5v12H3V2zm6.5 0H13v12H9.5V2z";
@@ -26,12 +27,16 @@ const exportDialog = document.getElementById("export-dialog");
 const addLevelButton = document.getElementById("add-level-button");
 const playLevelButton = document.getElementById("play-level-button");
 
+const listenToLevelButton = document.getElementById("listen-to-level-button");
+const submitPatternButton = document.getElementById("submit-pattern-button");
+const levelDescriptionButton = document.getElementById("level-description-button");
+
 const downloadButton = document.getElementById("download-button");
 const uploadButton = document.getElementById("upload-button");
 const uploadFileInput = document.getElementById("upload-file-input");
 
-Game.addEventListener("onInitialized", update);
-Game.addEventListener("onDataUploaded", update);
+Events.on("onInitialized", update);
+Events.on("onDataUploaded", update);
 
 function update(data) {
     timeSigNumerator.value = data.timeSigNumerator;
@@ -40,101 +45,114 @@ function update(data) {
     bpmDisplay.textContent = `${data.beatsPerMinute} BPM`;
 }
 
-export function init() {
-    playButton.addEventListener("click", async () => {
-        if (Tone.Transport.state === "stopped" || Tone.Transport.state === "paused") {
-            Game.startPlayback();
-            playIconPath.setAttribute("d", PAUSE_BUTTON_ICON_PATH);
-        }
-        else {
-            Game.pausePlayback();
-            playIconPath.setAttribute("d", PLAY_BUTTON_ICON_PATH);
-        }
-    });
-
-    stopButton.addEventListener("click", () => {
-        if (Tone.Transport.state === "stopped") {
-            return;
-        }
-
-        Game.stopPlayback();
+playButton.addEventListener("click", async () => {
+    if (Tone.Transport.state === "stopped" || Tone.Transport.state === "paused") {
+        Game.startPlayback();
+        playIconPath.setAttribute("d", PAUSE_BUTTON_ICON_PATH);
+    }
+    else {
+        Game.pausePlayback();
         playIconPath.setAttribute("d", PLAY_BUTTON_ICON_PATH);
-    });
+    }
+});
 
-    bpmSlider.addEventListener("input", () => {
-        Game.setBeatsPerMinute(parseInt(bpmSlider.value));
-        bpmDisplay.textContent = `${bpmSlider.value} BPM`;
-    });
+stopButton.addEventListener("click", () => {
+    if (Tone.Transport.state === "stopped") {
+        return;
+    }
 
-    timeSigNumerator.addEventListener("change", () => {
-        Game.setTimeSignatureNumerator(parseInt(timeSigNumerator.value));
-    });
+    Game.stopPlayback();
+    playIconPath.setAttribute("d", PLAY_BUTTON_ICON_PATH);
+});
 
-    timeSigDenominator.addEventListener("change", () => {
-        Game.setTimeSignatureDenominator(parseInt(timeSigDenominator.value));
-    });
+bpmSlider.addEventListener("input", () => {
+    Game.setBeatsPerMinute(parseInt(bpmSlider.value));
+    bpmDisplay.textContent = `${bpmSlider.value} BPM`;
+});
 
-    metronomeButton.addEventListener("click", (e) => {
-        Game.toggleMetronomePlayback();
-        metronomeButton.classList.toggle("active");
-    });
+timeSigNumerator.addEventListener("change", () => {
+    Game.setTimeSignatureNumerator(parseInt(timeSigNumerator.value));
+});
 
-    exportButton.addEventListener("click", () => {
-        ExportDialog.dialog.showModal();
-    });
+timeSigDenominator.addEventListener("change", () => {
+    Game.setTimeSignatureDenominator(parseInt(timeSigDenominator.value));
+});
 
-    addLevelButton.addEventListener("click", () => {
-        AddLevelDialog.dialog.showModal();
-    });
+metronomeButton.addEventListener("click", (e) => {
+    Game.toggleMetronomePlayback();
+    metronomeButton.classList.toggle("active");
+});
 
-    playLevelButton.addEventListener("click", async () => {
-        await PlayLevelDialog.populate();
-        PlayLevelDialog.dialog.showModal();
-    });
+exportButton.addEventListener("click", () => {
+    ExportDialog.dialog.showModal();
+});
 
-    downloadButton.addEventListener("click", () => {
-        const upquenceData = new Blob([JSON.stringify(Game.session.data)], { type: "application/json" });
-        const downloadURL = URL.createObjectURL(upquenceData);
-        const downloadLink = document.createElement("a");
+addLevelButton.addEventListener("click", () => {
+    AddLevelDialog.dialog.showModal();
+});
 
-        downloadLink.href = downloadURL;
-        downloadLink.download = "upquence_sequencer_data";
-        downloadLink.click();
-        URL.revokeObjectURL(downloadURL);
-    });
+playLevelButton.addEventListener("click", async () => {
+    await PlayLevelDialog.populate();
+    PlayLevelDialog.dialog.showModal();
+});
 
-    uploadButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        uploadFileInput.click();
-    });
+downloadButton.addEventListener("click", () => {
+    const upquenceData = new Blob([JSON.stringify(Game.session.data)], { type: "application/json" });
+    const downloadURL = URL.createObjectURL(upquenceData);
+    const downloadLink = document.createElement("a");
 
-    uploadFileInput.addEventListener("change", async (e) => {
-        if (uploadFileInput.files.length === 0) {
+    downloadLink.href = downloadURL;
+    downloadLink.download = "upquence_sequencer_data";
+    downloadLink.click();
+    URL.revokeObjectURL(downloadURL);
+});
+
+uploadButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    uploadFileInput.click();
+});
+
+uploadFileInput.addEventListener("change", async (e) => {
+    if (uploadFileInput.files.length === 0) {
+        return;
+    }
+
+    const file = uploadFileInput.files[0];
+    try {
+        const text = await file.text();
+        const json = JSON.parse(text);
+        if (!validateUpload(json)) {
             return;
         }
 
-        const file = uploadFileInput.files[0];
-        try {
-            const text = await file.text();
-            const json = JSON.parse(text);
-            if (!validateUpload(json)) {
-                return;
-            }
+        Game.setData(json);
+        Toast.showToast("New pattern loaded!");
+    } catch (error) {
+        Toast.showToast("Invalid pattern file!");
+        console.log("Error: ", error);
+    }
 
-            Game.setData(json);
-            Toast.showToast("New pattern loaded!");
-        } catch (error) {
-            Toast.showToast("Invalid pattern file!");
-            console.log("Error: ", error);
-        }
+    uploadFileInput.value = "";
+});
 
-        uploadFileInput.value = "";
-    });
+listenToLevelButton.addEventListener("click", () => {
+    if (Game.session.level === null) { return; }
+    Game.listenToLevel();
+    Toast.showToast("Listen for the pattern...");
+});
 
-    document.addEventListener("keydown", (e) => {
-        if (e.code === "Space") {
-            e.preventDefault();
-            playButton.click();
-        }
-    });
-}
+submitPatternButton.addEventListener("click", () => {
+    // TODO: submit level and unload it
+    Game.unloadLevel();
+});
+
+levelDescriptionButton.addEventListener("click", () => {
+    // TODO: show dialog that describes level
+})
+
+document.addEventListener("keydown", (e) => {
+    if (e.code === "Space") {
+        e.preventDefault();
+        playButton.click();
+    }
+});

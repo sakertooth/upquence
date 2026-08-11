@@ -1,3 +1,5 @@
+import * as Events from "./events.js"
+
 // The note value for one step (e.g., 16 means one step is 16th note long)
 const PATTERN_STEP_RESOLUTION = 16;
 
@@ -22,12 +24,9 @@ export let session = {
         trackPlayers: [],
         metronomePlayer: false,
         metronomePlaying: false,
+        levelPlayer: null,
     },
-    eventListeners: {
-        onTimeSignatureChange: [],
-        onDataUploaded: [],
-        onInitialized: [],
-    }
+    level: null
 }
 
 export async function init() {
@@ -69,7 +68,7 @@ export async function init() {
 
     }, `${PATTERN_STEP_RESOLUTION}n`);
 
-    emitEvent("onInitialized", session.data);
+    Events.emit("onInitialized", session.data);
 }
 
 async function createTrackPlayers(pattern) {
@@ -113,7 +112,7 @@ export function currentStep() {
 }
 
 export function startPlayback() {
-    Tone.Transport.start();
+    Tone.start().then(() => Tone.Transport.start());
 }
 
 export function pausePlayback() {
@@ -135,7 +134,7 @@ export function setTimeSignature(numerator, denominator) {
     session.data.timeSigDenominator = denominator;
     Tone.Transport.timeSignature = [session.data.timeSigNumerator, session.data.timeSigDenominator];
     Tone.Transport.setLoopPoints(0, "1m");
-    emitEvent("onTimeSignatureChange", numerator, denominator);
+    Events.emit("onTimeSignatureChange", numerator, denominator);
 }
 
 export function setBeatsPerMinute(bpm) {
@@ -149,10 +148,6 @@ export function setTimeSignatureNumerator(numerator) {
 
 export function setTimeSignatureDenominator(denominator) {
     setTimeSignature(session.data.timeSigNumerator, denominator);
-}
-
-export function addEventListener(event, callback) {
-    session.eventListeners[event].push(callback);
 }
 
 export function changeVolume(trackID, volume) {
@@ -181,11 +176,23 @@ export function setData(data) {
     Tone.Transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
     Tone.Transport.bpm.value = data.beatsPerMinute;
     session.data = data;
-    emitEvent("onDataUploaded", data);
+    Events.emit("onDataUploaded", data);
 }
 
-function emitEvent(type, ...args) {
-    for (let event of session.eventListeners[type]) {
-        event(...args);
-    }
+export async function loadLevel(data) {
+    session.level = data;
+
+    const buffer = await startExport(data);
+    session.playback.levelPlayer = new Tone.Player(buffer).toDestination();
+
+    await Tone.loaded();
+}
+
+export function unloadLevel() {
+    session.level = null;
+    session.playback.levelPlayer = null;
+}
+
+export function listenToLevel() {
+    session.playback.levelPlayer?.start();
 }

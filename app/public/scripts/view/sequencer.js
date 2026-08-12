@@ -40,7 +40,7 @@ function render() {
         trackVolumeSlider.className = "sequencer-track-slider";
         trackVolumeSlider.type = "range";
         trackVolumeSlider.min = -40;
-        trackVolumeSlider.defaultValue = Game.setDefaultTrackVolume();
+        trackVolumeSlider.defaultValue = Game.DEFAULT_TRACK_VOLUME;
         trackVolumeSlider.max = 40;
 
         const trackVolumeDisplay = document.createElement("div");
@@ -59,7 +59,7 @@ function render() {
         trackPanInput.className = "sequencer-track-slider";
         trackPanInput.type = "range";
         trackPanInput.min = -1;
-        trackPanInput.defaultValue = Game.setDefaultTrackPan();
+        trackPanInput.defaultValue = Game.DEFAULT_TRACK_PAN;
         trackPanInput.max = 1;
         trackPanInput.step = 0.1;
 

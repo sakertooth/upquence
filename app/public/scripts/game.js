@@ -1,22 +1,22 @@
 import * as Events from "./events.js"
 
 // The note value for one step (e.g., 16 means one step is 16th note long)
-const PATTERN_STEP_RESOLUTION = 16;
+export const PATTERN_STEP_RESOLUTION = 16;
 
 // The default number of beats per measure (e.g., a value of 4 means 4 beats in one measure)
-const DEFAULT_TIME_SIG_NUMERATOR = 4;
+export const DEFAULT_TIME_SIG_NUMERATOR = 4;
 
 // The default note value for a single beat (e.g., a value of 4 means each beat is a quarter note)
-const DEFAULT_TIME_SIG_DENOMINATOR = 4;
+export const DEFAULT_TIME_SIG_DENOMINATOR = 4;
 
 // The default number of beats per minute (e.g., a value of 140 means there are 140 beats that happen in one minute)
-const DEFAULT_BEATS_PER_MINUTE = 140;
+export const DEFAULT_BEATS_PER_MINUTE = 140;
 
 // The default volume at which each track will be set (e.g., a value of 5 means that the track is playing with a volume of 5 decibels)
-const DEFAULT_TRACK_VOLUME = 5;
+export const DEFAULT_TRACK_VOLUME = 5;
 
 // The default pan at which each track will be set (e,g,. a value of 0 means the pan is in the middle)
-const DEFAULT_TRACK_PAN = 0;
+export const DEFAULT_TRACK_PAN = 0;
 
 
 export let session = {
@@ -166,17 +166,9 @@ export function setTimeSignatureDenominator(denominator) {
     setTimeSignature(session.data.timeSigNumerator, denominator);
 }
 
-export function setDefaultTrackVolume() {
-    return DEFAULT_TRACK_VOLUME;
-}
-
 export function changeVolume(trackID, volume) {
     session.playback.trackPlayers[trackID].obj.volume.value = volume;
     session.data.pattern[trackID].vol = volume;
-}
-
-export function setDefaultTrackPan() {
-    return DEFAULT_TRACK_PAN;
 }
 
 export function changePanning(trackID, pan) {

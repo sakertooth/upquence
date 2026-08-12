@@ -12,6 +12,13 @@ const DEFAULT_TIME_SIG_DENOMINATOR = 4;
 // The default number of beats per minute (e.g., a value of 140 means there are 140 beats that happen in one minute)
 const DEFAULT_BEATS_PER_MINUTE = 140;
 
+// The default volume at which each track will be set (e.g., a value of 5 means that the track is playing with a volume of 5 decibels)
+const DEFAULT_TRACK_VOLUME = 5;
+
+// The default pan at which each track will be set (e,g,. a value of 0 means the pan is in the middle)
+const DEFAULT_TRACK_PAN = 0;
+
+
 export let session = {
     data: {
         pattern: [],
@@ -41,7 +48,9 @@ export async function init() {
         session.data.pattern = [...session.data.pattern, {
             name: sound.name,
             url: sound.url,
-            steps: Array(PATTERN_STEP_RESOLUTION).fill(false)
+            steps: Array(PATTERN_STEP_RESOLUTION).fill(false),
+            vol: DEFAULT_TRACK_VOLUME,
+            pan: DEFAULT_TRACK_PAN
         }]
     }
 
@@ -157,12 +166,22 @@ export function setTimeSignatureDenominator(denominator) {
     setTimeSignature(session.data.timeSigNumerator, denominator);
 }
 
+export function setDefaultTrackVolume(){
+    return DEFAULT_TRACK_VOLUME;
+}
+
 export function changeVolume(trackID, volume) {
     session.playback.trackPlayers[trackID].obj.volume.value = volume;
+    session.data.pattern[trackID].vol = volume;
+}
+
+export function setDefaultTrackPan(){
+    return DEFAULT_TRACK_PAN;
 }
 
 export function changePanning(trackID, pan) {
     session.playback.trackPlayers[trackID].pan.pan.value = pan;
+    session.data.pattern[trackID].pan = pan;
 }
 
 export async function startExport(data) {

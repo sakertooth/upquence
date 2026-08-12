@@ -40,26 +40,26 @@ function render() {
         trackVolumeSlider.className = "sequencer-track-slider";
         trackVolumeSlider.type = "range";
         trackVolumeSlider.min = -40;
-        trackVolumeSlider.defaultValue = 5;
+        trackVolumeSlider.defaultValue = Game.setDefaultTrackVolume();
         trackVolumeSlider.max = 40;
 
-        const trackVolume = document.createElement("div");
-        trackVolume.className = "sequencer-track-audio-display";
-        trackVolume.textContent = trackVolumeSlider.value + "dB";
+        const trackVolumeDisplay = document.createElement("div");
+        trackVolumeDisplay.className = "sequencer-track-audio-display";
+        trackVolumeDisplay.textContent = trackVolumeSlider.value + "dB";
 
         const trackAudioIndex = trackIndex;
         Game.changeVolume(trackAudioIndex, trackVolumeSlider.defaultValue);
 
         trackVolumeSlider.addEventListener("input", () => {
             Game.changeVolume(trackAudioIndex, trackVolumeSlider.value);
-            trackVolume.textContent = trackVolumeSlider.value + "dB";
+            trackVolumeDisplay.textContent = trackVolumeSlider.value + "dB";
         });
 
         const trackPanInput = document.createElement("input");
         trackPanInput.className = "sequencer-track-slider";
         trackPanInput.type = "range";
         trackPanInput.min = -1;
-        trackPanInput.defaultValue = 0;
+        trackPanInput.defaultValue = Game.setDefaultTrackPan();
         trackPanInput.max = 1;
         trackPanInput.step = 0.1;
 
@@ -77,7 +77,7 @@ function render() {
         trackRow.appendChild(trackHeader);
         trackRow.appendChild(stepContainer);
         trackRow.appendChild(trackVolumeSlider);
-        trackRow.appendChild(trackVolume);
+        trackRow.appendChild(trackVolumeDisplay);
         trackRow.appendChild(trackPanInput);
         trackRow.appendChild(trackPanDisplay);
         sequencer.appendChild(trackRow);

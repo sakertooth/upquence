@@ -25,11 +25,11 @@
     border-right: 2px solid var(--border-color);
 }
 
-.sequencer-track-volume-slider {
+.sequencer-track-slider {
     width: 120px;
 }
 
-.sequencer-track-volume-display {
+.sequencer-track-audio-display {
     width: 51px;
     text-align: center;
 }
@@ -67,4 +67,23 @@
 .sequencer-step.highlighted {
     border-color: var(--accent-highlight);
     box-shadow: inset 0 0 2px #ffffff;
+}
+
+.sequencer-knob {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #222;
+  position: relative;
+  cursor: pointer;
+}
+
+.sequencer-knob-indicator {
+  width: 3px;
+  height: 18px;
+  background: white;
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  transform-origin: 50% 19px;
 }

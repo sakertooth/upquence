@@ -37,32 +37,49 @@ function render() {
         }
 
         const trackVolumeSlider = document.createElement("input");
-        trackVolumeSlider.className = "sequencer-track-volume-slider";
+        trackVolumeSlider.className = "sequencer-track-slider";
         trackVolumeSlider.type = "range";
         trackVolumeSlider.min = -40;
         trackVolumeSlider.defaultValue = 5;
         trackVolumeSlider.max = 40;
 
         const trackVolume = document.createElement("div");
-        trackVolume.className = "sequencer-track-volume-display";
+        trackVolume.className = "sequencer-track-audio-display";
         trackVolume.textContent = trackVolumeSlider.value + "dB";
 
-        const trackVolumeIndex = trackIndex;
-        Game.changeVolume(trackVolumeIndex, trackVolumeSlider.defaultValue);
+        const trackAudioIndex = trackIndex;
+        Game.changeVolume(trackAudioIndex, trackVolumeSlider.defaultValue);
 
         trackVolumeSlider.addEventListener("input", () => {
-            Game.changeVolume(trackVolumeIndex, trackVolumeSlider.value);
-            
+            Game.changeVolume(trackAudioIndex, trackVolumeSlider.value);
             trackVolume.textContent = trackVolumeSlider.value + "dB";
         });
 
-        const trackPanning = document.createElement("div");
-        trackPanning.className = "track-panning-knob";
+        const trackPanInput = document.createElement("input");
+        trackPanInput.className = "sequencer-track-slider";
+        trackPanInput.type = "range";
+        trackPanInput.min = -1;
+        trackPanInput.defaultValue = 0;
+        trackPanInput.max = 1;
+        trackPanInput.step = 0.1;
+
+        const trackPanDisplay = document.createElement("div");
+        trackPanDisplay.className = "sequencer-track-audio-display";
+        trackPanDisplay.textContent = trackPanInput.value;
+
+        trackPanInput.addEventListener("input", () => {
+            Game.changePanning(trackAudioIndex, trackPanInput.value);
+            trackPanDisplay.textContent = trackPanInput.value;
+        });
+
+        
 
         trackRow.appendChild(trackHeader);
         trackRow.appendChild(stepContainer);
         trackRow.appendChild(trackVolumeSlider);
         trackRow.appendChild(trackVolume);
+        trackRow.appendChild(trackPanInput);
+        trackRow.appendChild(trackPanDisplay);
         sequencer.appendChild(trackRow);
     });
 

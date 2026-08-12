@@ -72,8 +72,6 @@ function render() {
             trackPanDisplay.textContent = trackPanInput.value;
         });
 
-        
-
         trackRow.appendChild(trackHeader);
         trackRow.appendChild(stepContainer);
         trackRow.appendChild(trackVolumeSlider);

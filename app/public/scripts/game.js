@@ -83,7 +83,7 @@ export async function init() {
 async function createTrackPlayers(pattern) {
     const players = pattern.map(track => {
         const trackPlayer = new Tone.Player(track.url);
-        const trackPan = new Tone.PanVol(0,0).toDestination();
+        const trackPan = new Tone.PanVol(0, 0).toDestination();
         trackPlayer.connect(trackPan);
 
         return {
@@ -166,7 +166,7 @@ export function setTimeSignatureDenominator(denominator) {
     setTimeSignature(session.data.timeSigNumerator, denominator);
 }
 
-export function setDefaultTrackVolume(){
+export function setDefaultTrackVolume() {
     return DEFAULT_TRACK_VOLUME;
 }
 
@@ -175,7 +175,7 @@ export function changeVolume(trackID, volume) {
     session.data.pattern[trackID].vol = volume;
 }
 
-export function setDefaultTrackPan(){
+export function setDefaultTrackPan() {
     return DEFAULT_TRACK_PAN;
 }
 

@@ -53,7 +53,7 @@ function render() {
         Game.changeVolume(trackAudioIndex, trackVolumeSlider.defaultValue);
 
         trackVolumeSlider.addEventListener("input", () => {
-            Game.changeVolume(trackAudioIndex, Number.parseInt(trackVolumeSlider.value));
+            Game.changeVolume(trackAudioIndex, Number.parseFloat(trackVolumeSlider.value));
             trackVolumeDisplay.textContent = trackVolumeSlider.value + "dB";
         });
 
@@ -70,7 +70,7 @@ function render() {
         trackPanDisplay.textContent = trackPanInput.value;
 
         trackPanInput.addEventListener("input", () => {
-            Game.changePanning(trackAudioIndex, Number.parseInt(trackPanInput.value));
+            Game.changePanning(trackAudioIndex, Number.parseFloat(trackPanInput.value));
             trackPanDisplay.textContent = trackPanInput.value;
         });
 

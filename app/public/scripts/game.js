@@ -27,11 +27,10 @@ export async function init() {
     for (let soundID of defaultDrumkit.sounds) {
         const sound = soundCatalogBody.sounds.find(sound => sound.id === soundID);
 
-        // TODO: It should be Array(numSteps()).fill(false)
         session.data.pattern = [...session.data.pattern, {
             name: sound.name,
             url: sound.url,
-            steps: Array(Constants.PATTERN_STEP_RESOLUTION).fill(false),
+            steps: Array(numSteps()).fill(false),
             vol: Constants.DEFAULT_TRACK_VOLUME,
             pan: Constants.DEFAULT_TRACK_PAN
         }]

@@ -23,7 +23,7 @@ form.addEventListener("submit", async (e) => {
                 ...Game.session.data,
                 title: titleControl.value,
                 description: descriptionControl.value,
-                pointsRequired: pointsRequiredControl.value
+                pointsRequired: Number.parseFloat(pointsRequiredControl.value)
             }),
         });
 

@@ -124,7 +124,7 @@
     ],
     "description": "A simple four on the floor beat.",
     "beatsPerMinute": 140,
-    "pointsRequired": "90",
+    "pointsRequired": 90,
     "timeSigNumerator": 4,
     "timeSigDenominator": 4
 }

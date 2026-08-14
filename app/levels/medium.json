@@ -1,0 +1,125 @@
+{
+    "title": "Medium",
+    "pattern": [
+        {
+            "url": "/sounds/tr808/clap.wav",
+            "vol": "0",
+            "name": "TR-808 Clap",
+            "steps": [
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false
+            ]
+        },
+        {
+            "url": "/sounds/tr808/closedhat.wav",
+            "vol": "0",
+            "name": "TR-808 Closed Hat",
+            "steps": [
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                true,
+                false
+            ]
+        },
+        {
+            "url": "/sounds/tr808/cowbell.wav",
+            "vol": "0",
+            "name": "TR-808 Cowbell",
+            "steps": [
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+            ]
+        },
+        {
+            "url": "/sounds/tr808/conga.wav",
+            "vol": "0",
+            "name": "TR-808 Conga",
+            "steps": [
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false
+            ]
+        },
+        {
+            "url": "/sounds/tr808/kick.wav",
+            "vol": "0",
+            "name": "TR-808 Kick",
+            "steps": [
+                true,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false
+            ]
+        }
+    ],
+    "description": "A house beat with a bit more flavor.",
+    "beatsPerMinute": 124,
+    "pointsRequired": 80,
+    "timeSigNumerator": 4,
+    "timeSigDenominator": 4
+}

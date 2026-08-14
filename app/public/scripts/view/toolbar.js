@@ -151,8 +151,22 @@ levelDescriptionButton.addEventListener("click", () => {
 })
 
 document.addEventListener("keydown", (e) => {
-    if (e.code === "Space") {
-        e.preventDefault();
-        playButton.click();
+    if (e.code !== "Space") {
+        return;
     }
+
+    if (document.querySelector("dialog[open]")) {
+        return;
+    }
+
+    const target = event.target;
+
+    if (target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target instanceof HTMLSelectElement) {
+        return;
+    }
+
+    e.preventDefault();
+    playButton.click();
 });

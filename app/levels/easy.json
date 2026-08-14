@@ -2,11 +2,16 @@
     "title": "Easy",
     "pattern": [
         {
-            "pan": 0,
             "url": "/sounds/tr808/clap.wav",
-            "vol": 0,
+            "vol": "0",
             "name": "TR-808 Clap",
             "steps": [
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
                 true,
                 false,
                 false,
@@ -14,21 +19,14 @@
                 true,
                 false,
                 false,
-                false,
                 true,
-                false,
-                false,
-                false,
-                true,
-                false,
                 false,
                 false
             ]
         },
         {
-            "pan": 0,
             "url": "/sounds/tr808/closedhat.wav",
-            "vol": 0,
+            "vol": "0",
             "name": "TR-808 Closed Hat",
             "steps": [
                 false,
@@ -50,9 +48,8 @@
             ]
         },
         {
-            "pan": 0,
             "url": "/sounds/tr808/cowbell.wav",
-            "vol": 0,
+            "vol": "0",
             "name": "TR-808 Cowbell",
             "steps": [
                 false,
@@ -74,9 +71,8 @@
             ]
         },
         {
-            "pan": 0,
             "url": "/sounds/tr808/conga.wav",
-            "vol": 0,
+            "vol": "0",
             "name": "TR-808 Conga",
             "steps": [
                 false,
@@ -98,7 +94,6 @@
             ]
         },
         {
-            "pan": 0,
             "url": "/sounds/tr808/kick.wav",
             "vol": 0,
             "name": "TR-808 Kick",
@@ -122,9 +117,9 @@
             ]
         }
     ],
-    "description": "A simple four on the floor beat.",
+    "description": "Something simple.",
     "beatsPerMinute": 140,
-    "pointsRequired": 90,
+    "pointsRequired": 95,
     "timeSigNumerator": 4,
     "timeSigDenominator": 4
 }

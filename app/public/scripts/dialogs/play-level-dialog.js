@@ -29,6 +29,7 @@ export async function populate() {
     }
 
     selectedLevel = levels.find(lvl => String(lvl.id) === select.value);
+    description.textContent = selectedLevel?.description ?? "";
 }
 
 playButton.addEventListener("click", async (e) => {
@@ -45,5 +46,5 @@ closeButton.addEventListener("click", (e) => {
 
 select.addEventListener("change", () => {
     selectedLevel = levels.find(lvl => String(lvl.id) === select.value);
-    description.textContent = level?.description ?? "";
+    description.textContent = selectedLevel?.description ?? "";
 });

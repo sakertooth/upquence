@@ -1,5 +1,6 @@
 import * as Events from "../events.js"
 import * as Game from "../game.js"
+import * as Constants from "../constants.js"
 
 const sequencer = document.getElementById("sequencer");
 
@@ -39,9 +40,10 @@ function render() {
         const trackVolumeSlider = document.createElement("input");
         trackVolumeSlider.className = "sequencer-track-slider";
         trackVolumeSlider.type = "range";
-        trackVolumeSlider.min = -40;
-        trackVolumeSlider.defaultValue = Game.DEFAULT_TRACK_VOLUME;
-        trackVolumeSlider.max = 40;
+        trackVolumeSlider.min = Constants.MIN_TRACK_VOLUME;
+        trackVolumeSlider.defaultValue = Constants.DEFAULT_TRACK_VOLUME;
+        trackVolumeSlider.max = Constants.MAX_TRACK_VOLUME;
+        trackVolumeSlider.step = Constants.DEFAULT_TRACK_VOLUME_STEP;
 
         const trackVolumeDisplay = document.createElement("div");
         trackVolumeDisplay.className = "sequencer-track-audio-display";
@@ -58,10 +60,10 @@ function render() {
         const trackPanInput = document.createElement("input");
         trackPanInput.className = "sequencer-track-slider";
         trackPanInput.type = "range";
-        trackPanInput.min = -1;
-        trackPanInput.defaultValue = Game.DEFAULT_TRACK_PAN;
-        trackPanInput.max = 1;
-        trackPanInput.step = 0.1;
+        trackPanInput.min = Constants.MIN_TRACK_PANNING;
+        trackPanInput.defaultValue = Constants.DEFAULT_TRACK_PANNING;
+        trackPanInput.max = Constants.MAX_TRACK_PANNING;
+        trackPanInput.step = Constants.DEFAULT_TRACK_PANNING_STEP;
 
         const trackPanDisplay = document.createElement("div");
         trackPanDisplay.className = "sequencer-track-audio-display";

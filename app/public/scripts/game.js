@@ -1,30 +1,12 @@
 import * as Events from "./events.js"
-
-// The note value for one step (e.g., 16 means one step is 16th note long)
-export const PATTERN_STEP_RESOLUTION = 16;
-
-// The default number of beats per measure (e.g., a value of 4 means 4 beats in one measure)
-export const DEFAULT_TIME_SIG_NUMERATOR = 4;
-
-// The default note value for a single beat (e.g., a value of 4 means each beat is a quarter note)
-export const DEFAULT_TIME_SIG_DENOMINATOR = 4;
-
-// The default number of beats per minute (e.g., a value of 140 means there are 140 beats that happen in one minute)
-export const DEFAULT_BEATS_PER_MINUTE = 140;
-
-// The default volume at which each track will be set (e.g., a value of 5 means that the track is playing with a volume of 5 decibels)
-export const DEFAULT_TRACK_VOLUME = 5;
-
-// The default pan at which each track will be set (e,g,. a value of 0 means the pan is in the middle)
-export const DEFAULT_TRACK_PAN = 0;
-
+import * as Constants from "./constants.js"
 
 export let session = {
     data: {
         pattern: [],
-        timeSigNumerator: DEFAULT_TIME_SIG_NUMERATOR,
-        timeSigDenominator: DEFAULT_TIME_SIG_DENOMINATOR,
-        beatsPerMinute: DEFAULT_BEATS_PER_MINUTE
+        timeSigNumerator: Constants.DEFAULT_TIME_SIG_NUMERATOR,
+        timeSigDenominator: Constants.DEFAULT_TIME_SIG_DENOMINATOR,
+        beatsPerMinute: Constants.DEFAULT_BEATS_PER_MINUTE
     },
     playback: {
         currentStep: 0,
@@ -45,12 +27,13 @@ export async function init() {
     for (let soundID of defaultDrumkit.sounds) {
         const sound = soundCatalogBody.sounds.find(sound => sound.id === soundID);
 
+        // TODO: It should be Array(numSteps()).fill(false)
         session.data.pattern = [...session.data.pattern, {
             name: sound.name,
             url: sound.url,
-            steps: Array(PATTERN_STEP_RESOLUTION).fill(false),
-            vol: DEFAULT_TRACK_VOLUME,
-            pan: DEFAULT_TRACK_PAN
+            steps: Array(Constants.PATTERN_STEP_RESOLUTION).fill(false),
+            vol: Constants.DEFAULT_TRACK_VOLUME,
+            pan: Constants.DEFAULT_TRACK_PAN
         }]
     }
 
@@ -75,7 +58,7 @@ export async function init() {
 
         session.playback.currentStep = (session.playback.currentStep + 1) % numSteps();
 
-    }, `${PATTERN_STEP_RESOLUTION}n`);
+    }, `${Constants.PATTERN_STEP_RESOLUTION}n`);
 
     Events.emit("onInitialized", session.data);
 }
@@ -83,7 +66,7 @@ export async function init() {
 async function createTrackPlayers(pattern) {
     const players = pattern.map(track => {
         const trackPlayer = new Tone.Player(track.url);
-        const trackPan = new Tone.PanVol(0, 0).toDestination();
+        const trackPan = new Tone.PanVol(Constants.DEFAULT_TRACK_PANNING, console.DEFAULT_TRACK_VOLUME).toDestination();
         trackPlayer.connect(trackPan);
 
         return {
@@ -108,7 +91,7 @@ function renderStep(time, data, players, step) {
 }
 
 function stepsPerBeatFor(denominator) {
-    return PATTERN_STEP_RESOLUTION / denominator;
+    return Constants.PATTERN_STEP_RESOLUTION / denominator;
 }
 
 function numStepsFor(numerator, denominator) {
@@ -187,7 +170,7 @@ export async function startExport(data) {
         transport.scheduleRepeat(time => {
             renderStep(time, data, trackPlayers, currentStep);
             currentStep = (currentStep + 1) % numStepsFor(data.timeSigNumerator, data.timeSigDenominator);
-        }, `${PATTERN_STEP_RESOLUTION}n`);
+        }, `${Constants.PATTERN_STEP_RESOLUTION}n`);
         transport.start(0);
     }, Tone.Time("4m").toSeconds());
 

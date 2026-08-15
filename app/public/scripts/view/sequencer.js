@@ -25,6 +25,10 @@ function render() {
             const step = document.createElement("div");
             step.className = "sequencer-step";
 
+            if (stepIndex % Game.stepsPerBeat() == 0) {
+                step.classList.add("start");
+            }
+
             if (track.steps[stepIndex]) {
                 step.classList.add("active");
             }

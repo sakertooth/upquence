@@ -81,6 +81,10 @@
     box-shadow: inset 0 0 2px #ffffff;
 }
 
+.sequencer-step.start {
+    margin-left: 3px;
+}
+
 .sequencer-step.highlighted {
     border-color: var(--accent-highlight);
     box-shadow: inset 0 0 2px #ffffff;

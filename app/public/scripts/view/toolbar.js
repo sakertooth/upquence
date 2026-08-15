@@ -151,6 +151,7 @@ levelDescriptionButton.addEventListener("click", () => {
     if (Game.session.level === null) {
         return;
     }
+
     const overlay = document.createElement("div");
     overlay.className = "level-description-overlay";
     overlay.textContent = Game.getLevelDescription();

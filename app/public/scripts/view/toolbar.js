@@ -148,6 +148,22 @@ submitPatternButton.addEventListener("click", () => {
 
 levelDescriptionButton.addEventListener("click", () => {
     // TODO: show dialog that describes level
+    if (Game.session.level === null) {
+        return;
+    }
+    const overlay = document.createElement("div");
+    overlay.className = "level-description-overlay";
+    overlay.textContent = Game.getLevelDescription();
+
+    const closeButton = document.createElement("button");
+    closeButton.className = "control";
+    closeButton.textContent = "Close";
+    closeButton.addEventListener("click", () => {
+        overlay.remove();
+    });
+
+    overlay.appendChild(closeButton);
+    document.body.appendChild(overlay);
 })
 
 document.addEventListener("keydown", (e) => {

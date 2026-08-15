@@ -192,6 +192,10 @@ export async function loadLevel(data) {
     await Tone.loaded();
 }
 
+export function getLevelDescription(){
+    return session.level.description;
+}
+
 export function unloadLevel() {
     session.level = null;
     session.playback.levelPlayer = null;

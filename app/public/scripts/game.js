@@ -203,3 +203,16 @@ export function unloadLevel() {
 export function listenToLevel() {
     session.playback.levelPlayer?.start();
 }
+
+export async function addTrack(name, url) {
+    session.data.pattern = [...session.data.pattern, {
+        name: name,
+        url: url,
+        steps: Array(numSteps()).fill(false),
+        vol: Constants.DEFAULT_TRACK_VOLUME,
+        pan: Constants.DEFAULT_TRACK_PAN
+    }];
+
+    session.playback.trackPlayers = await createTrackPlayers(session.data.pattern);
+    Events.emit("trackAdded", name, url);
+}

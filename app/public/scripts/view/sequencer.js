@@ -4,9 +4,13 @@ import * as Constants from "../constants.js"
 
 const sequencer = document.getElementById("sequencer");
 
+const addTrackButton = document.getElementById("add-track-button");
+const addTrackFileInput = document.getElementById("add-track-file-input");
+
 Events.on("onInitialized", render);
 Events.on("onTimeSignatureChange", render);
 Events.on("onDataUploaded", render);
+Events.on("trackAdded", render);
 
 function render() {
     sequencer.innerHTML = "";
@@ -103,3 +107,17 @@ function update() {
 
     requestAnimationFrame(update);
 }
+
+addTrackButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    addTrackFileInput.click();
+});
+
+addTrackFileInput.addEventListener("change", async () => {
+    if (addTrackFileInput.files.length === 0) {
+        return;
+    }
+
+    const file = addTrackFileInput.files[0];
+    Game.addTrack(file.name, URL.createObjectURL(file));
+});

@@ -159,6 +159,9 @@ export function changePanning(trackID, pan) {
 }
 
 export async function startExport(data) {
+    const secondsPerBeat = 60 / data.beatsPerMinute;
+    const duration = 4 * data.timeSigNumerator * secondsPerBeat;
+
     const buffer = await Tone.Offline(async ({ transport }) => {
         let currentStep = 0;
         let trackPlayers = await createTrackPlayers(data.pattern);
@@ -171,7 +174,7 @@ export async function startExport(data) {
             currentStep = (currentStep + 1) % numStepsFor(data.timeSigNumerator, data.timeSigDenominator);
         }, `${Constants.PATTERN_STEP_RESOLUTION}n`);
         transport.start(0);
-    }, Tone.Time("4m").toSeconds());
+    }, duration);
 
     return buffer;
 }

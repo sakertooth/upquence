@@ -192,7 +192,7 @@ export async function loadLevel(data) {
     await Tone.loaded();
 }
 
-export function getLevelDescription(){
+export function getLevelDescription() {
     return session.level.description;
 }
 

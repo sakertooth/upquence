@@ -5,7 +5,24 @@
     background-color: var(--border-color);
     border: 8px solid var(--border-color);
     width: fit-content;
+}
+
+.sequencer-container {
+    display: flex;
+    flex-direction: column;
     margin: 30px;
+}
+
+.sequencer-menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 48px;
+    width: 100%;
+    padding: 0 12px;
+    border-bottom: 1px solid #333;
+    box-sizing: border-box;
+    background-color: var(--bg-tertiary);
 }
 
 .sequencer-track {
@@ -70,20 +87,20 @@
 }
 
 .sequencer-knob {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #222;
-  position: relative;
-  cursor: pointer;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #222;
+    position: relative;
+    cursor: pointer;
 }
 
 .sequencer-knob-indicator {
-  width: 3px;
-  height: 18px;
-  background: white;
-  position: absolute;
-  left: 50%;
-  top: 6px;
-  transform-origin: 50% 19px;
+    width: 3px;
+    height: 18px;
+    background: white;
+    position: absolute;
+    left: 50%;
+    top: 6px;
+    transform-origin: 50% 19px;
 }

@@ -1,7 +1,6 @@
 import * as Events from "../events.js"
 import * as Game from "../game.js"
 import * as Toast from "./toast.js"
-import * as AddLevelDialog from "../dialogs/add-level-dialog.js";
 import * as PlayLevelDialog from "../dialogs/play-level-dialog.js";
 import * as ExportDialog from "../dialogs/export-dialog.js";
 import { validateUpload } from "../util/validate-upload.js";
@@ -24,9 +23,7 @@ const metronomeButton = document.getElementById("metronome-button");
 const exportButton = document.getElementById("export-button");
 const exportDialog = document.getElementById("export-dialog");
 
-const addLevelButton = document.getElementById("add-level-button");
 const playLevelButton = document.getElementById("play-level-button");
-
 const listenToLevelButton = document.getElementById("listen-to-level-button");
 const submitPatternButton = document.getElementById("submit-pattern-button");
 const levelDescriptionButton = document.getElementById("level-description-button");
@@ -87,10 +84,6 @@ metronomeButton.addEventListener("click", (e) => {
 
 exportButton.addEventListener("click", () => {
     ExportDialog.dialog.showModal();
-});
-
-addLevelButton.addEventListener("click", () => {
-    AddLevelDialog.dialog.showModal();
 });
 
 playLevelButton.addEventListener("click", async () => {

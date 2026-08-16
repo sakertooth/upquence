@@ -2,7 +2,7 @@ import * as Events from "./events.js"
 import * as Constants from "./constants.js"
 
 export let session = {
-    data: {
+    sandboxData: {
         pattern: [],
         timeSigNumerator: Constants.DEFAULT_TIME_SIG_NUMERATOR,
         timeSigDenominator: Constants.DEFAULT_TIME_SIG_DENOMINATOR,
@@ -27,7 +27,7 @@ export async function init() {
     for (let soundID of defaultDrumkit.sounds) {
         const sound = soundCatalogBody.sounds.find(sound => sound.id === soundID);
 
-        session.data.pattern = [...session.data.pattern, {
+        session.sandboxData.pattern = [...session.sandboxData.pattern, {
             name: sound.name,
             url: sound.url,
             steps: Array(numSteps()).fill(false),
@@ -37,18 +37,18 @@ export async function init() {
     }
 
     // Create player objects for each track
-    session.playback.trackPlayers = await createTrackPlayers(session.data.pattern);
+    session.playback.trackPlayers = await createTrackPlayers(session.sandboxData.pattern);
 
     // Add metronome player
     session.playback.metronomePlayer = new Tone.Player({ url: "../sounds/metronome.mp3" }).toDestination();
 
     // Start game loop, set time signature and BPM, etc
-    Tone.Transport.timeSignature = [session.data.timeSigNumerator, session.data.timeSigDenominator];
-    Tone.Transport.bpm.value = session.data.beatsPerMinute;
+    Tone.Transport.timeSignature = [session.sandboxData.timeSigNumerator, session.sandboxData.timeSigDenominator];
+    Tone.Transport.bpm.value = session.sandboxData.beatsPerMinute;
     Tone.Transport.loop = true;
     Tone.Transport.setLoopPoints(0, "1m");
     Tone.Transport.scheduleRepeat((time) => {
-        renderStep(time, session.data, session.playback.trackPlayers, session.playback.currentStep);
+        renderStep(time, session.sandboxData, session.playback.trackPlayers, session.playback.currentStep);
 
         // Play metronome on each new beat
         if (session.playback.metronomePlaying && session.playback.currentStep % stepsPerBeat() == 0) {
@@ -59,7 +59,7 @@ export async function init() {
 
     }, `${Constants.PATTERN_STEP_RESOLUTION}n`);
 
-    Events.emit("onInitialized", session.data);
+    Events.emit("onInitialized", session.sandboxData);
 }
 
 async function createTrackPlayers(pattern) {
@@ -98,11 +98,11 @@ function numStepsFor(numerator, denominator) {
 }
 
 export function stepsPerBeat() {
-    return stepsPerBeatFor(session.data.timeSigDenominator);
+    return stepsPerBeatFor(session.sandboxData.timeSigDenominator);
 }
 
 export function numSteps() {
-    return numStepsFor(session.data.timeSigNumerator, session.data.timeSigDenominator);
+    return numStepsFor(session.sandboxData.timeSigNumerator, session.sandboxData.timeSigDenominator);
 }
 
 export function currentStep() {
@@ -128,34 +128,34 @@ export function toggleMetronomePlayback() {
 }
 
 export function setTimeSignature(numerator, denominator) {
-    session.data.timeSigNumerator = numerator;
-    session.data.timeSigDenominator = denominator;
-    Tone.Transport.timeSignature = [session.data.timeSigNumerator, session.data.timeSigDenominator];
+    session.sandboxData.timeSigNumerator = numerator;
+    session.sandboxData.timeSigDenominator = denominator;
+    Tone.Transport.timeSignature = [session.sandboxData.timeSigNumerator, session.sandboxData.timeSigDenominator];
     Tone.Transport.setLoopPoints(0, "1m");
     Events.emit("onTimeSignatureChange", numerator, denominator);
 }
 
 export function setBeatsPerMinute(bpm) {
-    session.data.beatsPerMinute = bpm;
+    session.sandboxData.beatsPerMinute = bpm;
     Tone.Transport.bpm.value = bpm;
 }
 
 export function setTimeSignatureNumerator(numerator) {
-    setTimeSignature(numerator, session.data.timeSigDenominator);
+    setTimeSignature(numerator, session.sandboxData.timeSigDenominator);
 }
 
 export function setTimeSignatureDenominator(denominator) {
-    setTimeSignature(session.data.timeSigNumerator, denominator);
+    setTimeSignature(session.sandboxData.timeSigNumerator, denominator);
 }
 
 export function changeVolume(trackID, volume) {
     session.playback.trackPlayers[trackID].obj.volume.value = volume;
-    session.data.pattern[trackID].vol = volume;
+    session.sandboxData.pattern[trackID].vol = volume;
 }
 
 export function changePanning(trackID, pan) {
     session.playback.trackPlayers[trackID].pan.pan.value = pan;
-    session.data.pattern[trackID].pan = pan;
+    session.sandboxData.pattern[trackID].pan = pan;
 }
 
 export async function startExport(data) {
@@ -182,7 +182,7 @@ export async function startExport(data) {
 export function setData(data) {
     Tone.Transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
     Tone.Transport.bpm.value = data.beatsPerMinute;
-    session.data = data;
+    session.sandboxData = data;
     Events.emit("onDataUploaded", data);
 }
 
@@ -209,7 +209,7 @@ export function listenToLevel() {
 }
 
 export async function addTrack(name, url) {
-    session.data.pattern = [...session.data.pattern, {
+    session.sandboxData.pattern = [...session.sandboxData.pattern, {
         name: name,
         url: url,
         steps: Array(numSteps()).fill(false),
@@ -217,7 +217,7 @@ export async function addTrack(name, url) {
         pan: Constants.DEFAULT_TRACK_PAN
     }];
 
-    session.playback.trackPlayers = await createTrackPlayers(session.data.pattern);
+    session.playback.trackPlayers = await createTrackPlayers(session.sandboxData.pattern);
     Events.emit("trackAdded", name, url);
 }
 
@@ -285,5 +285,5 @@ function gradeLevelFor(data, level) {
 }
 
 export function gradeLevel() {
-    return gradeLevelFor(session.data, session.level);
+    return gradeLevelFor(session.sandboxData, session.level);
 }

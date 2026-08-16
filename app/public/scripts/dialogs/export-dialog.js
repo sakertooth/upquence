@@ -12,7 +12,7 @@ const cancelButton = dialog.querySelector("#cancel-button");
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const buffer = await Game.startExport(Game.session.data);
+    const buffer = await Game.startExport(Game.session.sandboxData);
     const wav = audioBufferToWav(buffer);
     const wavBlob = new Blob([wav], {
         type: "audio/wav"

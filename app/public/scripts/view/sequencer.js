@@ -14,7 +14,7 @@ Events.on("trackAdded", render);
 
 function render() {
     sequencer.innerHTML = "";
-    Game.session.data.pattern.forEach((track, trackIndex) => {
+    Game.session.sandboxData.pattern.forEach((track, trackIndex) => {
         const trackRow = document.createElement("div");
         trackRow.className = "sequencer-track";
 

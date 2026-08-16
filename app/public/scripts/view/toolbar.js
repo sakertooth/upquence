@@ -92,7 +92,7 @@ playLevelButton.addEventListener("click", async () => {
 });
 
 downloadButton.addEventListener("click", () => {
-    const upquenceData = new Blob([JSON.stringify(Game.session.data)], { type: "application/json" });
+    const upquenceData = new Blob([JSON.stringify(Game.session.sandboxData)], { type: "application/json" });
     const downloadURL = URL.createObjectURL(upquenceData);
     const downloadLink = document.createElement("a");
 

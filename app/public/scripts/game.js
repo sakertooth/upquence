@@ -85,6 +85,16 @@ class Game {
         this.mode = Mode.play;
     }
 
+    loadSandbox(data) {
+        this.#currentData = data;
+        Tone.Transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
+        Tone.Transport.bpm.value = data.beatsPerMinute;
+
+        if (this.#mode === Mode.Sandbox) {
+            Events.emit("datachanged", data);
+        }
+    }
+
     listenToLevel() {
         this.#playback.levelPlayer?.start();
     }

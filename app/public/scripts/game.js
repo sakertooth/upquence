@@ -8,6 +8,7 @@ export let session = {
         timeSigDenominator: Constants.DEFAULT_TIME_SIG_DENOMINATOR,
         beatsPerMinute: Constants.DEFAULT_BEATS_PER_MINUTE
     },
+    levelData: null,
     playback: {
         currentStep: 0,
         trackPlayers: [],
@@ -15,7 +16,6 @@ export let session = {
         metronomePlaying: false,
         levelPlayer: null,
     },
-    level: null
 }
 
 export async function init() {
@@ -187,7 +187,7 @@ export function setData(data) {
 }
 
 export async function loadLevel(data) {
-    session.level = data;
+    session.levelData = data;
 
     const buffer = await startExport(data);
     session.playback.levelPlayer = new Tone.Player(buffer).toDestination();
@@ -196,11 +196,11 @@ export async function loadLevel(data) {
 }
 
 export function getLevelDescription() {
-    return session.level.description;
+    return session.levelData.description;
 }
 
 export function unloadLevel() {
-    session.level = null;
+    session.levelData = null;
     session.playback.levelPlayer = null;
 }
 
@@ -280,10 +280,10 @@ function gradeLevelFor(data, level) {
 
     return {
         grade: totalGrade.toFixed(2),
-        passed: totalGrade >= session.level.pointsRequired
+        passed: totalGrade >= session.levelData.pointsRequired
     };
 }
 
 export function gradeLevel() {
-    return gradeLevelFor(session.sandboxData, session.level);
+    return gradeLevelFor(session.sandboxData, session.levelData);
 }

@@ -131,7 +131,7 @@ uploadFileInput.addEventListener("change", async (e) => {
 });
 
 listenToLevelButton.addEventListener("click", () => {
-    if (Game.session.level === null) { return; }
+    if (Game.session.levelData === null) { return; }
     Game.listenToLevel();
     Toast.showToast("Listen for the pattern...");
 });
@@ -150,7 +150,7 @@ const overlay = document.createElement("div");
 overlay.className = "description-overlay";
 
 levelDescriptionButton.addEventListener("click", () => {
-    if (Game.session.level === null) {
+    if (Game.session.levelData === null) {
         return;
     } else if (descriptionOpened === true) {
         descriptionOpened = false;

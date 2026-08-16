@@ -132,12 +132,12 @@ class Game {
 
     set timeSignatureNumerator(numerator) {
         this.#currentData.timeSigNumerator = numerator;
-        Events.on("timesigchanged", numerator, this.#currentData.timeSigDenominator);
+        Events.emit("timesigchanged", numerator, this.#currentData.timeSigDenominator);
     }
 
     set timeSignatureDenominator(denominator) {
         this.#currentData.timeSigDenominator = denominator;
-        Events.on("timesigchanged", this.#currentData.timeSigNumerator, denominator);
+        Events.emit("timesigchanged", this.#currentData.timeSigNumerator, denominator);
     }
 
     get stepsPerBeat() {
@@ -155,7 +155,7 @@ class Game {
     set beatsPerMinute(beatsPerMinute) {
         this.#currentData.beatsPerMinute = beatsPerMinute;
         Tone.Transport.bpm.value = beatsPerMinute;
-        Events.on("bpmchanged", beatsPerMinute);
+        Events.emit("bpmchanged", beatsPerMinute);
     }
 
     get mode() {
@@ -164,7 +164,7 @@ class Game {
 
     set mode(mode) {
         this.mode = mode;
-        Events.on("modechanged", this.#currentData, mode);
+        Events.emit("modechanged", this.#currentData, mode);
     }
 
     get #currentData() {

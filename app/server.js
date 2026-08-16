@@ -41,41 +41,6 @@ app.get("/api/levels/:id", async (req, res) => {
   }
 });
 
-app.post("/api/levels/:id/submit", async (req, res) => {
-  if (!req.body.hasOwnProperty("submission")) {
-    res.status(400);
-    res.json({ error: "Missing submission" })
-    return;
-  }
-
-  try {
-    const response = await pool.query(`SELECT data FROM levels WHERE ID = $1`, [req.query.id]);
-    const level = response.rows[0];
-    const submission = req.body.submission;
-
-    let matches = 0;
-    let totalMatches = level.pattern.length * level.pattern[0].steps;
-
-    for (let trackIndex = 0; trackIndex < level.pattern.length; ++trackIndex) {
-      const levelTrack = submission.pattern[trackIndex];
-      const submissionTrack = submission.pattern[trackIndex];
-      for (let stepIndex = 0; stepIndex < levelTrack.steps.length; ++stepIndex) {
-        if (submissionTrack.steps[stepIndex] === levelTrack.steps[stepIndex]) {
-          ++matches;
-        }
-      }
-    }
-
-    const score = matches / totalMatches * 100;
-    res.json({ score: score });
-  }
-  catch (e) {
-    console.log(e);
-    res.status(500);
-    res.json({ error: "Something went wrong" });
-  }
-});
-
 app.post("/api/levels/add", async (req, res) => {
   try {
     const response = await pool.query(`INSERT INTO levels (data) VALUES ($1)`, [req.body]);

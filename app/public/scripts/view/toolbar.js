@@ -145,12 +145,11 @@ listenToLevelButton.addEventListener("click", () => {
 
 submitPatternButton.addEventListener("click", () => {
     const score = Game.gradeLevel();
-    if (Object.hasOwn("invalid")) {
-        Toast.showToast("A problem occurred when calculating your score.");
-        return;
-    }
 
-    Toast.showToast(`You scored a ${score.grade}%, ${score.passed ? "you passed!" : "you failed!"}`);
+    Toast.showToast(Object.hasOwn("invalid") ?
+        "A problem occurred when calculating your score." :
+        `You scored a ${score.grade}%, ${score.passed ? "you passed!" : "you failed!"}`);
+
     Game.unloadLevel();
 });
 

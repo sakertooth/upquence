@@ -279,7 +279,7 @@ function gradeLevelFor(data, level) {
     const totalGrade = (totalStepGrade + totalTimeSigGrade + totalBpmGrade) * 100;
 
     return {
-        grade: totalGrade,
+        grade: totalGrade.toFixed(2),
         passed: totalGrade >= session.level.pointsRequired
     };
 }

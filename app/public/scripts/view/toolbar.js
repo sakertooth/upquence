@@ -158,7 +158,7 @@ levelDescriptionButton.addEventListener("click", () => {
     }
     descriptionOpened = true;
 
-    overlay.textContent = Game.getLevelDescription();
+    overlay.textContent = Game.session.levelData.description;
     document.body.appendChild(overlay);
 })
 

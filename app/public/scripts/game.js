@@ -221,42 +221,69 @@ export async function addTrack(name, url) {
     Events.emit("trackAdded", name, url);
 }
 
-function compareSteps(track, levelTrack) {
-    let pointsToLose = 0
-    track.steps.forEach((step, index) => {
-        let levelStep = levelTrack.steps[index];
-        if (step !== levelStep) {
-            pointsToLose++;
-            console.log(index);
-        }
+function gradeLevelFor(data, level) {
+    if (data.pattern.length !== level.pattern.length) {
+        return { invalid: true, message: "invalid number of tracks" };
+    }
+
+    const sameTracks = data.pattern.map((dataTrack, dataTrackIndex) => {
+        const levelTrack = level.pattern[dataTrackIndex];
+        return dataTrack.name === levelTrack.name && dataTrack.steps.length === levelTrack.steps.length;
     });
-    return pointsToLose
+
+    if (!sameTracks.every(same => same)) {
+        return { invalid: true, message: "tracks are not the same" };
+    }
+
+    const timeSigMatchingFactor = 0.3;
+    const stepMatchingFactor = 0.5;
+    const bpmMatchingFactor = 0.2;
+
+    let stepScore = 0;
+    let maxStepScore = 0;
+    let bpmScore = 0;
+    let timeSigScore = 0;
+
+    for (let trackIndex = 0; trackIndex < level.pattern.length; ++trackIndex) {
+        for (let stepIndex = 0; stepIndex < level.pattern[0].steps.length; ++stepIndex) {
+            const levelTrack = level.pattern[trackIndex];
+            const levelStep = levelTrack.steps[stepIndex];
+
+            if (levelStep) {
+                ++maxStepScore;
+
+                const dataTrack = data.pattern[trackIndex];
+                const dataStep = dataTrack.steps[stepIndex];
+                if (dataStep) {
+                    ++stepScore;
+                }
+            }
+        }
+    }
+
+    if (data.beatsPerMinute === level.beatsPerMinute) {
+        ++bpmScore;
+    }
+
+    if (data.timeSigNumerator === level.timeSigNumerator) {
+        ++timeSigScore;
+    }
+
+    if (data.timeSigNumerator === level.timeSigDenominator) {
+        ++timeSigScore;
+    }
+
+    const totalStepGrade = stepMatchingFactor * (stepScore / maxStepScore);
+    const totalTimeSigGrade = timeSigMatchingFactor * (timeSigScore / 2);
+    const totalBpmGrade = bpmMatchingFactor * bpmScore;
+    const totalGrade = (totalStepGrade + totalTimeSigGrade + totalBpmGrade) * 100;
+
+    return {
+        grade: totalGrade,
+        passed: totalGrade >= session.level.pointsRequired
+    };
 }
 
 export function gradeLevel() {
-    let pointsToLose = 0
-    session.data.pattern.forEach((track, index) => {
-        let levelTrack = session.level.pattern[index];
-        pointsToLose += compareSteps(track, levelTrack);
-    });
-
-    if (session.data.timeSigNumerator != session.level.timeSigNumerator) {
-        pointsToLose += 10;
-    }
-    if (session.data.timeSigDenominator != session.level.timeSigDenominator) {
-        pointsToLose += 10;
-    }
-    if (session.data.beatsPerMinute != session.level.beatsPerMinute) {
-        pointsToLose += 10;
-    }
-
-    const totalPoints = ((numSteps() * 5) + 30) - pointsToLose;
-    return totalPoints;
-}
-
-export function isScoreGood(score) {
-    if (score >= session.level.pointsRequired) {
-        return "you passed!";
-    }
-    return "you failed...";
+    return gradeLevelFor(session.data, session.level);
 }

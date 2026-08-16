@@ -144,10 +144,13 @@ listenToLevelButton.addEventListener("click", () => {
 });
 
 submitPatternButton.addEventListener("click", () => {
-    // TODO: submit level and unload it
     const score = Game.gradeLevel();
-    const result = Game.isScoreGood(score);
-    Toast.showToast(`Score: ${score}, ${result}`);
+    if (Object.hasOwn("invalid")) {
+        Toast.showToast("A problem occurred when calculating your score.");
+        return;
+    }
+
+    Toast.showToast(`You scored a ${score.grade}%, ${score.passed ? "you passed!" : "you failed!"}`);
     Game.unloadLevel();
 });
 

@@ -66,8 +66,23 @@ class Game {
 
     async loadLevel(level) {
         this.#levelData = level;
+        this.#playData = level;
+
+        // Disable all steps in the play data
+        for (let track of this.#playData) {
+            for (let step of track.steps) {
+                step = false;
+            }
+        }
+
+        // Create track players for the level
+        this.#playback.players.play = await createTrackPlayers(this.#playData.pattern);
+
         const buffer = await startExport(level);
         this.#playback.levelPlayer = new Tone.Player(buffer).toDestination();
+
+        // Switch mode and emit signal that the mode was switched
+        this.mode = Mode.play;
     }
 
     listenToLevel() {
@@ -171,8 +186,8 @@ class Game {
         this.#playback.currentStep = (this.#playback.currentStep + 1) % this.numSteps;
     }
 
-    async #createTrackPlayers() {
-        this.#currentPlayers = this.#currentData.pattern.map(track => {
+    async #createTrackPlayers(pattern) {
+        this.#currentPlayers = pattern.map(track => {
             const trackPlayer = new Tone.Player(track.url);
             const trackPan = new Tone.PanVol(Constants.DEFAULT_TRACK_PANNING, console.DEFAULT_TRACK_VOLUME).toDestination();
             trackPlayer.connect(trackPan);

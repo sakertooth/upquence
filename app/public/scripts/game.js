@@ -217,7 +217,7 @@ function compareSteps(track, levelTrack) {
     return pointsToLose
 }
 
-export function gradeLevel(){
+export function gradeLevel() {
     let pointsToLose = 0
     session.data.pattern.forEach((track, index) => {
         let levelTrack = session.level.pattern[index];

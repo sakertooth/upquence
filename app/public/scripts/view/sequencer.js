@@ -1,6 +1,7 @@
 import * as Events from "../events.js"
 import * as Game from "../game.js"
 import * as Constants from "../constants.js"
+import * as Toast from "../view/toast.js"
 
 const sequencer = document.getElementById("sequencer");
 
@@ -10,10 +11,11 @@ const addTrackFileInput = document.getElementById("add-track-file-input");
 Events.on("onTimeSignatureChange", render);
 Events.on("onDataUploaded", render);
 Events.on("trackAdded", render);
+Events.on("modeChanged", render);
 
 export function render() {
     sequencer.innerHTML = "";
-    Game.session.sandboxData.pattern.forEach((track, trackIndex) => {
+    Game.currentData().pattern.forEach((track, trackIndex) => {
         const trackRow = document.createElement("div");
         trackRow.className = "sequencer-track";
 
@@ -108,6 +110,11 @@ function update() {
 }
 
 addTrackButton.addEventListener("click", (e) => {
+    if (Game.session.currentMode !== Game.Mode.Sandbox) {
+        Toast.showToast("You can only do this action in sandbox mode!")
+        return;
+    }
+
     e.preventDefault();
     addTrackFileInput.click();
 });

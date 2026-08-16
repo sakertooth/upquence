@@ -8,11 +8,13 @@ export const Mode = Object.freeze({
 
 export let session = {
     sandboxData: createData(),
+    playData: createData(),
     levelData: createData(),
     currentMode: Mode.Sandbox,
     playback: {
         currentStep: 0,
         trackPlayers: [],
+        levelPlayers: [],
         metronomePlayer: false,
         metronomePlaying: false,
         levelPlayer: null,
@@ -49,7 +51,7 @@ export async function init() {
     Tone.Transport.loop = true;
     Tone.Transport.setLoopPoints(0, "1m");
     Tone.Transport.scheduleRepeat((time) => {
-        renderStep(time, session.sandboxData, session.playback.trackPlayers, session.playback.currentStep);
+        renderStep(time, currentData(), currentPlayers(), session.playback.currentStep);
 
         // Play metronome on each new beat
         if (session.playback.metronomePlaying && session.playback.currentStep % stepsPerBeat() == 0) {
@@ -103,6 +105,24 @@ function stepsPerBeatFor(denominator) {
 
 function numStepsFor(numerator, denominator) {
     return Math.floor(numerator * stepsPerBeatFor(denominator));
+}
+
+export function currentData() {
+    switch (session.currentMode) {
+        case Mode.Sandbox:
+            return session.sandboxData;
+        case Mode.Play:
+            return session.playData;
+    }
+}
+
+export function currentPlayers() {
+    switch (session.currentMode) {
+        case Mode.Sandbox:
+            return session.playback.trackPlayers;
+        case Mode.Play:
+            return session.playback.levelPlayers;
+    }
 }
 
 export function stepsPerBeat() {
@@ -196,20 +216,36 @@ export function setData(data) {
 
 export async function loadLevel(data) {
     session.levelData = data;
+    session.playData = structuredClone(data);
+
+    for (const track of session.playData.pattern) {
+        track.steps.fill(false);
+    }
 
     const buffer = await startExport(data);
     session.playback.levelPlayer = new Tone.Player(buffer).toDestination();
-
     await Tone.loaded();
+
+    session.playback.levelPlayers = await createTrackPlayers(data.pattern);
+
+    switchMode(Mode.Play);
 }
 
 export function unloadLevel() {
-    session.levelData = null;
-    session.playback.levelPlayer = null;
+    session.playback.levelPlayers = [];
+    session.playData.levelData = createData();
+    session.playData.levelPlayer = null;
+    switchMode(Mode.Sandbox);
 }
 
 export function listenToLevel() {
+    console.log(session.playback.levelPlayer);
     session.playback.levelPlayer?.start();
+}
+
+export function switchMode(mode) {
+    session.currentMode = mode;
+    Events.emit("modeChanged", mode);
 }
 
 function gradeLevelFor(data, level) {

@@ -130,12 +130,21 @@ uploadFileInput.addEventListener("change", async (e) => {
 });
 
 listenToLevelButton.addEventListener("click", () => {
-    if (Game.session.levelData === null) { return; }
+    if (Game.session.currentMode !== Game.Mode.Play) {
+        Toast.showToast("You can only do this action when playing a level!")
+        return;
+    }
+
     Game.listenToLevel();
     Toast.showToast("Listen for the pattern...");
 });
 
 submitPatternButton.addEventListener("click", () => {
+    if (Game.session.currentMode !== Game.Mode.Play) {
+        Toast.showToast("You can only do this action when playing a level!")
+        return;
+    }
+
     const score = Game.gradeLevel();
 
     Toast.showToast(Object.hasOwn("invalid") ?
@@ -149,15 +158,18 @@ const overlay = document.createElement("div");
 overlay.className = "description-overlay";
 
 levelDescriptionButton.addEventListener("click", () => {
-    if (Game.session.levelData === null) {
+    if (Game.session.currentMode !== Game.Mode.Play) {
+        Toast.showToast("You can only do this action when playing a level!")
         return;
-    } else if (descriptionOpened === true) {
+    }
+
+    if (descriptionOpened) {
         descriptionOpened = false;
         overlay.remove();
         return;
     }
-    descriptionOpened = true;
 
+    descriptionOpened = true;
     overlay.textContent = Game.session.levelData.description;
     document.body.appendChild(overlay);
 })

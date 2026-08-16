@@ -1,5 +1,87 @@
 import * as Events from "./events.js"
 import * as Constants from "./constants.js"
+import * as Session from "./session.js"
+
+const Mode = Object.freeze({
+    Sandbox: "sandbox",
+    Play: "play"
+});
+
+// TODO: Ongoing refactor
+class Game {
+    #sandboxData;
+    #playData;
+    #levelData;
+    #mode;
+    #playback;
+
+    constructor() {
+        this.#sandboxData = new Session.SessionData();
+        this.#playData = new Session.SessionData();
+        this.#levelData = new Session.SessionData();
+        this.#mode = Mode.Sandbox;
+        this.#playback = {
+            currentStep: 0,
+        };
+    }
+
+    startPlayback() {
+        Tone.start().then(() => Tone.Transport.start());
+    }
+
+    stopPlayback() {
+        this.#playback.currentStep = 0;
+        Tone.Transport.stop();
+    }
+
+    pausePlayback() {
+        Tone.Transport.pause();
+    }
+
+    addTrack(name, url) {
+        this.#currentData.addTrack(name, url);
+    }
+
+    get stepsPerBeat() {
+        return this.#currentData.stepsPerBeat;
+    }
+
+    get numSteps() {
+        return this.#currentData.numSteps;
+    }
+
+    get beatsPerMinute() {
+        return this.#currentData.beatsPerMinute;
+    }
+
+    set beatsPerMinute(beatsPerMinute) {
+        this.#currentData.beatsPerMinute = beatsPerMinute;
+        Tone.Transport.bpm.value = beatsPerMinute;
+        Events.on("bpmchanged", beatsPerMinute);
+    }
+
+    get mode() {
+        return this.#mode;
+    }
+
+    set mode(mode) {
+        this.mode = mode;
+        Events.on("modechanged", this.#currentData, mode);
+    }
+
+    get #currentData() {
+        switch (this.#mode) {
+            case Mode.Sandbox:
+                return this.#sandboxData;
+            case Mode.Play:
+                return this.#playData;
+        }
+    }
+
+    toJSON() {
+        return JSON.stringify(this.sandboxData);
+    }
+}
 
 export let session = {
     data: {

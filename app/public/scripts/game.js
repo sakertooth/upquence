@@ -42,6 +42,24 @@ class Game {
         this.#currentData.addTrack(name, url);
     }
 
+    get timeSignatureNumerator() {
+        return this.#currentData.timeSigNumerator;
+    }
+
+    get timeSignatureDenominator() {
+        return this.#currentData.timeSigDenominator;
+    }
+
+    set timeSignatureNumerator(numerator) {
+        this.#currentData.timeSigNumerator = numerator;
+        Events.on("timesigchanged", numerator, this.#currentData.timeSigDenominator);
+    }
+
+    set timeSignatureDenominator(denominator) {
+        this.#currentData.timeSigDenominator = denominator;
+        Events.on("timesigchanged", this.#currentData.timeSigNumerator, denominator);
+    }
+
     get stepsPerBeat() {
         return this.#currentData.stepsPerBeat;
     }

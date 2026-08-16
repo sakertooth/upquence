@@ -20,12 +20,15 @@ class Game {
         this.#playData = new Session.SessionData();
         this.#levelData = new Session.SessionData();
         this.#mode = Mode.Sandbox;
+
         this.#playback = {
             currentStep: 0,
             players: {
                 sandbox: [],
-                play: []
-            }
+                play: [],
+            },
+            metronomePlayer: new Tone.Player({ url: "../sounds/metronome.mp3" }).toDestination(),
+            metronomePlaying: false,
         };
 
         // Start game loop, set time signature and BPM, etc
@@ -49,6 +52,10 @@ class Game {
 
     pausePlayback() {
         Tone.Transport.pause();
+    }
+
+    toggleMetronomePlayback() {
+        this.#playback.metronomePlaying = !this.#playback.metronomePlaying;
     }
 
     addTrack(name, url) {

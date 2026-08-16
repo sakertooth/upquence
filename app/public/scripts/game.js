@@ -204,3 +204,43 @@ export function unloadLevel() {
 export function listenToLevel() {
     session.playback.levelPlayer?.start();
 }
+
+function compareSteps(track, levelTrack) {
+    let pointsToLose = 0
+    track.steps.forEach((step, index) => {
+        let levelStep = levelTrack.steps[index];
+        if (step !== levelStep) {
+            pointsToLose++;
+            console.log(index);
+        }
+    });
+    return pointsToLose
+}
+
+export function gradeLevel(){
+    let pointsToLose = 0
+    session.data.pattern.forEach((track, index) => {
+        let levelTrack = session.level.pattern[index];
+        pointsToLose += compareSteps(track, levelTrack);
+    });
+
+    if (session.data.timeSigNumerator != session.level.timeSigNumerator) {
+        pointsToLose += 10;
+    }
+    if (session.data.timeSigDenominator != session.level.timeSigDenominator) {
+        pointsToLose += 10;
+    }
+    if (session.data.beatsPerMinute != session.level.beatsPerMinute) {
+        pointsToLose += 10;
+    }
+
+    const totalPoints = ((numSteps() * 5) + 30) - pointsToLose;
+    return totalPoints;
+}
+
+export function isScoreGood(score) {
+    if (score >= session.level.pointsRequired) {
+        return "you passed!";
+    }
+    return "you failed...";
+}

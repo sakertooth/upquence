@@ -29,6 +29,8 @@ class Game {
             },
             metronomePlayer: new Tone.Player({ url: "../sounds/metronome.mp3" }).toDestination(),
             metronomePlaying: false,
+            levelPlayer: false,
+            listeningToLevel: false
         };
 
         // Start game loop, set time signature and BPM, etc
@@ -60,6 +62,39 @@ class Game {
 
     addTrack(name, url) {
         this.#currentData.addTrack(name, url);
+    }
+
+    async loadLevel(level) {
+        this.#levelData = level;
+        const buffer = await startExport(level);
+        this.#playback.levelPlayer = new Tone.Player(buffer).toDestination();
+    }
+
+    listenToLevel() {
+        this.#playback.levelPlayer?.start();
+    }
+
+    startExport() {
+        export async function startExport(data) {
+            const secondsPerBeat = 60 / data.beatsPerMinute;
+            const duration = 4 * data.timeSigNumerator * secondsPerBeat;
+
+            const buffer = await Tone.Offline(async ({ transport }) => {
+                let currentStep = 0;
+                let trackPlayers = await createTrackPlayers(data.pattern);
+
+                transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
+                transport.bpm.value = data.beatsPerMinute;
+
+                transport.scheduleRepeat(time => {
+                    renderStep(time, data, trackPlayers, currentStep);
+                    currentStep = (currentStep + 1) % numStepsFor(data.timeSigNumerator, data.timeSigDenominator);
+                }, `${Constants.PATTERN_STEP_RESOLUTION}n`);
+                transport.start(0);
+            }, duration);
+
+            return buffer;
+        }
     }
 
     get timeSignatureNumerator() {

@@ -2,13 +2,8 @@ import * as Events from "./events.js"
 import * as Constants from "./constants.js"
 
 export let session = {
-    sandboxData: {
-        pattern: [],
-        timeSigNumerator: Constants.DEFAULT_TIME_SIG_NUMERATOR,
-        timeSigDenominator: Constants.DEFAULT_TIME_SIG_DENOMINATOR,
-        beatsPerMinute: Constants.DEFAULT_BEATS_PER_MINUTE
-    },
-    levelData: null,
+    sandboxData: createData(),
+    levelData: createData(),
     playback: {
         currentStep: 0,
         trackPlayers: [],
@@ -60,6 +55,15 @@ export async function init() {
     }, `${Constants.PATTERN_STEP_RESOLUTION}n`);
 
     Events.emit("onInitialized", session.sandboxData);
+}
+
+function createData() {
+    return {
+        pattern: [],
+        timeSigNumerator: Constants.DEFAULT_TIME_SIG_NUMERATOR,
+        timeSigDenominator: Constants.DEFAULT_TIME_SIG_DENOMINATOR,
+        beatsPerMinute: Constants.DEFAULT_BEATS_PER_MINUTE
+    };
 }
 
 async function createTrackPlayers(pattern) {

@@ -86,11 +86,11 @@ class Game {
     }
 
     loadSandbox(data) {
-        this.#currentData = data;
-        Tone.Transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
-        Tone.Transport.bpm.value = data.beatsPerMinute;
+        this.#sandboxData = data;
 
         if (this.#mode === Mode.Sandbox) {
+            Tone.Transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
+            Tone.Transport.bpm.value = data.beatsPerMinute;
             Events.emit("datachanged", data);
         }
     }

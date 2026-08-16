@@ -33,6 +33,23 @@ class Game {
             listeningToLevel: false
         };
 
+        // Load default drum kit
+        const soundCatalogResponse = await fetch("/sounds/catalog.json");
+        const soundCatalogBody = await soundCatalogResponse.json();
+        const defaultDrumkit = soundCatalogBody.drumkits.find(drumkit => drumkit.name === soundCatalogBody["default-drumkit"]);
+
+        for (let soundID of defaultDrumkit.sounds) {
+            const sound = soundCatalogBody.sounds.find(sound => sound.id === soundID);
+
+            this.#sandboxData.pattern = [...this.#sandboxData.pattern, {
+                name: sound.name,
+                url: sound.url,
+                steps: Array(numSteps()).fill(false),
+                vol: Constants.DEFAULT_TRACK_VOLUME,
+                pan: Constants.DEFAULT_TRACK_PAN
+            }]
+        }
+
         // Start game loop, set time signature and BPM, etc
         Tone.Transport.timeSignature = [this.#currentData.timeSigNumerator, this.#currentData.timeSignatureDenominator];
         Tone.Transport.bpm.value = this.#currentData.beatsPerMinute;

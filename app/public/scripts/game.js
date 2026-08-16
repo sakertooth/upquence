@@ -1,9 +1,15 @@
 import * as Events from "./events.js"
 import * as Constants from "./constants.js"
 
+export const Mode = Object.freeze({
+    Sandbox: "sandbox",
+    Play: "play"
+});
+
 export let session = {
     sandboxData: createData(),
     levelData: createData(),
+    currentMode: Mode.Sandbox,
     playback: {
         currentStep: 0,
         trackPlayers: [],

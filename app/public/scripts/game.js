@@ -22,7 +22,20 @@ class Game {
         this.#mode = Mode.Sandbox;
         this.#playback = {
             currentStep: 0,
+            players: {
+                sandbox: [],
+                play: []
+            }
         };
+
+        // Start game loop, set time signature and BPM, etc
+        Tone.Transport.timeSignature = [this.#currentData.timeSigNumerator, this.#currentData.timeSignatureDenominator];
+        Tone.Transport.bpm.value = this.#currentData.beatsPerMinute;
+        Tone.Transport.loop = true;
+        Tone.Transport.setLoopPoints(0, "1m");
+
+        // Start schedule
+        Tone.scheduleRepeat((time) => this.#renderStep, `${Constants.PATTERN_STEP_RESOLUTION}n`);
     }
 
     startPlayback() {
@@ -94,6 +107,26 @@ class Game {
             case Mode.Play:
                 return this.#playData;
         }
+    }
+
+    get #currentPlayers() {
+        switch (this.#mode) {
+            case Mode.Sandbox:
+                return this.#playback.players.sandbox;
+            case Mode.Play:
+                return this.#playback.players.play;
+        }
+    }
+
+    #renderStep(time) {
+        for (let track of this.#currentData.pattern) {
+            if (track.steps[step]) {
+                const player = this.#currentPlayers.find(p => p.url === track.url);
+                player.obj.start(time);
+            }
+        }
+
+        this.#playback.currentStep = (this.#playback.currentStep + 1) % this.numSteps;
     }
 
     toJSON() {

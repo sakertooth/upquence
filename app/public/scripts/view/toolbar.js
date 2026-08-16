@@ -35,6 +35,8 @@ const downloadButton = document.getElementById("download-button");
 const uploadButton = document.getElementById("upload-button");
 const uploadFileInput = document.getElementById("upload-file-input");
 
+let descriptionOpened = false;
+
 Events.on("onInitialized", update);
 Events.on("onDataUploaded", update);
 
@@ -143,11 +145,27 @@ listenToLevelButton.addEventListener("click", () => {
 
 submitPatternButton.addEventListener("click", () => {
     // TODO: submit level and unload it
+    const score = Game.gradeLevel();
+    const result = Game.isScoreGood(score);
+    Toast.showToast(`Score: ${score}, ${result}`);
     Game.unloadLevel();
 });
 
+const overlay = document.createElement("div");
+overlay.className = "level-description-overlay";
+
 levelDescriptionButton.addEventListener("click", () => {
-    // TODO: show dialog that describes level
+    if (Game.session.level === null) {
+        return;
+    } else if (descriptionOpened === true) {
+        descriptionOpened = false;
+        overlay.remove();
+        return;
+    }
+    descriptionOpened = true;
+
+    overlay.textContent = Game.getLevelDescription();
+    document.body.appendChild(overlay);
 })
 
 document.addEventListener("keydown", (e) => {

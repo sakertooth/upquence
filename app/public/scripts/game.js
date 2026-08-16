@@ -248,7 +248,10 @@ export function switchMode(mode) {
     Events.emit("modeChanged", mode);
 }
 
-function gradeLevelFor(data, level) {
+export function gradeLevel() {
+    const data = session.playData;
+    const level = session.levelData;
+
     if (data.pattern.length !== level.pattern.length) {
         return { invalid: true, message: "invalid number of tracks" };
     }
@@ -309,8 +312,4 @@ function gradeLevelFor(data, level) {
         grade: totalGrade.toFixed(2),
         passed: totalGrade >= session.levelData.pointsRequired
     };
-}
-
-export function gradeLevel() {
-    return gradeLevelFor(session.sandboxData, session.levelData);
 }

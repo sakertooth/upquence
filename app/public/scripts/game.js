@@ -136,6 +136,22 @@ class Game {
         this.#playback.currentStep = (this.#playback.currentStep + 1) % this.numSteps;
     }
 
+    async #createTrackPlayers() {
+        this.#currentPlayers = this.#currentData.pattern.map(track => {
+            const trackPlayer = new Tone.Player(track.url);
+            const trackPan = new Tone.PanVol(Constants.DEFAULT_TRACK_PANNING, console.DEFAULT_TRACK_VOLUME).toDestination();
+            trackPlayer.connect(trackPan);
+
+            return {
+                url: track.url,
+                obj: trackPlayer,
+                pan: trackPan
+            };
+        });
+
+        await Tone.loaded();
+    }
+
     toJSON() {
         return JSON.stringify(this.sandboxData);
     }

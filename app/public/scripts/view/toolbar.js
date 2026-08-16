@@ -34,10 +34,9 @@ const uploadFileInput = document.getElementById("upload-file-input");
 
 let descriptionOpened = false;
 
-Events.on("onInitialized", update);
 Events.on("onDataUploaded", update);
 
-function update(data) {
+export function update(data) {
     timeSigNumerator.value = data.timeSigNumerator;
     timeSigDenominator.value = data.timeSigDenominator;
     bpmSlider.value = data.beatsPerMinute;

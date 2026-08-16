@@ -59,8 +59,6 @@ export async function init() {
         session.playback.currentStep = (session.playback.currentStep + 1) % numSteps();
 
     }, `${Constants.PATTERN_STEP_RESOLUTION}n`);
-
-    Events.emit("onInitialized", session.sandboxData);
 }
 
 function createData() {

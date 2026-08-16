@@ -7,12 +7,11 @@ const sequencer = document.getElementById("sequencer");
 const addTrackButton = document.getElementById("add-track-button");
 const addTrackFileInput = document.getElementById("add-track-file-input");
 
-Events.on("onInitialized", render);
 Events.on("onTimeSignatureChange", render);
 Events.on("onDataUploaded", render);
 Events.on("trackAdded", render);
 
-function render() {
+export function render() {
     sequencer.innerHTML = "";
     Game.session.sandboxData.pattern.forEach((track, trackIndex) => {
         const trackRow = document.createElement("div");

@@ -147,7 +147,7 @@ submitPatternButton.addEventListener("click", () => {
 });
 
 const overlay = document.createElement("div");
-overlay.className = "level-description-overlay";
+overlay.className = "description-overlay";
 
 levelDescriptionButton.addEventListener("click", () => {
     if (Game.session.level === null) {

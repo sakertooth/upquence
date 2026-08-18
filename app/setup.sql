@@ -6,3 +6,8 @@ CREATE TABLE levels (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     data JSONB NOT NULL
 );
+
+CREATE TABLE sessions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    data JSONB NOT NULL
+);

@@ -313,3 +313,17 @@ export function gradeLevel() {
         passed: totalGrade >= session.levelData.pointsRequired
     };
 }
+
+
+export async function addTrack(name, url) {
+    session.sandboxData.pattern = [...session.sandboxData.pattern, {
+        name: name,
+        url: url,
+        steps: Array(numSteps()).fill(false),
+        vol: Constants.DEFAULT_TRACK_VOLUME,
+        pan: Constants.DEFAULT_TRACK_PAN
+    }];
+
+    session.playback.trackPlayers = await createTrackPlayers(session.sandboxData.pattern);
+    Events.emit("trackAdded", name, url);
+}

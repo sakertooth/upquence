@@ -124,6 +124,11 @@ addTrackFileInput.addEventListener("change", async () => {
         return;
     }
 
+    if (Game.session.currentMode !== Game.Mode.Sandbox) {
+        Toast.showToast("You can only do this action in sandbox mode!");
+        return;
+    }
+
     const file = addTrackFileInput.files[0];
-    Game.addTrack(file.name, URL.createObjectURL(file));
+    await Game.addTrack(file.name, URL.createObjectURL(file));
 });

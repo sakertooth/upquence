@@ -315,15 +315,16 @@ export function gradeLevel() {
 }
 
 
-export async function addTrack(name, url) {
+export async function addTrack(sound) {
     session.sandboxData.pattern = [...session.sandboxData.pattern, {
-        name: name,
-        url: url,
+        id: sound.id,
+        name: sound.name,
+        url: sound.url,
         steps: Array(numSteps()).fill(false),
         vol: Constants.DEFAULT_TRACK_VOLUME,
         pan: Constants.DEFAULT_TRACK_PAN
     }];
 
     session.playback.trackPlayers = await createTrackPlayers(session.sandboxData.pattern);
-    Events.emit("trackAdded", name, url);
+    Events.emit("trackAdded", sound);
 }

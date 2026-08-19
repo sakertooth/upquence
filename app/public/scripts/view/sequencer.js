@@ -130,5 +130,19 @@ addTrackFileInput.addEventListener("change", async () => {
     }
 
     const file = addTrackFileInput.files[0];
-    await Game.addTrack(file.name, URL.createObjectURL(file));
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch("/api/sounds", {
+        method: "POST",
+        body: formData
+    });
+
+    if (!response.ok) {
+        Toast.showToast("Failed to upload sound!");
+        return;
+    }
+
+    const sound = await response.json();
+    await Game.addTrack(sound);
 });

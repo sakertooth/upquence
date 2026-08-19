@@ -41,18 +41,6 @@ app.get("/api/levels/:id", async (req, res) => {
   }
 });
 
-app.post("/api/levels/add", async (req, res) => {
-  try {
-    const response = await pool.query(`INSERT INTO levels (data) VALUES ($1)`, [req.body]);
-    res.json({ message: "Level added!" });
-  }
-  catch (e) {
-    console.log(e);
-    res.status(500);
-    res.json({ error: "Something went wrong" });
-  }
-});
-
 app.post("/api/sessions", async (req, res) => {
   try {
     const result = await pool.query(`INSERT INTO sessions (data) VALUES ($1) RETURNING id`, [req.body]);

@@ -1,4 +1,6 @@
 let express = require("express");
+let multer = require("multer");
+let path = require("path");
 
 let app = express();
 let hostname = "localhost";
@@ -14,8 +16,22 @@ let pool = new Pool(env);
   console.log("Connected to the database");
 })();
 
+const uploadSound = multer({
+  storage: multer.diskStorage({
+    filename: (req, file, cb) => cb(null, `${generateRandomIdentifier()}${path.extname(file.originalname)}`),
+    destination: (req, file, cb) => cb(null, "sounds")
+  })
+});
+
+function generateRandomIdentifier() {
+  return Array.from({ length: 32 }, () =>
+    Math.floor(Math.random() * 16).toString(16)
+  ).join("");
+}
+
 app.use(express.json());
 app.use(express.static("public"));
+app.use("/sounds", express.static("sounds"));
 
 app.get("/api/levels", async (req, res) => {
   try {
@@ -70,6 +86,19 @@ app.get("/api/sessions/:id", async (req, res) => {
     console.log(e);
     res.status(500).json({ error: "Something went wrong" })
   }
+});
+
+app.post("/api/sounds", uploadSound.single("file"), (req, res) => {
+  const filename = req.file.filename;
+  const extension = path.extname(filename);
+
+  const sound = {
+    id: path.basename(filename, extension),
+    name: path.basename(req.file.originalname, path.extname(req.file.originalname)),
+    url: `/sounds/${filename}`
+  };
+
+  res.status(201).json(sound);
 });
 
 app.listen(port, hostname, () => {

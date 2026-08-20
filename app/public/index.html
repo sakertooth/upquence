@@ -76,9 +76,14 @@
 
   <div class="game">
     <div class="sequencer-container">
-      <div class="sequencer-menu">
+      <div class="sequencer-menu" id="sequencer-menu">
         <input type="file" id="add-track-file-input" accept="audio/*" hidden>
         <button class="control" id="add-track-button">Add Track</button>
+        <div class="sequencer-menu-load">
+          <input class="dialog-control control" id="sequence-id-input" required>
+          <button class="control" id="load-button">Load</button>
+          <button class="control" id="save-button">Save</button>
+        </div>
       </div>
       <div class="sequencer" id="sequencer"></div>
     </div>
@@ -114,6 +119,14 @@
         <button class="control" id="close-button">Close</button>
       </div>
     </form>
+  </dialog>
+  <dialog class="dialog" id="save-session-dialog">
+    <div class="dialog-title">Your session was saved!</div>
+    <span class="dialog-description center" id="sequence-id"></span>
+    <div class="dialog-buttons center">
+      <button class="control" id="copy-to-clipboard-button" type="submit">Copy to Clipboard</button>
+      <button class="control" id="close-button">Close</button>
+    </div>
   </dialog>
   <script src="http://unpkg.com/tone"></script>
   <script type="module" src="scripts/main.js"></script>

@@ -48,7 +48,7 @@ app.get("/api/levels", async (req, res) => {
 app.get("/api/levels/:id", async (req, res) => {
   try {
     const response = await pool.query(`SELECT data FROM levels WHERE id = $1`, [req.query.id]);
-    res.json({ levels: response.rows });
+    res.jsozn({ levels: response.rows });
   }
   catch (e) {
     console.log(e);
@@ -60,7 +60,7 @@ app.get("/api/levels/:id", async (req, res) => {
 app.post("/api/sessions", async (req, res) => {
   try {
     const result = await pool.query(`INSERT INTO sessions (data) VALUES ($1) RETURNING id`, [req.body]);
-    res.json({ message: "Session saved!", id: result.rows[0].sid });
+    res.json({ message: "Session saved!", id: result.rows[0].id });
   }
   catch (e) {
     console.log(e);

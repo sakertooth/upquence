@@ -2,11 +2,18 @@ import * as Events from "../events.js"
 import * as Game from "../game.js"
 import * as Constants from "../constants.js"
 import * as Toast from "../view/toast.js"
+import * as SaveSessionDialog from "../dialogs/save-session-dialog.js"
 
 const sequencer = document.getElementById("sequencer");
 
 const addTrackButton = document.getElementById("add-track-button");
 const addTrackFileInput = document.getElementById("add-track-file-input");
+
+const loadButton = document.querySelector("#sequencer-menu #load-button");
+const saveButton = document.querySelector("#sequencer-menu #save-button");
+const sequenceIdBox = document.querySelector("#sequencer-menu #sequence-id-input");
+
+const saveDialog = document.querySelector("#save-dialog");
 
 Events.on("onTimeSignatureChange", render);
 Events.on("onDataUploaded", render);
@@ -145,4 +152,37 @@ addTrackFileInput.addEventListener("change", async () => {
 
     const sound = await response.json();
     await Game.addTrack(sound);
+});
+
+loadButton.addEventListener("click", async () => {
+    const id = sequenceIdBox.value;
+    const response = await fetch(`/api/sessions/${id}`);
+
+    if (!response.ok) {
+        Toast.showToast(`Failed to load session ${id}!`);
+        return;
+    }
+
+    const session = await response.json();
+    Game.setData(session);
+    Toast.showToast(`Loaded session ${id}!`);
+});
+
+saveButton.addEventListener("click", async () => {
+    const response = await fetch("/api/sessions", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(Game.session.sandboxData)
+    });
+
+    if (!response.ok) {
+        Toast.showToast(`Failed to save this session!`);
+        return;
+    }
+
+    const json = await response.json();
+    SaveSessionDialog.setID(json.id);
+    SaveSessionDialog.dialog.showModal();
 });

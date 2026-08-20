@@ -73,28 +73,71 @@ export function render() {
             trackVolumeDisplay.textContent = trackVolumeSlider.value + "dB";
         });
 
-        const trackPanInput = document.createElement("input");
-        trackPanInput.className = "sequencer-track-slider";
-        trackPanInput.type = "range";
-        trackPanInput.min = Constants.MIN_TRACK_PANNING;
-        trackPanInput.defaultValue = Constants.DEFAULT_TRACK_PANNING;
-        trackPanInput.max = Constants.MAX_TRACK_PANNING;
-        trackPanInput.step = Constants.DEFAULT_TRACK_PANNING_STEP;
+        const trackPanKnob = document.createElement("div");
+        trackPanKnob.className = "sequencer-track-knob";
+
+        const trackPanKnobIndicator = document.createElement("div");
+        trackPanKnobIndicator.className = "sequencer-track-knob-indicator";
+
+        const minPan = Constants.MIN_TRACK_PANNING;
+        const maxPan = Constants.MAX_TRACK_PANNING;
+        const panStep = Constants.DEFAULT_TRACK_PANNING_STEP;
+        const defaultPan = Constants.DEFAULT_TRACK_PANNING;
 
         const trackPanDisplay = document.createElement("div");
         trackPanDisplay.className = "sequencer-track-audio-display";
-        trackPanDisplay.textContent = trackPanInput.value;
+        trackPanDisplay.textContent = defaultPan;
+        
+        updatePan(defaultPan);
+        function updatePan(value) {
+            value = Math.max(minPan, Math.min(maxPan, value));
+            value = Math.round(value * 10) / 10;
+            Game.changePanning(trackAudioIndex, value);
+            trackPanDisplay.textContent = value;
 
-        trackPanInput.addEventListener("input", () => {
-            Game.changePanning(trackAudioIndex, Number.parseFloat(trackPanInput.value));
-            trackPanDisplay.textContent = trackPanInput.value;
+            const normalized = (value - minPan) / (maxPan - minPan);
+            const angle = -135 + normalized * 270;
+            trackPanKnobIndicator.style.transform = `translateX(-50%) rotate(${angle}deg)`;
+        }
+
+        let dragging = false;
+        let startY = 0;
+        let startValue = 0;
+        trackPanKnob.addEventListener("pointerdown", (event) => {
+            dragging = true;
+            startY = event.clientY;
+            startValue = defaultPan;
+
+            trackPanKnob.setPointerCapture(event.pointerId);
+            trackPanKnob.classList.add("dragging");
         });
 
+        trackPanKnob.addEventListener("pointermove", (event) => {
+            if (!dragging) {
+                return;
+            }
+            const sensitivity = (maxPan - minPan) / 100;
+            const delta = startY - event.clientY;
+            updatePan(startValue + delta * sensitivity);
+        });
+
+        trackPanKnob.addEventListener("pointerup", (event) => {
+            dragging = false;
+            trackPanKnob.releasePointerCapture(event.pointerId);
+            trackPanKnob.classList.remove("dragging");
+        });
+
+        trackPanKnob.addEventListener("pointercancel", () => {
+            dragging = false;
+            trackPanKnob.classList.remove("dragging");
+        });
+
+        trackPanKnob.appendChild(trackPanKnobIndicator);
         trackRow.appendChild(trackHeader);
         trackRow.appendChild(stepContainer);
         trackRow.appendChild(trackVolumeSlider);
         trackRow.appendChild(trackVolumeDisplay);
-        trackRow.appendChild(trackPanInput);
+        trackRow.appendChild(trackPanKnob);
         trackRow.appendChild(trackPanDisplay);
         sequencer.appendChild(trackRow);
     });

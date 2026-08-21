@@ -15,12 +15,17 @@ const sequenceIdBox = document.querySelector("#sequencer-menu #sequence-id-input
 
 const saveDialog = document.querySelector("#save-dialog");
 
+export let trackVolDisplays = [];
+export let trackPanDisplays = [];
+
 Events.on("onTimeSignatureChange", render);
 Events.on("onDataUploaded", render);
 Events.on("trackAdded", render);
 Events.on("modeChanged", render);
 
 export function render() {
+    trackVolDisplays.length = 0;
+    trackPanDisplays.length = 0;
     sequencer.innerHTML = "";
     Game.currentData().pattern.forEach((track, trackIndex) => {
         const trackRow = document.createElement("div");
@@ -64,6 +69,7 @@ export function render() {
         const trackVolumeDisplay = document.createElement("div");
         trackVolumeDisplay.className = "sequencer-track-audio-display";
         trackVolumeDisplay.textContent = trackVolumeSlider.value + "dB";
+        trackVolDisplays.push(trackVolumeDisplay);
 
         const trackAudioIndex = trackIndex;
         Game.changeVolume(trackAudioIndex, trackVolumeSlider.defaultValue);
@@ -87,6 +93,7 @@ export function render() {
         const trackPanDisplay = document.createElement("div");
         trackPanDisplay.className = "sequencer-track-audio-display";
         trackPanDisplay.textContent = defaultPan;
+        trackPanDisplays.push(trackPanDisplay);
         
         updatePan(defaultPan);
         function updatePan(value) {

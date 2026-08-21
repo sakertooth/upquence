@@ -1,5 +1,6 @@
 import * as Events from "./events.js"
 import * as Constants from "./constants.js"
+import * as Sequencer from "./view/sequencer.js"
 
 export const Mode = Object.freeze({
     Sandbox: "sandbox",
@@ -211,7 +212,20 @@ export function setData(data) {
     Tone.Transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
     Tone.Transport.bpm.value = data.beatsPerMinute;
     session.sandboxData = data;
+    let tempData = JSON.stringify(data);
     Events.emit("onDataUploaded", data);
+    updateTrackVolumeAndPan(JSON.parse(tempData));
+}
+
+//Events.on("onDataUploaded", updateTrackVolumeAndPan);
+//TEST FILES: 4f42ece8-2738-4415-b6d0-89ca654b65da, a0a2d12d-855e-4083-966d-8983ffae0071
+export function updateTrackVolumeAndPan(data) {
+    data.pattern.forEach((track, index) => {
+        changeVolume(index, track.vol);
+        Sequencer.trackVolDisplays[index].textContent = track.vol + "dB";
+        changePanning(index, track.pan);
+        Sequencer.trackPanDisplays[index].textContent = track.pan;
+    });
 }
 
 export async function loadLevel(data) {

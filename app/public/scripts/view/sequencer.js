@@ -61,7 +61,7 @@ export function render() {
         trackVolumeDisplay.textContent = trackVolumeKnob.value + "dB";
 
         trackVolumeKnob.addEventListener("input", () => {
-            Game.changeVolume(trackIndex, Number.parseFloat(trackVolumeKnob.value));
+            Game.changeVolume(trackIndex, trackVolumeKnob.value);
             trackVolumeDisplay.textContent = trackVolumeKnob.value + "dB";
         });
 
@@ -71,7 +71,7 @@ export function render() {
 
         const trackPanKnob = Knob.createKnob(track.pan, Constants.MIN_TRACK_PAN, Constants.MAX_TRACK_PAN, Constants.DEFAULT_TRACK_PAN_STEP);
         trackPanKnob.addEventListener("input", (event) => {
-            Game.changePan(trackIndex, track.pan);
+            Game.changePan(trackIndex, trackPanKnob.value);
             trackPanDisplay.textContent = trackPanKnob.value;
         });
 

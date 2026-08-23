@@ -55,25 +55,14 @@ export function render() {
             stepContainer.appendChild(step);
         }
 
-        const trackVolumeSlider = document.createElement("input");
-        trackVolumeSlider.className = "sequencer-track-slider";
-        trackVolumeSlider.type = "range";
-        trackVolumeSlider.min = Constants.MIN_TRACK_VOLUME;
-        trackVolumeSlider.defaultValue = Constants.DEFAULT_TRACK_VOLUME;
-        trackVolumeSlider.value = track.vol;
-        trackVolumeSlider.max = Constants.MAX_TRACK_VOLUME;
-        trackVolumeSlider.step = Constants.DEFAULT_TRACK_VOLUME_STEP;
-
+        const trackVolumeKnob = Knob.createKnob(track.vol, Constants.MIN_TRACK_VOLUME, Constants.MAX_TRACK_VOLUME, Constants.DEFAULT_TRACK_VOLUME_STEP);
         const trackVolumeDisplay = document.createElement("div");
         trackVolumeDisplay.className = "sequencer-track-audio-display";
-        trackVolumeDisplay.textContent = trackVolumeSlider.value + "dB";
+        trackVolumeDisplay.textContent = trackVolumeKnob.value + "dB";
 
-        const trackAudioIndex = trackIndex;
-        Game.changeVolume(trackAudioIndex, trackVolumeSlider.defaultValue);
-
-        trackVolumeSlider.addEventListener("input", () => {
-            Game.changeVolume(trackAudioIndex, Number.parseFloat(trackVolumeSlider.value));
-            trackVolumeDisplay.textContent = trackVolumeSlider.value + "dB";
+        trackVolumeKnob.addEventListener("input", () => {
+            Game.changeVolume(trackIndex, Number.parseFloat(trackVolumeKnob.value));
+            trackVolumeDisplay.textContent = trackVolumeKnob.value + "dB";
         });
 
         const trackPanDisplay = document.createElement("div");
@@ -88,7 +77,7 @@ export function render() {
 
         trackRow.appendChild(trackHeader);
         trackRow.appendChild(stepContainer);
-        trackRow.appendChild(trackVolumeSlider);
+        trackRow.appendChild(trackVolumeKnob);
         trackRow.appendChild(trackVolumeDisplay);
         trackRow.appendChild(trackPanKnob);
         trackRow.appendChild(trackPanDisplay);

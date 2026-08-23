@@ -119,7 +119,7 @@ uploadFileInput.addEventListener("change", async (e) => {
             return;
         }
 
-        Game.setData(json);
+        Game.loadSandboxData(json);
         Toast.showToast("New pattern loaded!");
     } catch (error) {
         Toast.showToast("Invalid pattern file!");

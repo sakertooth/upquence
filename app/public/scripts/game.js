@@ -218,7 +218,11 @@ export function setData(data) {
     Tone.Transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
     Tone.Transport.bpm.value = data.beatsPerMinute;
     session.sandboxData = data;
-    Events.emit("onDataUploaded", data);
+
+    createTrackPlayers(data.pattern).then((players) => {
+        session.playback.trackPlayers = players;
+        Events.emit("onDataUploaded", data);
+    });
 }
 
 export async function loadLevel(data) {

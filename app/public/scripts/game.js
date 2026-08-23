@@ -76,7 +76,7 @@ function createData() {
 async function createTrackPlayers(pattern) {
     const players = pattern.map(track => {
         const trackPlayer = new Tone.Player(track.url);
-        const trackPan = new Tone.PanVol(Constants.DEFAULT_TRACK_PANNING, console.DEFAULT_TRACK_VOLUME).toDestination();
+        const trackPan = new Tone.PanVol(Constants.DEFAULT_TRACK_PAN, console.DEFAULT_TRACK_VOLUME).toDestination();
         trackPlayer.connect(trackPan);
 
         return {
@@ -182,7 +182,7 @@ export function changeVolume(trackID, volume) {
     session.sandboxData.pattern[trackID].vol = volume;
 }
 
-export function changePanning(trackID, pan) {
+export function changePan(trackID, pan) {
     session.playback.trackPlayers[trackID].pan.pan.value = pan;
     session.sandboxData.pattern[trackID].pan = pan;
 }
@@ -221,7 +221,7 @@ export function updateTrackVolumeAndPan(data) {
     data.pattern.forEach((track, index) => {
         changeVolume(index, track.vol);
         Sequencer.trackVolDisplays[index].textContent = track.vol + "dB";
-        changePanning(index, track.pan);
+        changePan(index, track.pan);
         Sequencer.trackPanDisplays[index].textContent = track.pan;
     });
 }

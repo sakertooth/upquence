@@ -16,13 +16,13 @@ export const DEFAULT_TRACK_VOLUME = 0;
 
 // The default panning of a track
 // A positive value moves the sound to the right, a negative value to the left
-export const DEFAULT_TRACK_PANNING = 0;
+export const DEFAULT_TRACK_PAN = 0;
 
 // The default step amount you can increase and decrease track volume
 export const DEFAULT_TRACK_VOLUME_STEP = 1;
 
 // The default step amount you can pan left and right
-export const DEFAULT_TRACK_PANNING_STEP = 0.1;
+export const DEFAULT_TRACK_PAN_STEP = 0.1;
 
 // The minimum volume of a track in decibles
 export const MIN_TRACK_VOLUME = -6;
@@ -31,7 +31,7 @@ export const MIN_TRACK_VOLUME = -6;
 export const MAX_TRACK_VOLUME = 6;
 
 // The minimum panning of a track in decibles
-export const MIN_TRACK_PANNING = -1;
+export const MIN_TRACK_PAN = -1;
 
 // The maximum panning of a track in decibles
-export const MAX_TRACK_PANNING = 1;
+export const MAX_TRACK_PAN = 1;

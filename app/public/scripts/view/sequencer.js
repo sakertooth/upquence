@@ -85,10 +85,10 @@ export function render() {
         const trackPanKnobIndicator = document.createElement("div");
         trackPanKnobIndicator.className = "sequencer-track-knob-indicator";
 
-        const minPan = Constants.MIN_TRACK_PANNING;
-        const maxPan = Constants.MAX_TRACK_PANNING;
-        const panStep = Constants.DEFAULT_TRACK_PANNING_STEP;
-        const defaultPan = Constants.DEFAULT_TRACK_PANNING;
+        const minPan = Constants.MIN_TRACK_PAN;
+        const maxPan = Constants.MAX_TRACK_PAN;
+        const panStep = Constants.DEFAULT_TRACK_PAN_STEP;
+        const defaultPan = Constants.DEFAULT_TRACK_PAN;
 
         const trackPanDisplay = document.createElement("div");
         trackPanDisplay.className = "sequencer-track-audio-display";
@@ -99,7 +99,7 @@ export function render() {
         function updatePan(value) {
             value = Math.max(minPan, Math.min(maxPan, value));
             value = Math.round(value * 10) / 10;
-            Game.changePanning(trackAudioIndex, value);
+            Game.changePan(trackAudioIndex, value);
             trackPanDisplay.textContent = value;
 
             const normalized = (value - minPan) / (maxPan - minPan);

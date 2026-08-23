@@ -217,8 +217,6 @@ export function setData(data) {
     updateTrackVolumeAndPan(JSON.parse(tempData));
 }
 
-//Events.on("onDataUploaded", updateTrackVolumeAndPan);
-//TEST FILES: 4f42ece8-2738-4415-b6d0-89ca654b65da, a0a2d12d-855e-4083-966d-8983ffae0071
 export function updateTrackVolumeAndPan(data) {
     data.pattern.forEach((track, index) => {
         changeVolume(index, track.vol);

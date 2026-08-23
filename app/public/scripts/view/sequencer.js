@@ -2,6 +2,7 @@ import * as Events from "../events.js"
 import * as Game from "../game.js"
 import * as Constants from "../constants.js"
 import * as Toast from "../view/toast.js"
+import * as Knob from "../view/knob.js"
 import * as SaveSessionDialog from "../dialogs/save-session-dialog.js"
 
 const sequencer = document.getElementById("sequencer");
@@ -75,64 +76,15 @@ export function render() {
             trackVolumeDisplay.textContent = trackVolumeSlider.value + "dB";
         });
 
-        const trackPanKnob = document.createElement("div");
-        trackPanKnob.className = "sequencer-track-knob";
-
-        const trackPanKnobIndicator = document.createElement("div");
-        trackPanKnobIndicator.className = "sequencer-track-knob-indicator";
-
         const trackPanDisplay = document.createElement("div");
         trackPanDisplay.className = "sequencer-track-audio-display";
         trackPanDisplay.textContent = track.pan;
 
-        updatePan(track.pan);
-
-        function updatePan(value) {
-            value = Math.max(Constants.MIN_TRACK_PAN, Math.min(Constants.MAX_TRACK_PAN, value));
-            value = Math.round(value * 10) / 10;
-            Game.changePan(trackAudioIndex, value);
-            trackPanDisplay.textContent = value;
-
-            const normalized = (value - Constants.MIN_TRACK_PAN) / (Constants.MAX_TRACK_PAN - Constants.MIN_TRACK_PAN);
-            const angle = -135 + normalized * 270;
-            trackPanKnobIndicator.style.transform = `translateX(-50%) rotate(${angle}deg)`;
-        }
-
-        let dragging = false;
-        let startY = 0;
-        let startValue = 0;
-
-        trackPanKnob.addEventListener("pointerdown", (event) => {
-            dragging = true;
-            startY = event.clientY;
-            startValue = track.pan;
-
-            trackPanKnob.setPointerCapture(event.pointerId);
-            trackPanKnob.classList.add("dragging");
+        const trackPanKnob = Knob.createKnob(track.pan, Constants.MIN_TRACK_PAN, Constants.MAX_TRACK_PAN, Constants.DEFAULT_TRACK_PAN_STEP);
+        trackPanKnob.addEventListener("input", (event) => {
+            Game.changePan(trackIndex, track.pan);
+            trackPanDisplay.textContent = trackPanKnob.value;
         });
-
-        trackPanKnob.addEventListener("pointermove", (event) => {
-            if (!dragging) {
-                return;
-            }
-
-            const sensitivity = (Constants.MAX_TRACK_PAN - Constants.MIN_TRACK_PAN) / 100;
-            const delta = startY - event.clientY;
-            updatePan(startValue + delta * sensitivity);
-        });
-
-        trackPanKnob.addEventListener("pointerup", (event) => {
-            dragging = false;
-            trackPanKnob.releasePointerCapture(event.pointerId);
-            trackPanKnob.classList.remove("dragging");
-        });
-
-        trackPanKnob.addEventListener("pointercancel", () => {
-            dragging = false;
-            trackPanKnob.classList.remove("dragging");
-        });
-
-        trackPanKnob.appendChild(trackPanKnobIndicator);
 
         trackRow.appendChild(trackHeader);
         trackRow.appendChild(stepContainer);

@@ -15,18 +15,14 @@ const sequenceIdBox = document.querySelector("#sequencer-menu #sequence-id-input
 
 const saveDialog = document.querySelector("#save-dialog");
 
-export let trackVolDisplays = [];
-export let trackPanDisplays = [];
-
 Events.on("onTimeSignatureChange", render);
 Events.on("onDataUploaded", render);
 Events.on("trackAdded", render);
 Events.on("modeChanged", render);
 
 export function render() {
-    trackVolDisplays.length = 0;
-    trackPanDisplays.length = 0;
     sequencer.innerHTML = "";
+
     Game.currentData().pattern.forEach((track, trackIndex) => {
         const trackRow = document.createElement("div");
         trackRow.className = "sequencer-track";
@@ -63,13 +59,13 @@ export function render() {
         trackVolumeSlider.type = "range";
         trackVolumeSlider.min = Constants.MIN_TRACK_VOLUME;
         trackVolumeSlider.defaultValue = Constants.DEFAULT_TRACK_VOLUME;
+        trackVolumeSlider.value = track.vol;
         trackVolumeSlider.max = Constants.MAX_TRACK_VOLUME;
         trackVolumeSlider.step = Constants.DEFAULT_TRACK_VOLUME_STEP;
 
         const trackVolumeDisplay = document.createElement("div");
         trackVolumeDisplay.className = "sequencer-track-audio-display";
         trackVolumeDisplay.textContent = trackVolumeSlider.value + "dB";
-        trackVolDisplays.push(trackVolumeDisplay);
 
         const trackAudioIndex = trackIndex;
         Game.changeVolume(trackAudioIndex, trackVolumeSlider.defaultValue);
@@ -85,24 +81,19 @@ export function render() {
         const trackPanKnobIndicator = document.createElement("div");
         trackPanKnobIndicator.className = "sequencer-track-knob-indicator";
 
-        const minPan = Constants.MIN_TRACK_PAN;
-        const maxPan = Constants.MAX_TRACK_PAN;
-        const panStep = Constants.DEFAULT_TRACK_PAN_STEP;
-        const defaultPan = Constants.DEFAULT_TRACK_PAN;
-
         const trackPanDisplay = document.createElement("div");
         trackPanDisplay.className = "sequencer-track-audio-display";
-        trackPanDisplay.textContent = defaultPan;
-        trackPanDisplays.push(trackPanDisplay);
-        
-        updatePan(defaultPan);
+        trackPanDisplay.textContent = track.pan;
+
+        updatePan(track.pan);
+
         function updatePan(value) {
-            value = Math.max(minPan, Math.min(maxPan, value));
+            value = Math.max(Constants.MIN_TRACK_PAN, Math.min(Constants.MAX_TRACK_PAN, value));
             value = Math.round(value * 10) / 10;
             Game.changePan(trackAudioIndex, value);
             trackPanDisplay.textContent = value;
 
-            const normalized = (value - minPan) / (maxPan - minPan);
+            const normalized = (value - Constants.MIN_TRACK_PAN) / (Constants.MAX_TRACK_PAN - Constants.MIN_TRACK_PAN);
             const angle = -135 + normalized * 270;
             trackPanKnobIndicator.style.transform = `translateX(-50%) rotate(${angle}deg)`;
         }
@@ -110,10 +101,11 @@ export function render() {
         let dragging = false;
         let startY = 0;
         let startValue = 0;
+
         trackPanKnob.addEventListener("pointerdown", (event) => {
             dragging = true;
             startY = event.clientY;
-            startValue = defaultPan;
+            startValue = track.pan;
 
             trackPanKnob.setPointerCapture(event.pointerId);
             trackPanKnob.classList.add("dragging");
@@ -123,7 +115,8 @@ export function render() {
             if (!dragging) {
                 return;
             }
-            const sensitivity = (maxPan - minPan) / 100;
+
+            const sensitivity = (Constants.MAX_TRACK_PAN - Constants.MIN_TRACK_PAN) / 100;
             const delta = startY - event.clientY;
             updatePan(startValue + delta * sensitivity);
         });
@@ -140,6 +133,7 @@ export function render() {
         });
 
         trackPanKnob.appendChild(trackPanKnobIndicator);
+
         trackRow.appendChild(trackHeader);
         trackRow.appendChild(stepContainer);
         trackRow.appendChild(trackVolumeSlider);

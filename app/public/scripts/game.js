@@ -212,18 +212,7 @@ export function setData(data) {
     Tone.Transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
     Tone.Transport.bpm.value = data.beatsPerMinute;
     session.sandboxData = data;
-    let tempData = JSON.stringify(data);
     Events.emit("onDataUploaded", data);
-    updateTrackVolumeAndPan(JSON.parse(tempData));
-}
-
-export function updateTrackVolumeAndPan(data) {
-    data.pattern.forEach((track, index) => {
-        changeVolume(index, track.vol);
-        Sequencer.trackVolDisplays[index].textContent = track.vol + "dB";
-        changePan(index, track.pan);
-        Sequencer.trackPanDisplays[index].textContent = track.pan;
-    });
 }
 
 export async function loadLevel(data) {

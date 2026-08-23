@@ -209,6 +209,12 @@ export async function startExport(data) {
 }
 
 export function setData(data) {
+    // In case vol and/or pan are not already set in the uploaded data, set them to the defaults
+    for (let track of data.pattern) {
+        track.vol ??= Constants.DEFAULT_TRACK_VOLUME;
+        track.pan ??= Constants.DEFAULT_TRACK_PAN;
+    }
+
     Tone.Transport.timeSignature = [data.timeSigNumerator, data.timeSigDenominator];
     Tone.Transport.bpm.value = data.beatsPerMinute;
     session.sandboxData = data;

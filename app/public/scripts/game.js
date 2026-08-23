@@ -208,7 +208,7 @@ export async function startExport(data) {
     return buffer;
 }
 
-export function setData(data) {
+export function loadSandboxData(data) {
     // In case vol and/or pan are not already set in the uploaded data, set them to the defaults
     for (let track of data.pattern) {
         track.vol ??= Constants.DEFAULT_TRACK_VOLUME;

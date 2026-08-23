@@ -208,7 +208,7 @@ loadButton.addEventListener("click", async () => {
     }
 
     const session = await response.json();
-    Game.setData(session);
+    Game.loadSandboxData(session);
     Toast.showToast(`Loaded session ${id}!`);
 });
 

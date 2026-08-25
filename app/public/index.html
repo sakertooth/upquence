@@ -53,6 +53,7 @@
     </div>
     <div class="toolbar-misc">
       <div class="toolbar-group column">
+        <button class="control" id="info-button">Info</button>
         <button class="control" id="download-button">Download</button>
         <input type="file" id="upload-file-input" accept=".json" hidden>
         <button class="control" id="upload-button">Upload</button>
@@ -125,6 +126,29 @@
     <span class="dialog-description center" id="sequence-id"></span>
     <div class="dialog-buttons center">
       <button class="control" id="copy-to-clipboard-button" type="submit">Copy to Clipboard</button>
+      <button class="control" id="close-button">Close</button>
+    </div>
+  </dialog>
+  <dialog class="dialog" id="info-dialog">
+    <div class="dialog-title">Sequencer Info</div>
+    <span class="dialog-description center" id="sequence-id"></span>
+      <p>
+        <pre>
+          Time Signature: Two numbers stacked on top of each other.
+            Top Number: How many beats in a measure.
+            Bottom Number: What note goes into each beat (quarter note, eighth note, etc…).
+
+          Track: A lane of steps with volume and panning controls.
+            Steps: The individual blocks that when lit, schedule the track's sound to be played then.
+            Pan: Controls the spreading the audio. 
+              -1 means the audio only plays in the left ear, 1 means the audio only plays in the right ear.
+            Volume: Controls the volume that the track plays at.
+            
+          BPM: Measures how many beats are played per minute. 
+            Changes how fast or slow the song plays.
+      </pre>
+      </p>
+    <div class="dialog-buttons center">
       <button class="control" id="close-button">Close</button>
     </div>
   </dialog>

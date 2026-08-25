@@ -3,6 +3,7 @@ import * as Game from "../game.js"
 import * as Toast from "./toast.js"
 import * as PlayLevelDialog from "../dialogs/play-level-dialog.js";
 import * as ExportDialog from "../dialogs/export-dialog.js";
+import * as InfoDialog from "../dialogs/info-dialog.js";
 import { validateUpload } from "../util/validate-upload.js";
 
 const PLAY_BUTTON_ICON_PATH = "M3 2l11 6-11 6V2z";
@@ -31,6 +32,7 @@ const levelDescriptionButton = document.getElementById("level-description-button
 const downloadButton = document.getElementById("download-button");
 const uploadButton = document.getElementById("upload-button");
 const uploadFileInput = document.getElementById("upload-file-input");
+const infoButton = document.getElementById("info-button");
 
 let descriptionOpened = false;
 
@@ -172,7 +174,11 @@ levelDescriptionButton.addEventListener("click", () => {
     descriptionOpened = true;
     overlay.textContent = Game.session.levelData.description;
     document.body.appendChild(overlay);
-})
+});
+
+infoButton.addEventListener("click", () => {
+    InfoDialog.dialog.showModal();
+});
 
 document.addEventListener("keydown", (e) => {
     if (e.code !== "Space") {

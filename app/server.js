@@ -3,13 +3,13 @@ let multer = require("multer");
 let path = require("path");
 
 let app = express();
-let hostname = "localhost";
-let port = 3000;
-
-let env = require("../env.json");
+let hostname = process.env.HOSTNAME;
+let port = process.env.PORT;
 
 let { Pool } = require("pg");
-let pool = new Pool(env);
+let pool = new Pool({
+  connectionString: process.env.DATABASE_URL
+});
 
 (async () => {
   await pool.connect();
@@ -30,8 +30,8 @@ function generateRandomIdentifier() {
 }
 
 app.use(express.json());
-app.use(express.static("public"));
-app.use("/sounds", express.static("sounds"));
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/sounds", express.static(path.join(__dirname, "sounds")));
 
 app.get("/api/levels", async (req, res) => {
   try {

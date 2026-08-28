@@ -19,8 +19,9 @@
   "type": "commonjs",
   "main": "server.js",
   "scripts": {
-    "start": "cd app && node server.js",
-    "setup": "psql -U postgres -f ./app/setup.sql && node ./app/setup.js"
+    "dev": "node --env-file app/.env.development app/server.js",
+    "start": "node app/server.js",
+    "setup": "psql \"$DATABASE_URL\" -f app/setup.sql && node app/setup.js"
   },
   "dependencies": {
     "express": "^5.2.1",

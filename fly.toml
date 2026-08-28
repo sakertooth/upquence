@@ -25,3 +25,6 @@ primary_region = 'ams'
 [env]
   HOSTNAME = "0.0.0.0"
   PORT = "3000"
+
+[deploy]
+  release_command = "npm run setup"

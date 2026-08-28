@@ -20,8 +20,9 @@
   "main": "server.js",
   "scripts": {
     "dev": "node --env-file app/.env.development app/server.js",
+    "setup:dev": "node --env-file app/.env.development app/setup.js",
     "start": "node app/server.js",
-    "setup": "psql \"$DATABASE_URL\" -f app/setup.sql && node app/setup.js"
+    "setup": "node app/setup.js"
   },
   "dependencies": {
     "express": "^5.2.1",

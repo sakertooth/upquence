@@ -18,8 +18,8 @@ let pool = new Pool({
 
 const uploadSound = multer({
   storage: multer.diskStorage({
-    filename: (req, file, cb) => cb(null, `${generateRandomIdentifier()}${path.extname(file.originalname)}`),
-    destination: (req, file, cb) => cb(null, "sounds")
+    filename: (_, file, cb) => cb(null, `${generateRandomIdentifier()}${path.extname(file.originalname)}`),
+    destination: (_, _, cb) => cb(null, "sounds")
   })
 });
 
